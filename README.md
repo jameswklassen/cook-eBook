@@ -1,3 +1,3 @@
-# Recipe App
+# cook-eBook
 
-An app that will allow users to store, view and edit their own collection of recipes!
+cook-eBook is a new app that will allow users to store, view and edit their own collection of recipes!
