@@ -23,7 +23,7 @@ Software Engineering Summer 2019 Project
         </a>
     </td>
     <td style="text-align: center;">
-        <a href="https://code.cs.umanitoba.ca/RyanF>
+        <a href="https://code.cs.umanitoba.ca/RyanF">
             <img src="https://code.cs.umanitoba.ca/uploads/-/system/user/avatar/176/avatar.png?width=400" width="100px;"/>
             <br/>
             <sub>
