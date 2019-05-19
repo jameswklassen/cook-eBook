@@ -25,8 +25,6 @@ public boolean doMethod() {
 All indents are four spaces. All indenting is done with tabs.
 
 Matching braces always line up vertically in the same column as their construct.
-
-All if, while and for statements must use braces even if they control just one statement.
 ```java
 if(condition) {
     do thing
@@ -46,3 +44,8 @@ class Order {
     //methods
 }
 ```
+
+## Documentation
+As a rule of thumb, code should be self-explanatory 99% of the time. If you feel the need to comment, there's a good chance you can write it in a simpler, better way.
+
+Of course, sometimes you do need to comment to clarify something, or point out something that isn't obvious. However, they should be used minimally.
