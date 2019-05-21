@@ -25,3 +25,6 @@ cook-eBook is a new app that will allow users to store, view and edit their own 
 
 ## Coding Style
 - Our [coding style](https://code.cs.umanitoba.ca/comp3350-summer2019/master-branch-chefs---2/blob/master/docs/Coding%20Style.md) guide to keep things consistent!
+
+## Work Flow / Contributing
+- Our document for [Contributing](https://code.cs.umanitoba.ca/comp3350-summer2019/master-branch-chefs---2/blob/master/docs/Contributing.md) standards for this project
