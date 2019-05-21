@@ -56,10 +56,12 @@ There will be two main branches in this project: The master branch and the devel
 
 Task branches will be named in the following format: TASK-name-or-description-here
 
-When you feel the code for your task is done, you can put up a pull request to have your branch merged into the Develop branch. The only circumstances in which a merge to master is permitted is when we're cutting a release for an iteration (or, god forbid, a critical hotfix).
+When you feel the code for your task is done, you can put up a merge request to have your branch merged into the Develop branch. The only circumstances in which a merge to master is permitted is when we're cutting a release for an iteration (or, god forbid, a critical hotfix).
 
-# Pull Requests
-All pull requests should have an appropriate title, consisting of a brief description of what was changed/added. In the description should be a more detailed version, including any and all important/relevant technical details.
+# Merge Requests
+All merge requests should have an appropriate title, consisting of a brief description of what was changed/added. In the description should be a more detailed version, including any and all important/relevant technical details.
+
+You should say what user story and what developer task it is assoicated with.
 
 In terms of approvals, this will depend on the scope of the request. If you're just adding a few lines of documentation, you don't need any approvals. If you're adding any functional code, you need at least 1 approval, from someone other than yourself. If you're adding a significant amount of code, then you'll need 2 approvals. Significant additions SHOULD and WILL require unit tests to ensure that the changes are working.
 
