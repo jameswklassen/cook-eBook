@@ -61,7 +61,9 @@ When you feel the code for your task is done, you can put up a merge request to 
 # Merge Requests
 All merge requests should have an appropriate title, consisting of a brief description of what was changed/added. In the description should be a more detailed version, including any and all important/relevant technical details.
 
-You should say what user story and what developer task it is assoicated with.
+You should link user story and what developer task it is assoicated with.
+
+As an option in your merge request you should check off `squash commits` and `delete source branch`
 
 In terms of approvals, this will depend on the scope of the request. If you're just adding a few lines of documentation, you don't need any approvals. If you're adding any functional code, you need at least 1 approval, from someone other than yourself. If you're adding a significant amount of code, then you'll need 2 approvals. Significant additions SHOULD and WILL require unit tests to ensure that the changes are working.
 
