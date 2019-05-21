@@ -42,7 +42,7 @@ Software Engineering Summer 2019 Project
     </td>
     <td style="text-align: center;">
         <a href="https://code.cs.umanitoba.ca/RuoshiZhao">
-            <img src="https://secure.gravatar.com/avatar/4b093d0b74a16c89a78f23a5a854d92a?s=800&d=identicon" width="100px;"/>
+            <img src="https://code.cs.umanitoba.ca/uploads/-/system/user/avatar/209/avatar.png?width=400" width="100px;"/>
             <br/>
             <sub>
                 <b>Ruoshi Zhao</b>
