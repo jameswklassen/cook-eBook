@@ -33,7 +33,7 @@ Software Engineering Summer 2019 Project
     </td>
     <td style="text-align: center;">
         <a href="https://code.cs.umanitoba.ca/OfficialArms">
-            <img src="https://secure.gravatar.com/avatar/7d0cfeb2ddac8bf4a855dd696d885a13?s=800&d=identicon" width="100px;"/>
+            <img src="https://code.cs.umanitoba.ca/uploads/-/system/user/avatar/179/avatar.png?width=400" width="100px;"/>
             <br/>
             <sub>
                 <b>Joshua Moreira</b>
