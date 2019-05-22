@@ -16,4 +16,4 @@ cook-eBook is a significant improvement over more traditional methods of recipe 
 
 ### How will cook-eBook be successful?
 
-cook-eBook’s success will be measured based on a number of goals. The first goal would be for users to find cook-eBook more efficient than a traditional recipe collection method when comparing the two. The second goal would be for users to find the recipe sharing functionality easy and simple. Lastly, the overall goal is for the app to be so intuitive that the the simplicity and ease of use rivals simply writing a recipe on a piece of paper.
+cook-eBook’s success will be measured based on a number of goals. The first goal would be for users to find cook-eBook more efficient than a traditional recipe collection method when comparing the two. The second goal would be for users to find the recipe sharing functionality easy and simple. Lastly, the overall goal is for the app to be so intuitive that the simplicity and ease of use rivals simply writing a recipe on a piece of paper.
