@@ -2,6 +2,9 @@
 
 cook-eBook is a new app that will allow users to store, view and edit their own collection of recipes!
 
+## Vision Statement
+- Our [Vision Statement](https://code.cs.umanitoba.ca/comp3350-summer2019/master-branch-chefs---2/blob/master/docs/Vision%20Statement.md) for Iteration 0
+
 ## Iterations
 
 - [Iteration 1](https://code.cs.umanitoba.ca/comp3350-summer2019/master-branch-chefs---2/milestones/1?title=Iteration+1)
@@ -16,9 +19,6 @@ cook-eBook is a new app that will allow users to store, view and edit their own 
 ## User Stories
 - [User Story List](https://code.cs.umanitoba.ca/comp3350-summer2019/master-branch-chefs---2/issues?label_name%5B%5D=User+Story)
 
-
-## Vision Statement
-- Our [Vision Statement](https://code.cs.umanitoba.ca/comp3350-summer2019/master-branch-chefs---2/blob/master/docs/Vision%20Statement.md) for Iteration 0
 
 ## Architecture
 - Our planned [Architecture](https://code.cs.umanitoba.ca/comp3350-summer2019/master-branch-chefs---2/blob/master/docs/Architecture.md) for our project
