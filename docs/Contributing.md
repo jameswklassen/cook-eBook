@@ -1,7 +1,7 @@
 # cook-eBook
-Software Engineering Summer 2019 Project
+Software Engineering Summer 2019 Project created by the Master Branch Chefs
 
-# Master Branch Chef Contributing members
+# Master Branch Chefs Contributing members
 <table>
 <tr>
     <td style="text-align: center;">
