@@ -5,6 +5,7 @@ cook-eBook is a new app that will allow users to store, view and edit their own 
 ## Vision Statement
 - Our [Vision Statement](https://code.cs.umanitoba.ca/comp3350-summer2019/master-branch-chefs---2/blob/master/docs/Vision%20Statement.md) for Iteration 0
 
+
 ## Iterations
 
 - [Iteration 1](https://code.cs.umanitoba.ca/comp3350-summer2019/master-branch-chefs---2/milestones/1?title=Iteration+1)
@@ -20,11 +21,17 @@ cook-eBook is a new app that will allow users to store, view and edit their own 
 - [User Story List](https://code.cs.umanitoba.ca/comp3350-summer2019/master-branch-chefs---2/issues?label_name%5B%5D=User+Story)
 
 
+## Developer Tasks
+- [Developer Task List](https://code.cs.umanitoba.ca/comp3350-summer2019/master-branch-chefs---2/issues?label_name%5B%5D=Developer+Task)
+
+
 ## Architecture
 - Our planned [Architecture](https://code.cs.umanitoba.ca/comp3350-summer2019/master-branch-chefs---2/blob/master/docs/Architecture.md) for our project
 
+
 ## Coding Style
 - Our [coding style](https://code.cs.umanitoba.ca/comp3350-summer2019/master-branch-chefs---2/blob/master/docs/Coding%20Style.md) guide to keep things consistent!
+
 
 ## Work Flow / Contributing
 - Our document for [Contributing](https://code.cs.umanitoba.ca/comp3350-summer2019/master-branch-chefs---2/blob/master/docs/Contributing.md) standards for this project
