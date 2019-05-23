@@ -1,7 +1,7 @@
 # cook-eBook
 Software Engineering Summer 2019 Project
 
-# Contributing members
+# Master Branch Chef Contributing members
 <table>
 <tr>
     <td style="text-align: center;">
