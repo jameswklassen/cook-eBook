@@ -4,19 +4,16 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import com.cook_ebook.objects.Recipe;
+import com.cook_ebook.objects.RecipeTagSet;
 
-import java.util.*;
+import java.util.Date;
 
 public class RecipeTest {
     @Test
-    public void testCreateRecipe() {
+    public void testCreateRecipeWithoutTag() {
         Recipe recipe;
 
-        System.out.println("\nStarting testCreateRecipe");
-
-        Set<String> tags = new HashSet<>();
-        tags.add("sweet");
-        tags.add("desert");
+        System.out.println("\nStarting testCreateRecipeWithoutTag");
 
         recipe = new Recipe(
                 1,
@@ -25,8 +22,9 @@ public class RecipeTest {
                 "Flour, Eggs, Butter",
                 60,
                 "",
-                tags,
-                true);
+                new RecipeTagSet(),
+                true,
+                new Date());
 
         assertEquals(1, recipe.getRecipeID());
         assertEquals("Cookies", recipe.getRecipeTitle());
@@ -34,45 +32,72 @@ public class RecipeTest {
         assertEquals("Flour, Eggs, Butter", recipe.getRecipeIngredients());
         assertEquals(60, recipe.getRecipeCookingTime());
         assertEquals("", recipe.getRecipeImages());
-        assertEquals(true, tags.equals(recipe.getRecipeTags()));
+        assertEquals(0, recipe.getRecipeTagSet().size());
         assertEquals(true, recipe.getRecipeIsFavourite());
 
-        System.out.println("Finished testCreateRecipe");
+        System.out.println("Finished testCreateRecipeWithoutTag");
     }
 
     @Test
-    public void testAddRecipeTags() {
-        System.out.println("\nStarting testAddRecipeTags");
+    public void testCreateRecipeWithATag() {
+        Recipe recipe;
 
-        Recipe recipe = new Recipe(1);
+        System.out.println("\nStarting testCreateRecipeWithATag");
 
-        Set<String> testSet = new HashSet<>();
+        recipe = new Recipe(
+                2,
+                "Cheese Cake",
+                "These cakes are amazing",
+                "Flour, Eggs, Butter",
+                30,
+                "",
+                new RecipeTagSet("sugar"),
+                false,
+                new Date());
 
-        recipe.addRecipeTag("sweet");
-        testSet.add("sweet");
+        assertEquals(2, recipe.getRecipeID());
+        assertEquals("Cheese Cake", recipe.getRecipeTitle());
+        assertEquals("These cakes are amazing", recipe.getRecipeDescription());
+        assertEquals("Flour, Eggs, Butter", recipe.getRecipeIngredients());
+        assertEquals(30, recipe.getRecipeCookingTime());
+        assertEquals("", recipe.getRecipeImages());
+        assertTrue(recipe.getRecipeTagSet().contains("sugar"));
+        assertEquals(false, recipe.getRecipeIsFavourite());
 
-        assertEquals(true, testSet.equals(recipe.getRecipeTags()));
-
-        System.out.println("Finished testAddRecipeTags");
+        System.out.println("Finished testCreateRecipeWithATag");
     }
 
     @Test
-    public void testRemoveRecipeTags() {
-        System.out.println("\nStarting testRemoveRecipeTags");
+    public void testCreateRecipeWithMultipleTag() {
+        Recipe recipe;
 
-        Recipe recipe = new Recipe(1);
-        recipe.addRecipeTag("sweet");
+        System.out.println("\nStarting testCreateRecipeWithMultipleTag");
 
-        Set<String> testSet = new HashSet<>();
-        testSet.add("sweet");
+        RecipeTagSet recipeTagSet = new RecipeTagSet();
+        recipeTagSet.addTag("sugar");
+        recipeTagSet.addTag("egg");
 
+        recipe = new Recipe(
+                2,
+                "Cheese Cake",
+                "These cakes are amazing",
+                "Flour, Eggs, Butter",
+                30,
+                "",
+                recipeTagSet,
+                false,
+                new Date());
 
-        assertEquals(true, testSet.equals(recipe.getRecipeTags()));
+        assertEquals(2, recipe.getRecipeID());
+        assertEquals("Cheese Cake", recipe.getRecipeTitle());
+        assertEquals("These cakes are amazing", recipe.getRecipeDescription());
+        assertEquals("Flour, Eggs, Butter", recipe.getRecipeIngredients());
+        assertEquals(30, recipe.getRecipeCookingTime());
+        assertEquals("", recipe.getRecipeImages());
+        assertTrue(recipe.getRecipeTagSet().contains("sugar"));
+        assertTrue(recipe.getRecipeTagSet().contains("egg"));
+        assertEquals(false, recipe.getRecipeIsFavourite());
 
-        recipe.removeRecipeTag("sweet");
-
-        assertEquals(true, recipe.getRecipeTags().isEmpty());
-
-        System.out.println("Finished testRemoveRecipeTags");
+        System.out.println("Finished testCreateRecipeWithMultipleTag");
     }
 }

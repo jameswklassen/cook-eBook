@@ -10,8 +10,10 @@ public class Recipe {
     private String recipeIngredients;
     private int recipeCookingTime;
     private String recipeImages;
-    private Set<String> recipeTags;
+    private RecipeTagSet recipeTagSet;
     private Boolean recipeIsFavourite;
+    private Date date;
+
 
     public Recipe(final int recipeID) {
         this.recipeID = recipeID;
@@ -20,9 +22,9 @@ public class Recipe {
         this.recipeIngredients = null;
         this.recipeCookingTime = -1;
         this.recipeImages = null;
-        this.recipeTags = new HashSet<>();
+        this.recipeTagSet = null;
         this.recipeIsFavourite = null;
-
+        this.date = new Date(); // Current date
     }
 
     public Recipe(
@@ -32,8 +34,9 @@ public class Recipe {
         String recipeIngredients,
         int recipeCookingTime,
         String recipeImages,
-        Set<String> recipeTags,
-        Boolean recipeIsFavourite
+        RecipeTagSet recipeTagSet,
+        Boolean recipeIsFavourite,
+        Date date
     ) {
         this.recipeID = recipeID;
         this.recipeTitle = recipeTitle;
@@ -41,8 +44,9 @@ public class Recipe {
         this.recipeIngredients = recipeIngredients;
         this.recipeCookingTime = recipeCookingTime;
         this.recipeImages = recipeImages;
-        this.recipeTags = recipeTags;
+        this.recipeTagSet = recipeTagSet;
         this.recipeIsFavourite = recipeIsFavourite;
+        this.date = new Date(); // Current date
     }
 
     public int getRecipeID() {
@@ -69,12 +73,16 @@ public class Recipe {
         return recipeImages;
     }
 
-    public Set<String> getRecipeTags() {
-        return recipeTags;
+    public Set<String> getRecipeTagSet() {
+        return recipeTagSet.getAllTags();
     }
 
     public Boolean getRecipeIsFavourite() {
         return recipeIsFavourite;
+    }
+
+    public Date getRecipeDate() {
+        return date;
     }
 
     public void setRecipeTitle(String recipeTitle) {
@@ -97,20 +105,16 @@ public class Recipe {
         this.recipeImages = recipeImages;
     }
 
-    public void setRecipeTags(Set<String> recipeTags) {
-        this.recipeTags = recipeTags;
-    }
-
-    public void addRecipeTag(String tag) {
-        this.recipeTags.add(tag);
-    }
-
-    public void removeRecipeTag(String tag) {
-        this.recipeTags.remove(tag);
+    public void setRecipeTags(String newTag, String oldTag) {
+        this.recipeTagSet.setTag(newTag, oldTag);
     }
 
     public void setRecipeIsFavourite(Boolean recipeIsFavourite) {
         this.recipeIsFavourite = recipeIsFavourite;
+    }
+
+    public void updateRecipeDate() {
+        this.date = new Date(); //update date to current date
     }
 
     @Override
@@ -122,7 +126,7 @@ public class Recipe {
                 ", recipeIngredients='" + recipeIngredients + '\'' +
                 ", recipeCookingTime=" + recipeCookingTime +
                 ", recipeImages='" + recipeImages + '\'' +
-                ", recipeTags='" + recipeTags + '\'' +
+                ", recipeTagSet='" + recipeTagSet.getAllTags() + '\'' +
                 ", recipeIsFavourite=" + recipeIsFavourite +
                 '}';
     }
