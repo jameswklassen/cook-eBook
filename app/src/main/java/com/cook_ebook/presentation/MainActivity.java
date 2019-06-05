@@ -1,4 +1,4 @@
-package com.cook_ebook;
+package com.cook_ebook.presentation;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -8,6 +8,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.content.Intent;
+
+import com.cook_ebook.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,6 +36,11 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    public void viewRecipe(View v){
+        Intent myIntent = new Intent(getBaseContext(), SingleRecipe.class);
+        startActivity(myIntent);
     }
 
     @Override
