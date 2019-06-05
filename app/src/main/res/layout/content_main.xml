@@ -5,8 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".MainActivity"
+    tools:context=".presentation.MainActivity"
     tools:showIn="@layout/activity_main">
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="viewRecipe"
+        android:text="@string/view_recipe"
+        tools:layout_editor_absoluteX="246dp"
+        tools:layout_editor_absoluteY="314dp" />
 
     <TextView
         android:layout_width="wrap_content"
