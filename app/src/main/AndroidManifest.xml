@@ -18,6 +18,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.cook_ebook.presentation.MainActivity" />
         </activity>
+        <activity android:name=".presentation.AddEditView"></activity>
         <activity
             android:name=".presentation.MainActivity"
             android:label="@string/app_name"

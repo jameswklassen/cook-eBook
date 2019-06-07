@@ -43,6 +43,16 @@ public class MainActivity extends AppCompatActivity {
         startActivity(myIntent);
     }
 
+    public void addRecipe(){
+        Intent myIntent = new Intent(getBaseContext(), AddEditView.class);
+        startActivity(myIntent);
+    }
+    
+    //TODO Add delete function
+    public void deleteRecipe(){
+        // delete recipe
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -51,7 +61,12 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.add_recipe) {
+            addRecipe();
+            return true;
+        }else if(id ==R.id.delete_recipe)
+        {
+            deleteRecipe();
             return true;
         }
 
