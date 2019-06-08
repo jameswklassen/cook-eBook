@@ -10,5 +10,4 @@
 
     <include layout="@layout/content_add_edit_view" />
 
-
 </android.support.design.widget.CoordinatorLayout>
