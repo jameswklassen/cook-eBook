@@ -4,7 +4,10 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,7 +15,14 @@ import android.content.Intent;
 
 import com.cook_ebook.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "MainActivity";
+
+    //Temporary variables until we have database placeholders merged in
+    private List<String> rNames = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        addTestNames();
     }
 
     @Override
@@ -36,11 +48,6 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
-    }
-
-    public void viewRecipe(View v){
-        Intent myIntent = new Intent(getBaseContext(), SingleRecipe.class);
-        startActivity(myIntent);
     }
 
     public void addRecipe(){
@@ -71,5 +78,30 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void addTestNames() {
+        rNames.add("Chicken");
+        rNames.add("Spinach");
+        rNames.add("Omelet");
+        rNames.add("Cookie");
+
+        for(int i = 0; i < 100; i++)
+        {
+            rNames.add("Test Item #" + (i+1));
+        }
+
+
+        initRecyclerView();
+    }
+
+    private void initRecyclerView() {
+        Log.d(TAG, "InitRecyclerView: init recycler view.");
+
+        RecyclerView recyclerView = findViewById(R.id.recycleView);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(rNames, this);
+
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 }

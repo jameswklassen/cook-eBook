@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="5dp"
+    android:id="@+id/parent_relative_layout">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardElevation="15dp"
+        app:cardCornerRadius="7dp"
+        app:cardBackgroundColor="#eee"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="15dp"
+
+            android:text="Canada!!!"
+
+            android:textSize="30sp"
+            android:textColor="#000"
+
+            android:id="@+id/recipe_name"
+            />
+
+    </android.support.v7.widget.CardView>
+
+
+
+</RelativeLayout>
