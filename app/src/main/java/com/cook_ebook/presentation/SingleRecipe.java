@@ -1,6 +1,7 @@
 package com.cook_ebook.presentation;
 
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,8 @@ public class SingleRecipe extends AppCompatActivity implements View.OnClickListe
     private FloatingActionButton favourite_btn;
     private boolean favourite = false;
 
+    private Bundle extras;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +27,11 @@ public class SingleRecipe extends AppCompatActivity implements View.OnClickListe
         favourite_btn = findViewById(R.id.fav_button);
         favourite_btn.setOnClickListener(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        extras = getIntent().getExtras();
+
+        CollapsingToolbarLayout layout = findViewById(R.id.toolbar_layout);
+        layout.setTitle(extras.getString("recipeTitle"));
     }
 
     @Override
