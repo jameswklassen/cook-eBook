@@ -16,7 +16,8 @@ public class RecipePersistenceStub implements RecipePersistence {
     public RecipePersistenceStub() {
         this.recipeList = new ArrayList<>();
 
-        recipeList.add(new Recipe(1, "cheese cake",
+        recipeList.add(new Recipe(1,
+                "cheese cake",
                 "cheese cake description",
                 "egg, cream cheese",
                 30,
@@ -24,7 +25,8 @@ public class RecipePersistenceStub implements RecipePersistence {
                 new RecipeTagSet(),
                 false,
                 new Date()));
-        recipeList.add(new Recipe(2, "brownies",
+        recipeList.add(new Recipe(2,
+                "brownies",
                 "brownies description",
                 "flour, baking power",
                 20,
@@ -32,13 +34,23 @@ public class RecipePersistenceStub implements RecipePersistence {
                 new RecipeTagSet("cake"),
                 false,
                 new Date()));
-        recipeList.add(new Recipe(3, "pasta",
+        recipeList.add(new Recipe(3,
+                "pasta",
                 "pasta description",
                 "egg, water",
                 10,
                 "pasta images",
                 new RecipeTagSet(),
                 true,
+                new Date()));
+        recipeList.add(new Recipe(4,
+                "pasta2",
+                "pasta2 description",
+                "egg, water",
+                10,
+                "pasta2 images",
+                new RecipeTagSet(),
+                false,
                 new Date()));
     }
 
@@ -53,7 +65,7 @@ public class RecipePersistenceStub implements RecipePersistence {
 
         Collections.sort(recipeListSortByDateAscending, new Comparator<Recipe>() {
             public int compare(Recipe recipe1, Recipe recipe2) {
-                return Long.valueOf(recipe1.getRecipeDate().getTime()).compareTo(recipe2.getRecipeDate().getTime());
+                return Integer.valueOf(recipe1.getRecipeID()).compareTo(recipe2.getRecipeID());
             }
         });
 
@@ -71,7 +83,7 @@ public class RecipePersistenceStub implements RecipePersistence {
 
         Collections.sort(recipeListSortByDateDescending, new Comparator<Recipe>() {
             public int compare(Recipe recipe1, Recipe recipe2) {
-                return Long.valueOf(recipe2.getRecipeDate().getTime()).compareTo(recipe1.getRecipeDate().getTime());
+                return Integer.valueOf(recipe2.getRecipeID()).compareTo(recipe1.getRecipeID());
             }
         });
 
@@ -79,7 +91,7 @@ public class RecipePersistenceStub implements RecipePersistence {
     }
 
     @Override
-    public Recipe getRecipeById(int recipeId){
+    public Recipe getRecipeById(int recipeId) {
         for(int i = 0; i < recipeList.size(); i ++) {
             if(recipeList.get(i).getRecipeID() == recipeId) {
                 return recipeList.get(i);
@@ -89,7 +101,7 @@ public class RecipePersistenceStub implements RecipePersistence {
     }
 
     @Override
-    public List<Recipe> getRecipeListByCookingTime(int cookingTime){
+    public List<Recipe> getRecipeListByCookingTime(int cookingTime) {
         List<Recipe> recipeListByCookingTime = new ArrayList<>();
 
         for(int i = 0; i < recipeList.size(); i ++) {
@@ -97,11 +109,19 @@ public class RecipePersistenceStub implements RecipePersistence {
                 recipeListByCookingTime.add(recipeList.get(i));
             }
         }
+
+        //sort the result by recipeId in ascending order
+        Collections.sort(recipeListByCookingTime, new Comparator<Recipe>() {
+            public int compare(Recipe recipe1, Recipe recipe2) {
+                return Integer.valueOf(recipe1.getRecipeID()).compareTo(recipe2.getRecipeID());
+            }
+        });
+
         return recipeListByCookingTime;
     }
 
     @Override
-    public List<Recipe> getRecipeListByTag(String tag){
+    public List<Recipe> getRecipeListByTag(String tag) {
         List<Recipe> recipeListByTag = new ArrayList<>();
 
         for(int i = 0; i < recipeList.size(); i ++) {
@@ -113,7 +133,7 @@ public class RecipePersistenceStub implements RecipePersistence {
     }
 
     @Override
-    public List<Recipe> getRecipeListByFavourite(boolean isFavourite){
+    public List<Recipe> getRecipeListByFavourite(boolean isFavourite) {
         List<Recipe> recipeListByFavourite = new ArrayList<>();
 
         for(int i = 0; i < recipeList.size(); i ++) {
@@ -121,11 +141,19 @@ public class RecipePersistenceStub implements RecipePersistence {
                 recipeListByFavourite.add(recipeList.get(i));
             }
         }
+
+        //sort the result by recipeId in ascending order
+        Collections.sort(recipeListByFavourite, new Comparator<Recipe>() {
+            public int compare(Recipe recipe1, Recipe recipe2) {
+                return Integer.valueOf(recipe1.getRecipeID()).compareTo(recipe2.getRecipeID());
+            }
+        });
+
         return recipeListByFavourite;
     }
 
     @Override
-    public List<Recipe> getRecipeListByDate(Date date){
+    public List<Recipe> getRecipeListByDate(Date date) {
         List<Recipe> recipeListByDate = new ArrayList<>();
 
         for(int i = 0; i < recipeList.size(); i ++) {
@@ -133,34 +161,68 @@ public class RecipePersistenceStub implements RecipePersistence {
                 recipeListByDate.add(recipeList.get(i));
             }
         }
+
+        //sort the result by recipeId in ascending order
+        Collections.sort(recipeListByDate, new Comparator<Recipe>() {
+            public int compare(Recipe recipe1, Recipe recipe2) {
+                return Integer.valueOf(recipe1.getRecipeID()).compareTo(recipe2.getRecipeID());
+            }
+        });
+
         return recipeListByDate;
     }
 
     @Override
-    public Recipe insertRecipe(Recipe currentRecipe) {
-        // don't bother checking for duplicates
-        recipeList.add(currentRecipe);
-        return currentRecipe;
-    }
-
-    @Override
-    public Recipe updateRecipe(Recipe currentRecipe){
+    public boolean insertRecipe(Recipe currentRecipe) {
         int index;
-
         index = recipeList.indexOf(currentRecipe);
-        if (index >= 0) {
-            recipeList.set(index, currentRecipe);
-        }
-        return currentRecipe;
-    }
 
-    @Override
-    public void deleteRecipe(Recipe currentRecipe){
-        int index;
-
-        index = recipeList.indexOf(currentRecipe);
         if(index >= 0) {
-            recipeList.remove(index);
+            // check for duplicates
+            return false;
         }
+
+        recipeList.add(currentRecipe);
+        return true;
+    }
+
+    @Override
+    public boolean updateRecipe(Recipe currentRecipe) {
+        int index;
+        index = recipeList.indexOf(currentRecipe);
+
+        if (index < 0) {
+            //if currentRecipe does not exist in the list
+            return false;
+        }
+
+        recipeList.set(index, currentRecipe);
+        return true;
+    }
+
+    @Override
+    public boolean deleteRecipe(Recipe currentRecipe) {
+        int index;
+        index = recipeList.indexOf(currentRecipe);
+
+        if(index < 0) {
+            //if currentRecipe does not exist in the list
+            return false;
+        }
+
+        recipeList.remove(index);
+        return true;
+    }
+
+    @Override
+    public boolean deleteRecipeById(int recipeId) {
+        for(int i = 0; i < recipeList.size(); i ++) {
+            if(recipeList.get(i).getRecipeID() == recipeId) {
+                recipeList.remove(i);
+                return true;
+            }
+        }
+
+        return false;
     }
 }

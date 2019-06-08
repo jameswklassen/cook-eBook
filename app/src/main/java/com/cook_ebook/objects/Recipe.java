@@ -130,4 +130,16 @@ public class Recipe {
                 ", recipeIsFavourite=" + recipeIsFavourite +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o instanceof Recipe) {
+            Recipe newRecipe = (Recipe)o;
+            if(this.getRecipeID() == newRecipe.getRecipeID()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
