@@ -6,8 +6,7 @@ import com.cook_ebook.persistence.stubs.RecipePersistenceStub;
 import com.cook_ebook.persistence.stubs.RecipeTagPersistenceStub;
 
 
-public class Services
-{
+public class Services {
     private static RecipePersistence recipePersistence = null;
     private static RecipeTagPersistence recipeTagPersistence = null;
 
