@@ -7,10 +7,4 @@
         android:orderInCategory="100"
         android:title="@string/add_recipe"
         app:showAsAction="never" />
-
-    <item
-        android:id="@+id/delete_recipe"
-        android:orderInCategory="100"
-        android:title="@string/delete_recipe"
-        app:showAsAction="never" />
 </menu>
