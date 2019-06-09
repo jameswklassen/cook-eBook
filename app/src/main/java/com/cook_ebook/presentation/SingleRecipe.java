@@ -6,7 +6,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.Menu;
 
 import com.cook_ebook.R;
 
@@ -35,6 +37,12 @@ public class SingleRecipe extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_single_recipe, menu);
+        return true;
+    }
+
+    @Override
     public void onClick(View v) {
         if(favourite_btn != null)
             if(favourite) {
@@ -45,6 +53,22 @@ public class SingleRecipe extends AppCompatActivity implements View.OnClickListe
                 favourite_btn.setImageResource(android.R.drawable.star_big_on);
                 favourite = true;
             }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.delete_recipe) {
+            //deleteRecipe();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 }
