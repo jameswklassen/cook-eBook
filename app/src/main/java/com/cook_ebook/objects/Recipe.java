@@ -3,8 +3,8 @@ package com.cook_ebook.objects;
 import java.util.*;
 
 public class Recipe {
+    private static int counter = -1;
 
-    private final int recipeID;
     private String recipeTitle;
     private String recipeDescription;
     private String recipeIngredients;
@@ -13,7 +13,7 @@ public class Recipe {
     private RecipeTagSet recipeTagSet;
     private Boolean recipeIsFavourite;
     private Date date;
-
+    private int recipeID;
 
     public Recipe(final int recipeID) {
         this.recipeID = recipeID;
@@ -28,17 +28,14 @@ public class Recipe {
     }
 
     public Recipe(
-        final int recipeID,
         String recipeTitle,
         String recipeDescription,
         String recipeIngredients,
         int recipeCookingTime,
         String recipeImages,
         RecipeTagSet recipeTagSet,
-        Boolean recipeIsFavourite,
-        Date date
-    ) {
-        this.recipeID = recipeID;
+        Boolean recipeIsFavourite) {
+        recipeID = setRecipeID();
         this.recipeTitle = recipeTitle;
         this.recipeDescription = recipeDescription;
         this.recipeIngredients = recipeIngredients;
@@ -47,6 +44,11 @@ public class Recipe {
         this.recipeTagSet = recipeTagSet;
         this.recipeIsFavourite = recipeIsFavourite;
         this.date = new Date(); // Current date
+    }
+
+    public int setRecipeID() {
+        counter ++;
+        return counter;
     }
 
     public int getRecipeID() {
