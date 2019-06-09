@@ -12,9 +12,10 @@ public class RecipeTagPersistenceStub implements RecipeTagPersistence {
     public RecipeTagPersistenceStub() {
         this.recipeTagSet = new RecipeTagSet();
 
-        recipeTagSet.addTag("egg");
-        recipeTagSet.addTag("sugar");
+        recipeTagSet.addTag("dessert");
+        recipeTagSet.addTag("pasta");
         recipeTagSet.addTag("cake");
+        recipeTagSet.addTag("salad");
     }
 
     @Override

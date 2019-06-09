@@ -12,7 +12,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cook_ebook.R;
+import com.cook_ebook.objects.Recipe;
 
+import java.util.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,11 +22,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private static final String TAG = "RecyclerViewAdapter";
 
-    private List<String> recipeNames;
+    private List<Recipe> recipes;
     private Context _context;
 
-    public RecyclerViewAdapter(List<String> recipeNames, Context context) {
-        this.recipeNames = recipeNames;
+    public RecyclerViewAdapter(List<Recipe> recipes, Context context) {
+        this.recipes = recipes;
         this._context = context;
     }
 
@@ -41,21 +43,42 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
         Log.d(TAG, "onBindViewHolder: called.");
 
-        viewHolder.recipeName.setText(recipeNames.get(i));
+        viewHolder.recipeName.setText(recipes.get(i).getRecipeTitle());
         viewHolder.parent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent myIntent = new Intent(_context, SingleRecipe.class);
-                myIntent.putExtra("recipeTitle", recipeNames.get(i));
+                myIntent.putExtra("recipeTitle", recipes.get(i).getRecipeTitle());
+                myIntent.putExtra("recipeDescription", recipes.get(i).getRecipeDescription());
+                myIntent.putExtra("recipeIngredients", recipes.get(i).getRecipeIngredients());
+                myIntent.putExtra("recipeTime", recipes.get(i).getRecipeCookingTime());
+                myIntent.putExtra("recipeFavourite", recipes.get(i).getRecipeIsFavourite());
+                String tags = tagsToString(recipes.get(i).getRecipeTagSet());
+                myIntent.putExtra("recipeTags", tags);
 
                 _context.startActivity(myIntent, myIntent.getExtras());
             }
         });
     }
 
+    private String tagsToString(List<String> tags)
+    {
+        if(tags.size() == 0)
+            return "No Tags";
+
+        String tagString = "";
+
+        for(int i = 0; i< tags.size(); i++)
+        {
+            tagString += tags.get(i) + "\n";
+        }
+
+        return tagString;
+    }
+
     @Override
     public int getItemCount() {
-        return recipeNames.size();
+        return recipes.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.TextView;
 
 import com.cook_ebook.R;
 
@@ -34,6 +35,23 @@ public class SingleRecipe extends AppCompatActivity implements View.OnClickListe
 
         CollapsingToolbarLayout layout = findViewById(R.id.toolbar_layout);
         layout.setTitle(extras.getString("recipeTitle"));
+
+        TextView description = findViewById(R.id.description);
+        description.setText(extras.getString("recipeDescription"));
+
+        TextView ingredients = findViewById(R.id.ingredients);
+        ingredients.setText(extras.getString("recipeIngredients"));
+
+        TextView time = findViewById(R.id.time);
+        String cookTime = extras.getInt("recipeTime") + " minutes";
+        time.setText(cookTime);
+
+        TextView tags = findViewById(R.id.tags);
+        tags.setText(extras.getString("recipeTags"));
+
+        favourite = extras.getBoolean("recipeFavourite");
+        updateFavourite();
+
     }
 
     @Override
@@ -44,6 +62,12 @@ public class SingleRecipe extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
+        updateFavourite();
+    }
+
+    // TODO: have this update the value in memory
+    private void updateFavourite()
+    {
         if(favourite_btn != null)
             if(favourite) {
                 favourite_btn.setImageResource(android.R.drawable.star_big_off);

@@ -73,8 +73,8 @@ public class Recipe {
         return recipeImages;
     }
 
-    public Set<String> getRecipeTagSet() {
-        return recipeTagSet.getAllTags();
+    public List<String> getRecipeTagSet() {
+        return recipeTagSet.getTagsList();
     }
 
     public Boolean getRecipeIsFavourite() {
