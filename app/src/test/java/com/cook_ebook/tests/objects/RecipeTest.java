@@ -9,24 +9,22 @@ import com.cook_ebook.objects.RecipeTagSet;
 import java.util.Date;
 
 public class RecipeTest {
+
     @Test
     public void testCreateRecipeWithoutTag() {
         Recipe recipe;
 
         System.out.println("\nStarting testCreateRecipeWithoutTag");
 
-        recipe = new Recipe(
-                1,
-                "Cookies",
+        recipe = new Recipe("Cookies",
                 "These cookies are amazing",
                 "Flour, Eggs, Butter",
                 60,
                 "",
                 new RecipeTagSet(),
-                true,
-                new Date());
+                true);
 
-        assertEquals(1, recipe.getRecipeID());
+        assertEquals(0, recipe.getRecipeID());
         assertEquals("Cookies", recipe.getRecipeTitle());
         assertEquals("These cookies are amazing", recipe.getRecipeDescription());
         assertEquals("Flour, Eggs, Butter", recipe.getRecipeIngredients());
@@ -44,18 +42,14 @@ public class RecipeTest {
 
         System.out.println("\nStarting testCreateRecipeWithATag");
 
-        recipe = new Recipe(
-                2,
-                "Cheese Cake",
+        recipe = new Recipe("Cheese Cake",
                 "These cakes are amazing",
                 "Flour, Eggs, Butter",
                 30,
                 "",
                 new RecipeTagSet("sugar"),
-                false,
-                new Date());
+                false);
 
-        assertEquals(2, recipe.getRecipeID());
         assertEquals("Cheese Cake", recipe.getRecipeTitle());
         assertEquals("These cakes are amazing", recipe.getRecipeDescription());
         assertEquals("Flour, Eggs, Butter", recipe.getRecipeIngredients());
@@ -77,18 +71,14 @@ public class RecipeTest {
         recipeTagSet.addTag("sugar");
         recipeTagSet.addTag("egg");
 
-        recipe = new Recipe(
-                2,
-                "Cheese Cake",
+        recipe = new Recipe("Cheese Cake",
                 "These cakes are amazing",
                 "Flour, Eggs, Butter",
                 30,
                 "",
                 recipeTagSet,
-                false,
-                new Date());
+                false);
 
-        assertEquals(2, recipe.getRecipeID());
         assertEquals("Cheese Cake", recipe.getRecipeTitle());
         assertEquals("These cakes are amazing", recipe.getRecipeDescription());
         assertEquals("Flour, Eggs, Butter", recipe.getRecipeIngredients());
