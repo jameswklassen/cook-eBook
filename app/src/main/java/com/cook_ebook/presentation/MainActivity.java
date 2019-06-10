@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.content.Intent;
 
 import com.cook_ebook.objects.Recipe;
+import com.cook_ebook.objects.RecipeTagSet;
 import com.cook_ebook.logic.RecipeHandler;
 import com.cook_ebook.R;
 
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     //Temporary variables until we have database placeholders merged in
     private List<Recipe> recipes = new ArrayList<>();
     private RecipeHandler handler = new RecipeHandler();
+    private RecyclerViewAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,9 +56,52 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void addRecipe(){
-        Intent myIntent = new Intent(getBaseContext(), AddEditView.class);
-        startActivity(myIntent);
+        startActivityForResult(new Intent(getApplicationContext(), AddEditView.class), 1);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if(requestCode == 1 && resultCode == RESULT_OK)
+        {
+            Bundle extras = data.getExtras();
+            int time;
+
+            try {
+                time = Integer.parseInt(extras.getString("recipeTime"));
+            } catch (NumberFormatException | NullPointerException nfe) {
+                time = -1; //something is wrong
+            }
+
+            String title = extras.getString("recipeTitle");
+            String tags = extras.getString("recipeTags");
+            String ingredients = extras.getString("recipeIngredients");
+            String description = extras.getString("recipeDescription");
+
+            Recipe newRecipe = buildRecipe(time, title, tags, ingredients, description);
+
+            handler.insertRecipe(newRecipe);
+            recipes.add(0, newRecipe);
+            adapter.notifyItemInserted(0);
+
+        }
+    }
+
+    private Recipe buildRecipe(int time, String title, String tags, String ingredients, String description)
+    {
+        RecipeTagSet newSet = new RecipeTagSet(tags);
+
+        Recipe newRecipe = new Recipe(
+                title,
+                description,
+                ingredients,
+                time,
+                null,
+                newSet,
+                false);
+        return newRecipe;
+    }
+
 
     //TODO Add delete function
     public void deleteRecipe(){
@@ -84,21 +129,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getRecipes() {
-        List<String> names = new ArrayList<>();
         recipes = handler.getAllRecipes();
-        for(int i = 0; i < recipes.size(); i++)
-        {
-            names.add(recipes.get(i).getRecipeTitle());
-        }
-
-        initRecyclerView(recipes);
+        initRecyclerView();
     }
 
-    private void initRecyclerView(List<Recipe> recipes) {
+    private void initRecyclerView() {
         Log.d(TAG, "InitRecyclerView: init recycler view.");
 
         RecyclerView recyclerView = findViewById(R.id.recycleView);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(recipes, this);
+        adapter = new RecyclerViewAdapter(recipes, this);
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
