@@ -24,6 +24,9 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
+    public static final int ADD_ACTIVITY = 1;
+    public static final int SINGLE_ACTIVITY = 2;
+
     //Temporary variables until we have database placeholders merged in
     private List<Recipe> recipes = new ArrayList<>();
     private RecipeHandler handler = new RecipeHandler();
@@ -55,16 +58,20 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    public void addRecipe(){
-        startActivityForResult(new Intent(getApplicationContext(), AddEditView.class), 1);
+    public void addRecipe() {
+        startActivityForResult(new Intent(getApplicationContext(), AddEditView.class), ADD_ACTIVITY);
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        if(requestCode == 1 && resultCode == RESULT_OK)
-        {
-            Bundle extras = data.getExtras();
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode != RESULT_OK) {
+            Log.d(TAG, "Result code was NOT okay. " + requestCode);
+            return;
+        }
+
+        Bundle extras = data.getExtras();
+
+        if(requestCode == ADD_ACTIVITY) {
             int time;
 
             try {
@@ -83,12 +90,12 @@ public class MainActivity extends AppCompatActivity {
             handler.insertRecipe(newRecipe);
             recipes.add(0, newRecipe);
             adapter.notifyItemInserted(0);
-
+        } else if(requestCode == SINGLE_ACTIVITY && data != null) {
+            deleteRecipe(extras.getInt("doDelete"));
         }
     }
 
-    private Recipe buildRecipe(int time, String title, String tags, String ingredients, String description)
-    {
+    private Recipe buildRecipe(int time, String title, String tags, String ingredients, String description) {
         RecipeTagSet newSet = new RecipeTagSet(tags);
 
         Recipe newRecipe = new Recipe(
@@ -102,10 +109,19 @@ public class MainActivity extends AppCompatActivity {
         return newRecipe;
     }
 
+    public void deleteRecipe(int id) {
+        int index;
 
-    //TODO Add delete function
-    public void deleteRecipe(){
-        // delete recipe
+        handler.deleteRecipeById(id);
+        for(index = 0; index < recipes.size(); index++) {
+            if(recipes.get(index).getRecipeID() == id) {
+                recipes.remove(index);
+                break;
+            }
+        }
+
+        adapter.notifyItemRemoved(index);
+        ((RecyclerView)findViewById(R.id.recycleView)).setAdapter(adapter); //Force a redraw.
     }
 
     @Override
@@ -119,9 +135,8 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.add_recipe) {
             addRecipe();
             return true;
-        }else if(id ==R.id.delete_recipe)
-        {
-            deleteRecipe();
+        } else if(id == R.id.delete_recipe) {
+            deleteRecipe(0);
             return true;
         }
 

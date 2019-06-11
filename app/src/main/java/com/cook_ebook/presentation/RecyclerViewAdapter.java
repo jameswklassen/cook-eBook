@@ -1,5 +1,6 @@
 package com.cook_ebook.presentation;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -53,8 +54,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 myIntent.putExtra("recipeFavourite", recipes.get(i).getRecipeIsFavourite());
                 String tags = tagsToString(recipes.get(i).getRecipeTagSet());
                 myIntent.putExtra("recipeTags", tags);
+                myIntent.putExtra("recipeID", recipes.get(i).getRecipeID());
 
-                _context.startActivity(myIntent, myIntent.getExtras());
+                ((Activity)_context).startActivityForResult(myIntent, MainActivity.SINGLE_ACTIVITY);
             }
         });
     }
@@ -67,9 +69,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         String tagString = "";
 
         for(int i = 0; i< tags.size(); i++)
-        {
             tagString += tags.get(i) + "\n";
-        }
 
         return tagString;
     }
