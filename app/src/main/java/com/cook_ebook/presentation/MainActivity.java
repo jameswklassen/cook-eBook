@@ -88,8 +88,8 @@ public class MainActivity extends AppCompatActivity {
             Recipe newRecipe = buildRecipe(time, title, tags, ingredients, description);
 
             handler.insertRecipe(newRecipe);
-            recipes.add(0, newRecipe);
-            adapter.notifyItemInserted(0);
+            recipes.add(recipes.size(), newRecipe);
+            adapter.notifyItemInserted(recipes.size());
         } else if(requestCode == SINGLE_ACTIVITY && data != null) {
             deleteRecipe(extras.getInt("doDelete"));
         }
