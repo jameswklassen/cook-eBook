@@ -32,7 +32,7 @@ Note for the Marker:
 - We were able to assoicate an image with a recipe and display it in the single recipe view
 
 ### Architecture Document
-We updated our [Architecture](https://code.cs.umanitoba.ca/comp3350-summer2019/cook-eBook/blob/develop/docs/Architecture.md) Document
+We updated our [Architecture](https://code.cs.umanitoba.ca/comp3350-summer2019/cook-eBook/blob/master/docs/Architecture.md) Document
 
 ## Next Iteration
 In the second Iteration we would like to :
