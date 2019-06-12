@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.cook_ebook.presentation.MainActivity">
+    <item
+        android:id="@+id/add_recipe"
+        android:orderInCategory="100"
+        android:title="@string/add_recipe"
+        app:showAsAction="never" />
+</menu>
