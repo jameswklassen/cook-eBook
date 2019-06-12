@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.cook_ebook.presentation.SingleRecipe">
+    <item
+        android:id="@+id/delete_recipe"
+        android:orderInCategory="100"
+        android:title="@string/delete_recipe"
+        app:showAsAction="never" />
+</menu>
