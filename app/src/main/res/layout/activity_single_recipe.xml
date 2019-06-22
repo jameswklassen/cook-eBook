@@ -50,10 +50,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
-        app:backgroundTint="#FFCA47"
+        android:backgroundTint="#FFFFFF"
+        app:backgroundTint="#C62828"
+        app:borderWidth="1dp"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end"
-        app:srcCompat="@android:drawable/btn_star_big_on" />
+        app:srcCompat="@drawable/heart_empty" />
 
 
 </android.support.design.widget.CoordinatorLayout>

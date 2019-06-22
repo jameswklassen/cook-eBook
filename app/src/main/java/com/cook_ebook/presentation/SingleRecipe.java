@@ -70,10 +70,10 @@ public class SingleRecipe extends AppCompatActivity implements View.OnClickListe
     private void updateFavourite() {
         if(favourite_btn != null) {
             if (favourite) {
-                favourite_btn.setImageResource(android.R.drawable.star_big_off);
+                favourite_btn.setImageResource(R.drawable.heart_empty);
                 favourite = false;
             } else {
-                favourite_btn.setImageResource(android.R.drawable.star_big_on);
+                favourite_btn.setImageResource(R.drawable.heart_filled);
                 favourite = true;
             }
         }
