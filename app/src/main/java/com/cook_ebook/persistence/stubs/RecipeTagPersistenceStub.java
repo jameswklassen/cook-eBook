@@ -23,37 +23,24 @@ public class RecipeTagPersistenceStub implements RecipeTagPersistence {
         return recipeTagSet.getAllTags();
     }
 
-
-    // we may not need this method,
-    // but I will keep it here until we finish true database
     @Override
-    public RecipeTagSet insertMultipleTags(RecipeTagSet currentTagSet){
-        Iterator<String> iter = currentTagSet.getAllTags().iterator();
-        while (iter.hasNext()) {
-            recipeTagSet.addTag(iter.next());
+    public boolean insertOneTag(String targetTag){
+        if(recipeTagSet.getAllTags().contains(targetTag)) {
+            return false;
         }
-        return currentTagSet;
-    }
 
-    @Override
-    public RecipeTagSet insertOneTag(String targetTag){
         recipeTagSet.addTag(targetTag);
-        return recipeTagSet;
+        return true;
     }
 
     @Override
-    public void deleteMultipleTags(RecipeTagSet currentTagSet){
-        Iterator<String> iter = currentTagSet.getAllTags().iterator();
-        while (iter.hasNext()) {
-            recipeTagSet.deleteTag(iter.next());
-        }
-    }
-
-    @Override
-    public void deleteOneTag(String targetTag){
+    public boolean deleteOneTag(String targetTag){
         if (recipeTagSet.getAllTags().contains(targetTag)) {
             recipeTagSet.deleteTag(targetTag);
+            return true;
         }
+
+        return false;
     }
 
     @Override

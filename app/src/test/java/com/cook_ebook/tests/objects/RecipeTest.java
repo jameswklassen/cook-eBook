@@ -22,7 +22,6 @@ public class RecipeTest {
                 new RecipeTagSet(),
                 true);
 
-        assertEquals(0, recipe.getRecipeID());
         assertEquals("Cookies", recipe.getRecipeTitle());
         assertEquals("These cookies are amazing", recipe.getRecipeDescription());
         assertEquals("Flour, Eggs, Butter", recipe.getRecipeIngredients());
