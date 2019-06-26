@@ -49,23 +49,23 @@ public class RecipeHandler {
     }
 
     // should throw an exception for an invalid recipe
-    public boolean insertRecipe(Recipe recipe) {
+    public Recipe insertRecipe(Recipe recipe) {
         return dataAccessRecipe.insertRecipe(recipe);
     }
 
     // should throw an exception for an invalid recipe
     // should take care if two recipes have same Id
-    public boolean updateRecipe(Recipe newRecipe) {
+    public Recipe updateRecipe(Recipe newRecipe) {
         return dataAccessRecipe.updateRecipe(newRecipe);
     }
 
     // should throw an exception if the recipe doesn't exist
-    public boolean deleteRecipe(Recipe recipe) {
-        return dataAccessRecipe.deleteRecipe(recipe);
+    public void deleteRecipe(Recipe recipe) {
+        dataAccessRecipe.deleteRecipe(recipe);
     }
 
     // should throw an exception if the recipe doesn't exist
-    public boolean deleteRecipeById(int recipeId) {
-        return dataAccessRecipe.deleteRecipeById(recipeId);
+    public void deleteRecipeById(int recipeId) {
+        dataAccessRecipe.deleteRecipeById(recipeId);
     }
 }

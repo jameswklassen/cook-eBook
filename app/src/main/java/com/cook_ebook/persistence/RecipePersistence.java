@@ -20,11 +20,11 @@ public interface RecipePersistence {
 
     List<Recipe> getRecipeListByDate(Date date);
 
-    boolean insertRecipe(Recipe recipe);
+    Recipe insertRecipe(Recipe recipe);
 
-    boolean updateRecipe(Recipe newRecipe);
+    Recipe updateRecipe(Recipe newRecipe);
 
-    boolean deleteRecipe(Recipe recipe);
+    void deleteRecipe(Recipe recipe);
 
-    boolean deleteRecipeById(int recipeId);
+    void deleteRecipeById(int recipeId);
 }

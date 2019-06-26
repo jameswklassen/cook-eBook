@@ -128,7 +128,7 @@ public class RecipeHandlerTest {
         List<Recipe> actualRecipeList = recipeHandler.getAllRecipes();
 
         assertEquals(5, actualRecipeList.size());
-        assertTrue(recipeHandler.deleteRecipe(recipe));
+        assertEquals(recipe, recipeHandler.insertRecipe(recipe));
 
         System.out.println("Finished testInsertRecipe");
     }
@@ -156,8 +156,6 @@ public class RecipeHandlerTest {
 
         assertEquals(3, actualRecipeList.size());
 
-        assertTrue(recipeHandler.insertRecipe(recipe));
-
         System.out.println("Finished testDeleteRecipe");
     }
 
@@ -166,13 +164,11 @@ public class RecipeHandlerTest {
         System.out.println("\nStarting testDeleteRecipeById");
 
         Recipe recipe = recipeHandler.getRecipeById(3);
-        recipeHandler.deleteRecipeById(3);
+        recipeHandler.deleteRecipeById(recipe.getRecipeID());
 
         List<Recipe> actualRecipeList = recipeHandler.getAllRecipes();
 
         assertEquals(3, actualRecipeList.size());
-
-        assertTrue(recipeHandler.insertRecipe(recipe));
 
         System.out.println("Finished testDeleteRecipeById");
     }
