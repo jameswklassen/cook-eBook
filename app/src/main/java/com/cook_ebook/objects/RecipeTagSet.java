@@ -4,18 +4,30 @@ import java.util.*;
 import java.util.Iterator;
 
 public class RecipeTagSet {
+    private static int counter = -1;
 
     private Set<String> recipeTagSet;
+    private int id;
 
     public RecipeTagSet() {
         this.recipeTagSet = new HashSet<>();
     }
 
     public RecipeTagSet(String tag) {
+        this.id = setID();
         this.recipeTagSet = new HashSet<>();
         if(tag != null) {
             recipeTagSet.add(tag);
         }
+    }
+
+    private int setID() {
+        counter ++;
+        return counter;
+    }
+
+    public int getID() {
+        return id;
     }
 
     public Set<String> getAllTags() {
