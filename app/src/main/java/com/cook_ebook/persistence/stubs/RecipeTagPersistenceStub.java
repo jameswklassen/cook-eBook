@@ -1,50 +1,97 @@
 package com.cook_ebook.persistence.stubs;
 
-import com.cook_ebook.objects.RecipeTagSet;
+import com.cook_ebook.objects.RecipeTag;
 import com.cook_ebook.persistence.RecipeTagPersistence;
 
 import java.util.*;
-import java.util.Iterator;
 
 public class RecipeTagPersistenceStub implements RecipeTagPersistence {
-    private RecipeTagSet recipeTagSet;
+    private Set<RecipeTag> recipeTagSet;
 
     public RecipeTagPersistenceStub() {
-        this.recipeTagSet = new RecipeTagSet();
+        this.recipeTagSet = new HashSet<>();
 
-        recipeTagSet.addTag("dessert");
-        recipeTagSet.addTag("pasta");
-        recipeTagSet.addTag("cake");
-        recipeTagSet.addTag("salad");
+        recipeTagSet.add(new RecipeTag("dessert"));
+        recipeTagSet.add(new RecipeTag("cake"));
+        recipeTagSet.add(new RecipeTag("pasta"));
+        recipeTagSet.add(new RecipeTag("salad"));
     }
 
     @Override
-    public Set<String> getAllTags(){
-        return recipeTagSet.getAllTags();
+    public Set<RecipeTag> getAllTags(){
+        return recipeTagSet;
     }
 
     @Override
-    public boolean insertOneTag(String targetTag){
-        if(recipeTagSet.getAllTags().contains(targetTag)) {
-            return false;
+    public int getTagNameById(String tagName) {
+        Iterator<RecipeTag> iterator = recipeTagSet.iterator();
+        while (iterator.hasNext()) {
+            RecipeTag temp = iterator.next();
+            if(temp.getTagName() == tagName) {
+                return temp.getTagID();
+            }
         }
 
-        recipeTagSet.addTag(targetTag);
-        return true;
+        return -1;
     }
 
     @Override
-    public boolean deleteOneTag(String targetTag){
-        if (recipeTagSet.getAllTags().contains(targetTag)) {
-            recipeTagSet.deleteTag(targetTag);
-            return true;
+    public String getTagIdByName(int tagId) {
+        Iterator<RecipeTag> iterator = recipeTagSet.iterator();
+        while (iterator.hasNext()) {
+            RecipeTag temp = iterator.next();
+            if(temp.getTagID() == tagId) {
+                return temp.getTagName();
+            }
         }
 
-        return false;
+        return "Tag Id does not exist!";
     }
 
     @Override
-    public boolean doesTagExist(String targetTag){
-        return recipeTagSet.getAllTags().contains(targetTag);
+    public RecipeTag getTagById(int tagId){
+        Iterator<RecipeTag> iterator = recipeTagSet.iterator();
+        while (iterator.hasNext()) {
+            RecipeTag temp = iterator.next();
+            if(temp.getTagID() == tagId) {
+                return temp;
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public RecipeTag getTagByName(String tagName){
+        Iterator<RecipeTag> iterator = recipeTagSet.iterator();
+        while (iterator.hasNext()) {
+            RecipeTag temp = iterator.next();
+            if(temp.getTagName() == tagName) {
+                return temp;
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public RecipeTag insertOneTag(RecipeTag targetTag){
+        if(!recipeTagSet.contains(targetTag)) {
+            recipeTagSet.add(targetTag);
+        }
+
+        return targetTag;
+    }
+
+    @Override
+    public void deleteOneTag(RecipeTag targetTag){
+        if (recipeTagSet.contains(targetTag)) {
+            recipeTagSet.remove(targetTag);
+        }
+    }
+
+    @Override
+    public boolean doesTagExist(RecipeTag targetTag){
+        return recipeTagSet.contains(targetTag);
     }
 }

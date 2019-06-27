@@ -1,14 +1,23 @@
 package com.cook_ebook.persistence;
 
-import com.cook_ebook.objects.RecipeTagSet;
+import com.cook_ebook.objects.RecipeTag;
+
 import java.util.*;
 
 public interface RecipeTagPersistence {
-    Set<String> getAllTags();
+    Set<RecipeTag> getAllTags();
 
-    boolean insertOneTag(String targetTag);
+    int getTagNameById(String tagName);
 
-    boolean deleteOneTag(String targetTag);
+    String getTagIdByName(int tagId);
 
-    boolean doesTagExist(String targetTag);
+    RecipeTag getTagById(int tagId);
+
+    RecipeTag getTagByName(String tagName);
+
+    RecipeTag insertOneTag(RecipeTag targetTag);
+
+    void deleteOneTag(RecipeTag targetTag);
+
+    boolean doesTagExist(RecipeTag targetTag);
 }

@@ -10,7 +10,7 @@ public class Recipe {
     private String recipeIngredients;
     private int recipeCookingTime;
     private String recipeImages;
-    private RecipeTagSet recipeTagSet;
+    private Set<RecipeTag> recipeTagSet;
     private Boolean recipeIsFavourite;
     private Date date;
     private int recipeID;
@@ -22,7 +22,7 @@ public class Recipe {
         this.recipeIngredients = null;
         this.recipeCookingTime = -1;
         this.recipeImages = null;
-        this.recipeTagSet = null;
+        this.recipeTagSet = new HashSet<>();
         this.recipeIsFavourite = null;
         this.date = new Date(); // Current date
     }
@@ -33,7 +33,6 @@ public class Recipe {
         String recipeIngredients,
         int recipeCookingTime,
         String recipeImages,
-        RecipeTagSet recipeTagSet,
         Boolean recipeIsFavourite) {
         recipeID = setRecipeID();
         this.recipeTitle = recipeTitle;
@@ -41,7 +40,7 @@ public class Recipe {
         this.recipeIngredients = recipeIngredients;
         this.recipeCookingTime = recipeCookingTime;
         this.recipeImages = recipeImages;
-        this.recipeTagSet = recipeTagSet;
+        this.recipeTagSet = new HashSet<>();
         this.recipeIsFavourite = recipeIsFavourite;
         this.date = new Date(); // Current date
     }
@@ -75,8 +74,8 @@ public class Recipe {
         return recipeImages;
     }
 
-    public List<String> getRecipeTagSet() {
-        return recipeTagSet.getTagsList();
+    public Set<RecipeTag> getRecipeTagSet() {
+        return recipeTagSet;
     }
 
     public Boolean getRecipeIsFavourite() {
@@ -107,8 +106,18 @@ public class Recipe {
         this.recipeImages = recipeImages;
     }
 
-    public void setRecipeTags(String newTag, String oldTag) {
-        this.recipeTagSet.setTag(newTag, oldTag);
+    public RecipeTag addRecipeTag(RecipeTag newTag) {
+        if(!recipeTagSet.contains(newTag)) {
+            recipeTagSet.add(newTag);
+        }
+
+        return newTag;
+    }
+
+    public void deleteRecipeTag(RecipeTag targetTag) {
+        if(recipeTagSet.contains(targetTag)) {
+            recipeTagSet.remove(targetTag);
+        }
     }
 
     public void setRecipeIsFavourite(Boolean recipeIsFavourite) {
@@ -128,7 +137,7 @@ public class Recipe {
                 ", recipeIngredients='" + recipeIngredients + '\'' +
                 ", recipeCookingTime=" + recipeCookingTime +
                 ", recipeImages='" + recipeImages + '\'' +
-                ", recipeTagSet='" + recipeTagSet.getAllTags() + '\'' +
+                ", recipeTagSet='" + recipeTagSet + '\'' +
                 ", recipeIsFavourite=" + recipeIsFavourite +
                 '}';
     }

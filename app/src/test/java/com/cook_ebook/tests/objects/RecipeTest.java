@@ -4,7 +4,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import com.cook_ebook.objects.Recipe;
-import com.cook_ebook.objects.RecipeTagSet;
+import com.cook_ebook.objects.RecipeTag;
 
 public class RecipeTest {
 
@@ -19,7 +19,7 @@ public class RecipeTest {
                 "Flour, Eggs, Butter",
                 60,
                 "",
-                new RecipeTagSet(),
+                new RecipeTag(),
                 true);
 
         assertEquals("Cookies", recipe.getRecipeTitle());
@@ -44,7 +44,7 @@ public class RecipeTest {
                 "Flour, Eggs, Butter",
                 330,
                 "",
-                new RecipeTagSet("sugar"),
+                new RecipeTag("sugar"),
                 false);
 
         assertEquals("Cheese Cake", recipe.getRecipeTitle());
@@ -64,16 +64,16 @@ public class RecipeTest {
 
         System.out.println("\nStarting testCreateRecipeWithMultipleTag");
 
-        RecipeTagSet recipeTagSet = new RecipeTagSet();
-        recipeTagSet.addTag("sugar");
-        recipeTagSet.addTag("egg");
+        RecipeTag recipeTag = new RecipeTag();
+        recipeTag.addTag("sugar");
+        recipeTag.addTag("egg");
 
         recipe = new Recipe("Cheese Cake",
                 "These cakes are amazing",
                 "Flour, Eggs, Butter",
                 320,
                 "",
-                recipeTagSet,
+                recipeTag,
                 false);
 
         assertEquals("Cheese Cake", recipe.getRecipeTitle());

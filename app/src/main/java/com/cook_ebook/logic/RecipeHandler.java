@@ -35,7 +35,7 @@ public class RecipeHandler {
 
     // should throw exception if recipe doesn't exist
     public List<Recipe> getRecipeListByTag(String tag) {
-        return dataAccessRecipe.getRecipeListByTag(tag);
+        return dataAccessRecipe.getRecipeListByTagName(tag);
     }
 
     // should throw exception if recipe doesn't exist

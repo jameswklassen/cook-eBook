@@ -6,7 +6,7 @@ import static org.junit.Assert.*;
 
 import com.cook_ebook.logic.RecipeHandler;
 import com.cook_ebook.objects.Recipe;
-import com.cook_ebook.objects.RecipeTagSet;
+import com.cook_ebook.objects.RecipeTag;
 
 import java.util.List;
 
@@ -124,7 +124,7 @@ public class RecipeHandlerTest {
                 "egg, water",
                 10,
                 "pasta3 images",
-                new RecipeTagSet(),
+                new RecipeTag(),
                 true);
 
         recipeHandler.insertRecipe(recipe);
