@@ -25,10 +25,10 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:toolbarId="@+id/toolbar">
 
-            <ImageView
+            <br.com.felix.imagezoom.ImageZoom
+                android:adjustViewBounds="true"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:clickable="true"
                 android:focusable="auto"
                 android:scaleType="centerCrop"
                 android:src="@drawable/recipe" />
