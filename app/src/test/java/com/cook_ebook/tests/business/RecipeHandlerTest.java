@@ -15,7 +15,7 @@ public class RecipeHandlerTest {
     private RecipeHandler recipeHandler;
 
     @Before
-    public void setUp() {
+    public void setup() {
         System.out.println("Starting test for RecipeHandler");
         recipeHandler = new RecipeHandler();
     }
@@ -116,6 +116,9 @@ public class RecipeHandlerTest {
     public void testInsertRecipe() {
         System.out.println("\nStarting testInsertRecipe");
 
+        int initialSize = recipeHandler.getAllRecipes().size();
+        int expectedSize = initialSize + 1;
+
         Recipe recipe = new Recipe("pasta3",
                 "pasta3 description",
                 "egg, water",
@@ -125,10 +128,8 @@ public class RecipeHandlerTest {
                 true);
 
         recipeHandler.insertRecipe(recipe);
-        List<Recipe> actualRecipeList = recipeHandler.getAllRecipes();
 
-        assertEquals(5, actualRecipeList.size());
-        assertTrue(recipeHandler.deleteRecipe(recipe));
+        assertEquals(expectedSize, recipeHandler.getAllRecipes().size());
 
         System.out.println("Finished testInsertRecipe");
     }
@@ -150,13 +151,16 @@ public class RecipeHandlerTest {
     public void testDeleteRecipe() {
         System.out.println("\nStarting testDeleteRecipe");
 
-        Recipe recipe = recipeHandler.getAllRecipes().get(0);
+        List<Recipe> initialList = recipeHandler.getAllRecipes();
+
+        int initialSize = initialList.size();
+        int expectedSize = initialSize - 1;
+        Recipe recipe = initialList.get(0);
+
         recipeHandler.deleteRecipe(recipe);
-        List<Recipe> actualRecipeList = recipeHandler.getAllRecipes();
 
-        assertEquals(3, actualRecipeList.size());
-
-        assertTrue(recipeHandler.insertRecipe(recipe));
+        assertEquals(expectedSize, recipeHandler.getAllRecipes().size());
+        assertEquals(recipe, recipeHandler.insertRecipe(recipe));
 
         System.out.println("Finished testDeleteRecipe");
     }
@@ -165,14 +169,15 @@ public class RecipeHandlerTest {
     public void testDeleteRecipeById() {
         System.out.println("\nStarting testDeleteRecipeById");
 
-        Recipe recipe = recipeHandler.getRecipeById(3);
-        recipeHandler.deleteRecipeById(3);
+        List<Recipe> initialRecipeList = recipeHandler.getAllRecipes();
 
-        List<Recipe> actualRecipeList = recipeHandler.getAllRecipes();
+        int initialSize = initialRecipeList.size();
+        int expectedSize = initialSize - 1;
+        Recipe recipe = initialRecipeList.get(0);
 
-        assertEquals(3, actualRecipeList.size());
+        recipeHandler.deleteRecipeById(recipe.getRecipeID());
 
-        assertTrue(recipeHandler.insertRecipe(recipe));
+        assertEquals(expectedSize, recipeHandler.getAllRecipes().size());
 
         System.out.println("Finished testDeleteRecipeById");
     }

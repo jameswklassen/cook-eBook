@@ -213,56 +213,53 @@ public class RecipePersistenceStub implements RecipePersistence {
     }
 
     @Override
-    public boolean insertRecipe(Recipe currentRecipe) {
+    public Recipe insertRecipe(Recipe currentRecipe) {
         int index;
         index = recipeList.indexOf(currentRecipe);
 
         if(index >= 0) {
             // check for duplicates
-            return false;
+            return null;
         }
 
         recipeList.add(currentRecipe);
-        return true;
+        return currentRecipe;
     }
 
     @Override
-    public boolean updateRecipe(Recipe currentRecipe) {
+    public Recipe updateRecipe(Recipe currentRecipe) {
         int index;
         index = recipeList.indexOf(currentRecipe);
 
         if (index < 0) {
             //if currentRecipe does not exist in the list
-            return false;
+            return null;
         }
 
         recipeList.set(index, currentRecipe);
-        return true;
+        return currentRecipe;
     }
 
     @Override
-    public boolean deleteRecipe(Recipe currentRecipe) {
+    public void deleteRecipe(Recipe currentRecipe) {
         int index;
         index = recipeList.indexOf(currentRecipe);
 
         if(index < 0) {
             //if currentRecipe does not exist in the list
-            return false;
+            return;
         }
 
         recipeList.remove(index);
-        return true;
     }
 
     @Override
-    public boolean deleteRecipeById(int recipeId) {
+    public void deleteRecipeById(int recipeId) {
         for(int i = 0; i < recipeList.size(); i ++) {
             if(recipeList.get(i).getRecipeID() == recipeId) {
                 recipeList.remove(i);
-                return true;
+                return;
             }
         }
-
-        return false;
     }
 }

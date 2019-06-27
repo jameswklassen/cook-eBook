@@ -46,7 +46,7 @@ public class Recipe {
         this.date = new Date(); // Current date
     }
 
-    public int setRecipeID() {
+    private int setRecipeID() {
         counter ++;
         return counter;
     }
