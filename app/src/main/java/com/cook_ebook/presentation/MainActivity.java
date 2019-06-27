@@ -17,6 +17,7 @@ import com.cook_ebook.objects.Recipe;
 import com.cook_ebook.objects.RecipeTagSet;
 import com.cook_ebook.logic.RecipeHandler;
 import com.cook_ebook.R;
+import com.cook_ebook.persistence.utils.DBHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        DBHelper.copyDatabaseToDevice(this);
         getRecipes();
     }
 
