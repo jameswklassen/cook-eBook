@@ -1,0 +1,17 @@
+CREATE SCHEMA PUBLIC AUTHORIZATION DBA
+CREATE MEMORY TABLE PUBLIC.RECIPES(id INTEGER IDENTITY PRIMARY KEY, title VARCHAR(100) NOT NULL, description VARCHAR(500), ingredients VARCHAR(500), cooking_time INTEGER NOT NULL, images VARCHAR(100), tag_set_id INTEGER, favourite INTEGER NOT NULL, date DATETIME)
+CREATE MEMORY TABLE PUBLIC.TAGSET(id INTEGER IDENTITY PRIMARY KEY, tags VARCHAR(200))
+CREATE USER SA PASSWORD DIGEST 'd41d8cd98f00b204e9800998ecf8427e'
+ALTER USER SA SET LOCAL TRUE
+CREATE SCHEMA PUBLIC AUTHORIZATION DBA
+SET DATABASE DEFAULT INITIAL SCHEMA PUBLIC
+GRANT DBA TO SA
+SET WRITE_DELAY 20
+SET FILES SCALE 32
+SET SCHEMA PUBLIC
+INSERT INTO RECIPES (title, description, ingredients, cooking_time, images, tag_set_id, favourite, date) VALUES('Chocolate Chip Cookies','Some tasty chocolate chip cookies','Butter, flour, chocolate chips',30,'/add/path/to/resource/later', 0, 0,'2019-01-30 02:38:54')
+INSERT INTO RECIPES (title, description, ingredients, cooking_time, images, tag_set_id, favourite, date) VALUES('Turkey Dinner', 'Fancy dinner', 'turkey, food', 100, '/add/path/to/resource/later', 1, 0, '2019-05-30 12:38:54')
+INSERT INTO RECIPES (title, description, ingredients, cooking_time, images, tag_set_id, favourite, date) VALUES('Fried Chicken', 'Tasty and greasy', 'chicken, oil', 60, '/add/path/to/resource/later', 2, 0, '2019-10-30 10:20:00')
+INSERT INTO TAGSET (tags) VALUES('sweet, dessert, cookies')
+INSERT INTO TAGSET (tags) VALUES('savoury, fancy, gourmet')
+INSERT INTO TAGSET (tags) VALUES('greasy, crispy, easy, fast')

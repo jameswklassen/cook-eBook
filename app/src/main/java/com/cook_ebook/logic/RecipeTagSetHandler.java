@@ -1,5 +1,6 @@
 package com.cook_ebook.logic;
 
+import com.cook_ebook.application.Services;
 import com.cook_ebook.persistence.RecipeTagPersistence;
 
 import java.util.Set;
