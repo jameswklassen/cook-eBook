@@ -104,8 +104,10 @@ public class MainActivity extends AppCompatActivity {
                 ingredients,
                 time,
                 null,
-                newSet,
                 false);
+
+        newRecipe.addRecipeTag(newSet);
+
         return newRecipe;
     }
 

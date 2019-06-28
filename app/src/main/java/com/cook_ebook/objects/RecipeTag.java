@@ -42,7 +42,7 @@ public class RecipeTag {
     public boolean equals(Object o) {
         if(o instanceof RecipeTag) {
             RecipeTag newRecipeTag = (RecipeTag) o;
-            if(this.getTagID() == newRecipeTag.getTagID()) {
+            if(this.getTagName().equals(newRecipeTag.getTagName())) {
                 return true;
             }
         }

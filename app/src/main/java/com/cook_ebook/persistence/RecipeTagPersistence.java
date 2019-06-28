@@ -21,5 +21,7 @@ public interface RecipeTagPersistence {
 
     boolean doesTagExist(RecipeTag targetTag);
 
+    // we may not need this method, I am not not sure, so I keep it for temp
+    // if we do not need it, we can delete this method before merge to master
     boolean doesTagNameExist(String targetTagName);
 }
