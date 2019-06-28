@@ -77,15 +77,38 @@ public class RecipeHandlerTest {
     }
 
     @Test
+    public void testGetRecipeListByTagName() {
+        System.out.println("\nStarting testGetRecipeListByTagName");
+
+        List<Recipe> actualRecipeList1 = recipeHandler.getRecipeListByTagName("cake");
+        assertEquals(1, actualRecipeList1.size());
+
+        List<Recipe> actualRecipeList2 = recipeHandler.getRecipeListByTagName("dessert");
+        assertEquals(2, actualRecipeList2.size());
+
+        System.out.println("Finished testGetRecipeListByTagName");
+    }
+
+    @Test
+    public void testGetRecipeListByTagId() {
+        System.out.println("\nStarting testGetRecipeListByTagId");
+
+        // this test will be implemented after we have true database
+        List<Recipe> actualRecipeList1 = recipeHandler.getRecipeListByTagId(-1);
+        assertNull(actualRecipeList1);
+
+        System.out.println("Finished testGetRecipeListByTagId");
+    }
+
+    @Test
     public void testGetRecipeListByTag() {
         System.out.println("\nStarting testGetRecipeListByTag");
-        List<Recipe> actualRecipeList = recipeHandler.getRecipeListByTag("cake");
 
-        assertEquals(1, actualRecipeList.size());
+        List<Recipe> actualRecipeList1 = recipeHandler.getRecipeListByTag(new RecipeTag("cake"));
+        assertEquals(1, actualRecipeList1.size());
 
-        for(int i = 0; i < actualRecipeList.size(); i ++) {
-            assertEquals("cake", actualRecipeList.get(i).getRecipeTagSet().get(0));
-        }
+        List<Recipe> actualRecipeList2 = recipeHandler.getRecipeListByTag(new RecipeTag("dessert"));
+        assertEquals(2, actualRecipeList2.size());
 
         System.out.println("Finished testGetRecipeListByTag");
     }
@@ -124,7 +147,6 @@ public class RecipeHandlerTest {
                 "egg, water",
                 10,
                 "pasta3 images",
-                new RecipeTag(),
                 true);
 
         recipeHandler.insertRecipe(recipe);

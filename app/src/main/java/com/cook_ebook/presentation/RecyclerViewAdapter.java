@@ -14,7 +14,10 @@ import android.widget.TextView;
 
 import com.cook_ebook.R;
 import com.cook_ebook.objects.Recipe;
+import com.cook_ebook.objects.RecipeTag;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
@@ -52,7 +55,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 myIntent.putExtra("recipeIngredients", recipes.get(i).getRecipeIngredients());
                 myIntent.putExtra("recipeTime", recipes.get(i).getRecipeCookingTime());
                 myIntent.putExtra("recipeFavourite", recipes.get(i).getRecipeIsFavourite());
-                String tags = tagsToString(recipes.get(i).getRecipeTagSet());
+
+                String tags = "";
+                Iterator<RecipeTag> iterator = recipes.get(i).getRecipeTagSet().iterator();
+                List<String> tagsList = new ArrayList<> ();
+                while(iterator.hasNext()) {
+                    RecipeTag temp = iterator.next();
+                    tagsList.add(temp.getTagName());
+                    tags = tagsToString(tagsList);
+                }
+
                 myIntent.putExtra("recipeTags", tags);
                 myIntent.putExtra("recipeID", recipes.get(i).getRecipeID());
 

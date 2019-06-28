@@ -53,7 +53,7 @@ public class RecipeTest {
         assertEquals(330, recipe.getRecipeCookingTime());
         assertEquals("", recipe.getRecipeImages());
         assertEquals(1, recipe.getRecipeTagSet().size());
-        assertTrue(recipe.getRecipeTagSet().contains("sugar"));
+        assertTrue(recipe.getRecipeTagSet().contains(new RecipeTag("sugar")));
         assertEquals(false, recipe.getRecipeIsFavourite());
 
         System.out.println("Finished testCreateRecipeWithATag");
@@ -81,8 +81,8 @@ public class RecipeTest {
         assertEquals(320, recipe.getRecipeCookingTime());
         assertEquals("", recipe.getRecipeImages());
         assertEquals(2, recipe.getRecipeTagSet().size());
-        assertTrue(recipe.getRecipeTagSet().contains("sugar"));
-        assertTrue(recipe.getRecipeTagSet().contains("egg"));
+        assertTrue(recipe.getRecipeTagSet().contains(new RecipeTag("sugar")));
+        assertTrue(recipe.getRecipeTagSet().contains(new RecipeTag("egg")));
         assertEquals(false, recipe.getRecipeIsFavourite());
 
         System.out.println("Finished testCreateRecipeWithMultipleDifferentTags");
@@ -111,8 +111,8 @@ public class RecipeTest {
         assertEquals(320, recipe.getRecipeCookingTime());
         assertEquals("", recipe.getRecipeImages());
         assertEquals(2, recipe.getRecipeTagSet().size());
-        assertTrue(recipe.getRecipeTagSet().contains("sugar"));
-        assertTrue(recipe.getRecipeTagSet().contains("egg"));
+        assertTrue(recipe.getRecipeTagSet().contains(new RecipeTag("sugar")));
+        assertTrue(recipe.getRecipeTagSet().contains(new RecipeTag("egg")));
         assertEquals(false, recipe.getRecipeIsFavourite());
 
         System.out.println("Finished testCreateRecipeWithMultipleSameTags");
