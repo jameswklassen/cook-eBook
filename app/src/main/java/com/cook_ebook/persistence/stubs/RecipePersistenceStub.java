@@ -93,11 +93,11 @@ public class RecipePersistenceStub implements RecipePersistence {
                 "salad images",
                 false));
 
-        recipeList.get(0).addRecipeTag(recipeTagsPersistence.getTagByName("dessert"));
-        recipeList.get(0).addRecipeTag(recipeTagsPersistence.getTagByName("cake"));
-        recipeList.get(1).addRecipeTag(recipeTagsPersistence.getTagByName("dessert"));
-        recipeList.get(2).addRecipeTag(recipeTagsPersistence.getTagByName("pasta"));
-        recipeList.get(3).addRecipeTag(recipeTagsPersistence.getTagByName("salad"));
+        recipeList.get(0).getRecipeTagSet().add(new RecipeTag("dessert"));
+        recipeList.get(0).getRecipeTagSet().add(new RecipeTag("cake"));
+        recipeList.get(1).getRecipeTagSet().add(new RecipeTag(("dessert")));
+        recipeList.get(2).getRecipeTagSet().add(new RecipeTag(("pasta")));
+        recipeList.get(3).getRecipeTagSet().add(new RecipeTag(("salad")));
     }
 
     @Override
@@ -171,13 +171,16 @@ public class RecipePersistenceStub implements RecipePersistence {
         List<Recipe> recipeListByTagName = new ArrayList<>();
 
         for(int i = 0; i < recipeList.size(); i ++) {
-            Iterator<RecipeTag> iterator = recipeList.get(i).getRecipeTagSet().iterator();
-
-            while (iterator.hasNext()) {
-                RecipeTag temp = iterator.next();
-                if(temp.getTagName().equals(tagName)) {
-                    recipeListByTagName.add(recipeList.get(i));
-                }
+//            Iterator<RecipeTag> iterator = recipeList.get(i).getRecipeTagSet().iterator();
+//
+//            while (iterator.hasNext()) {
+//                RecipeTag temp = iterator.next();
+//                if(temp.getTagName().equals(tagName)) {
+//                    recipeListByTagName.add(recipeList.get(i));
+//                }
+//            }
+            if(recipeList.get(i).getRecipeTagSet().contains(new RecipeTag("tagName"))) {
+                recipeListByTagName.add(recipeList.get(i));
             }
         }
 

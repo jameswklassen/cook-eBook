@@ -74,8 +74,15 @@ public class Recipe {
         return recipeImages;
     }
 
-    public Set<RecipeTag> getRecipeTagSet() {
-        return recipeTagSet;
+    public List<RecipeTag> getRecipeTagSet() {
+        Iterator<RecipeTag> iterator = recipeTagSet.iterator();
+        List<RecipeTag> tagList = new ArrayList<>();
+
+        while(iterator.hasNext()) {
+            tagList.add(iterator.next());
+        }
+
+        return tagList;
     }
 
     public Boolean getRecipeIsFavourite() {
@@ -107,7 +114,14 @@ public class Recipe {
     }
 
     public RecipeTag addRecipeTag(RecipeTag newTag) {
-        if(!recipeTagSet.contains(newTag)) {
+        Iterator<RecipeTag> iterator = recipeTagSet.iterator();
+        List<RecipeTag> tagList = new ArrayList<>();
+
+        while(iterator.hasNext()) {
+            tagList.add(iterator.next());
+        }
+
+        if(!tagList.contains(newTag)) {
             recipeTagSet.add(newTag);
         }
 
@@ -115,7 +129,14 @@ public class Recipe {
     }
 
     public void deleteRecipeTag(RecipeTag targetTag) {
-        if(recipeTagSet.contains(targetTag)) {
+        Iterator<RecipeTag> iterator = recipeTagSet.iterator();
+        List<RecipeTag> tagList = new ArrayList<>();
+
+        while(iterator.hasNext()) {
+            tagList.add(iterator.next());
+        }
+
+        if(tagList.contains(targetTag)) {
             recipeTagSet.remove(targetTag);
         }
     }
