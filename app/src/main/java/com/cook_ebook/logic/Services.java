@@ -12,7 +12,7 @@ public class Services {
 
     public static synchronized RecipePersistence getRecipePersistence() {
         if(recipePersistence == null) {
-            recipePersistence = new RecipePersistenceStub();
+            recipePersistence = new RecipePersistenceStub(recipeTagPersistence);
         }
 
         return recipePersistence;
