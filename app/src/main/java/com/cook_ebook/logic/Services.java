@@ -10,16 +10,16 @@ public class Services {
     private static RecipePersistence recipePersistence = null;
     private static RecipeTagPersistence recipeTagPersistence = null;
 
-    public static synchronized RecipePersistence getRecipePersistence(){
-        if (recipePersistence == null){
-            recipePersistence = new RecipePersistenceStub();
+    public static synchronized RecipePersistence getRecipePersistence() {
+        if(recipePersistence == null) {
+            recipePersistence = new RecipePersistenceStub(recipeTagPersistence);
         }
 
         return recipePersistence;
     }
 
-    public static synchronized RecipeTagPersistence getRecipeTagPersistence(){
-        if (recipeTagPersistence == null){
+    public static synchronized RecipeTagPersistence getRecipeTagPersistence() {
+        if(recipeTagPersistence == null) {
             recipeTagPersistence = new RecipeTagPersistenceStub();
         }
 

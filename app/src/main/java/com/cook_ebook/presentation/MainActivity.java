@@ -14,7 +14,7 @@ import android.view.MenuItem;
 import android.content.Intent;
 
 import com.cook_ebook.objects.Recipe;
-import com.cook_ebook.objects.RecipeTagSet;
+import com.cook_ebook.objects.RecipeTag;
 import com.cook_ebook.logic.RecipeHandler;
 import com.cook_ebook.R;
 
@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private Recipe buildRecipe(int time, String title, String tags, String ingredients, String description) {
-        RecipeTagSet newSet = new RecipeTagSet(tags);
+        RecipeTag newSet = new RecipeTag(tags);
 
         Recipe newRecipe = new Recipe(
                 title,
@@ -104,8 +104,10 @@ public class MainActivity extends AppCompatActivity {
                 ingredients,
                 time,
                 null,
-                newSet,
                 false);
+
+        newRecipe.addRecipeTag(newSet);
+
         return newRecipe;
     }
 

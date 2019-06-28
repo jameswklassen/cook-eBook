@@ -1,8 +1,9 @@
 package com.cook_ebook.persistence.stubs;
 
 import com.cook_ebook.objects.Recipe;
-import com.cook_ebook.objects.RecipeTagSet;
+import com.cook_ebook.objects.RecipeTag;
 import com.cook_ebook.persistence.RecipePersistence;
+import com.cook_ebook.persistence.RecipeTagPersistence;
 
 import java.util.*;
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import java.util.Comparator;
 public class RecipePersistenceStub implements RecipePersistence {
     private List<Recipe> recipeList;
 
-    public RecipePersistenceStub() {
+    public RecipePersistenceStub(RecipeTagPersistence recipeTagsPersistence) {
         this.recipeList = new ArrayList<>();
 
         recipeList.add(new Recipe("Cheese Cake",
@@ -32,8 +33,8 @@ public class RecipePersistenceStub implements RecipePersistence {
                         "4 eggs",
                 60,
                 "cheese cake images",
-                new RecipeTagSet("cake"),
                 false));
+
         recipeList.add(new Recipe("Brownies",
                 "Preheat oven to 350 degrees F (175 degrees C). Grease and flour an 8-inch square pan.\n" +
                         "In a large saucepan, melt 1/2 cup butter. Remove from heat, and stir in sugar, eggs, and 1 teaspoon vanilla. Beat in 1/3 cup cocoa, 1/2 cup flour, salt, and baking powder. Spread batter into prepared pan.\n" +
@@ -49,8 +50,8 @@ public class RecipePersistenceStub implements RecipePersistence {
                         "1/4 teaspoon baking powder",
                 45,
                 "brownies images",
-                new RecipeTagSet("dessert"),
                 false));
+
         recipeList.add(new Recipe("Chicken Pasta",
                 "Bring a large pot of lightly salted water to a boil. Add linguini pasta, and cook for 8 to 10 minutes, or until al dente; drain.\n" +
                         "Meanwhile, place chicken and Cajun seasoning in a bowl, and toss to coat.\n" +
@@ -71,8 +72,8 @@ public class RecipePersistenceStub implements RecipePersistence {
                         "2 tablespoons grated Parmesan cheese",
                 30,
                 "pasta images",
-                new RecipeTagSet("pasta"),
                 true));
+
         recipeList.add(new Recipe("Greek Salad",
                 "Whisk olive oil, vinegar, dill, salt, and black pepper together in a bowl.\n" +
                         "Mix cucumber, broccoli, cauliflower, plum tomatoes, red cabbage, red onion, red bell pepper, green bell pepper, olives, and feta cheese together in a large bowl. Drizzle dressing over vegetable mixture; toss to coat. Refrigerate at least 1 hour to allow flavors to marinate.",
@@ -90,8 +91,13 @@ public class RecipePersistenceStub implements RecipePersistence {
                         "1 (4 ounce) package feta cheese, crumbled",
                 30,
                 "salad images",
-                new RecipeTagSet("salad"),
                 false));
+
+        recipeList.get(0).getRecipeTagSet().add(new RecipeTag("dessert"));
+        recipeList.get(0).getRecipeTagSet().add(new RecipeTag("cake"));
+        recipeList.get(1).getRecipeTagSet().add(new RecipeTag(("dessert")));
+        recipeList.get(2).getRecipeTagSet().add(new RecipeTag(("pasta")));
+        recipeList.get(3).getRecipeTagSet().add(new RecipeTag(("salad")));
     }
 
     @Override
@@ -161,14 +167,67 @@ public class RecipePersistenceStub implements RecipePersistence {
     }
 
     @Override
-    public List<Recipe> getRecipeListByTag(String tag) {
+    public List<Recipe> getRecipeListByTagName(String tagName) {
+        List<Recipe> recipeListByTagName = new ArrayList<>();
+
+        for(int i = 0; i < recipeList.size(); i ++) {
+            if(recipeList.get(i).doesTagBelongsToRecipe(new RecipeTag(tagName))) {
+                recipeListByTagName.add(recipeList.get(i));
+            }
+        }
+
+        //sort the result by recipeId in ascending order
+        Collections.sort(recipeListByTagName, new Comparator<Recipe>() {
+            public int compare(Recipe recipe1, Recipe recipe2) {
+                return Integer.valueOf(recipe1.getRecipeID()).compareTo(recipe2.getRecipeID());
+            }
+        });
+
+        return recipeListByTagName;
+    }
+
+    @Override
+    public List<Recipe> getRecipeListByTagId(int tagId){
+        List<Recipe> recipeListByTagId = new ArrayList<>();
+
+        for(int i = 0; i < recipeList.size(); i ++) {
+            Iterator<RecipeTag> iterator = recipeList.get(i).getRecipeTagSet().iterator();
+
+            while (iterator.hasNext()) {
+                RecipeTag temp = iterator.next();
+                if(temp.getTagID() == tagId) {
+                    recipeListByTagId.add(recipeList.get(i));
+                }
+            }
+        }
+
+        //sort the result by recipeId in ascending order
+        Collections.sort(recipeListByTagId, new Comparator<Recipe>() {
+            public int compare(Recipe recipe1, Recipe recipe2) {
+                return Integer.valueOf(recipe1.getRecipeID()).compareTo(recipe2.getRecipeID());
+            }
+        });
+
+        return recipeListByTagId;
+    }
+
+    @Override
+    public List<Recipe> getRecipeListByTag(RecipeTag tag){
         List<Recipe> recipeListByTag = new ArrayList<>();
 
         for(int i = 0; i < recipeList.size(); i ++) {
-            if(recipeList.get(i).getRecipeTagSet().contains(tag)) {
+            if(recipeList.get(i).doesTagBelongsToRecipe(tag)) {
                 recipeListByTag.add(recipeList.get(i));
             }
         }
+
+        //sort the result by recipeId in ascending order
+        Collections.sort(recipeListByTag, new Comparator<Recipe>() {
+            public int compare(Recipe recipe1, Recipe recipe2) {
+                return Integer.valueOf(recipe1.getRecipeID()).compareTo(recipe2.getRecipeID());
+            }
+        });
+
         return recipeListByTag;
     }
 

@@ -4,7 +4,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import com.cook_ebook.objects.Recipe;
-import com.cook_ebook.objects.RecipeTagSet;
+import com.cook_ebook.objects.RecipeTag;
 
 public class RecipeTest {
 
@@ -19,7 +19,6 @@ public class RecipeTest {
                 "Flour, Eggs, Butter",
                 60,
                 "",
-                new RecipeTagSet(),
                 true);
 
         assertEquals("Cookies", recipe.getRecipeTitle());
@@ -44,47 +43,78 @@ public class RecipeTest {
                 "Flour, Eggs, Butter",
                 330,
                 "",
-                new RecipeTagSet("sugar"),
                 false);
+
+        recipe.addRecipeTag(new RecipeTag("sugar"));
 
         assertEquals("Cheese Cake", recipe.getRecipeTitle());
         assertEquals("These cakes are amazing", recipe.getRecipeDescription());
         assertEquals("Flour, Eggs, Butter", recipe.getRecipeIngredients());
         assertEquals(330, recipe.getRecipeCookingTime());
         assertEquals("", recipe.getRecipeImages());
-        assertTrue(recipe.getRecipeTagSet().contains("sugar"));
+        assertEquals(1, recipe.getRecipeTagSet().size());
+        assertTrue(recipe.doesTagBelongsToRecipe(new RecipeTag("sugar")));
         assertEquals(false, recipe.getRecipeIsFavourite());
 
         System.out.println("Finished testCreateRecipeWithATag");
     }
 
     @Test
-    public void testCreateRecipeWithMultipleTag() {
+    public void testCreateRecipeWithMultipleDifferentTags() {
         Recipe recipe;
 
-        System.out.println("\nStarting testCreateRecipeWithMultipleTag");
-
-        RecipeTagSet recipeTagSet = new RecipeTagSet();
-        recipeTagSet.addTag("sugar");
-        recipeTagSet.addTag("egg");
+        System.out.println("\nStarting testCreateRecipeWithMultipleDifferentTags");
 
         recipe = new Recipe("Cheese Cake",
                 "These cakes are amazing",
                 "Flour, Eggs, Butter",
                 320,
                 "",
-                recipeTagSet,
                 false);
+
+        recipe.addRecipeTag(new RecipeTag("sugar"));
+        recipe.addRecipeTag(new RecipeTag("egg"));
 
         assertEquals("Cheese Cake", recipe.getRecipeTitle());
         assertEquals("These cakes are amazing", recipe.getRecipeDescription());
         assertEquals("Flour, Eggs, Butter", recipe.getRecipeIngredients());
         assertEquals(320, recipe.getRecipeCookingTime());
         assertEquals("", recipe.getRecipeImages());
-        assertTrue(recipe.getRecipeTagSet().contains("sugar"));
-        assertTrue(recipe.getRecipeTagSet().contains("egg"));
+        assertEquals(2, recipe.getRecipeTagSet().size());
+        assertTrue(recipe.doesTagBelongsToRecipe(new RecipeTag("sugar")));
+        assertTrue(recipe.doesTagBelongsToRecipe(new RecipeTag("egg")));
         assertEquals(false, recipe.getRecipeIsFavourite());
 
-        System.out.println("Finished testCreateRecipeWithMultipleTag");
+        System.out.println("Finished testCreateRecipeWithMultipleDifferentTags");
+    }
+
+    @Test
+    public void testCreateRecipeWithMultipleSameTags() {
+        Recipe recipe;
+
+        System.out.println("\nStarting testCreateRecipeWithMultipleSameTags");
+
+        recipe = new Recipe("Cheese Cake",
+                "These cakes are amazing",
+                "Flour, Eggs, Butter",
+                320,
+                "",
+                false);
+
+        recipe.addRecipeTag(new RecipeTag("sugar"));
+        recipe.addRecipeTag(new RecipeTag("egg"));
+        recipe.addRecipeTag(new RecipeTag("egg"));
+
+        assertEquals("Cheese Cake", recipe.getRecipeTitle());
+        assertEquals("These cakes are amazing", recipe.getRecipeDescription());
+        assertEquals("Flour, Eggs, Butter", recipe.getRecipeIngredients());
+        assertEquals(320, recipe.getRecipeCookingTime());
+        assertEquals("", recipe.getRecipeImages());
+        assertEquals(2, recipe.getRecipeTagSet().size());
+        assertTrue(recipe.doesTagBelongsToRecipe(new RecipeTag("sugar")));
+        assertTrue(recipe.doesTagBelongsToRecipe(new RecipeTag("egg")));
+        assertEquals(false, recipe.getRecipeIsFavourite());
+
+        System.out.println("Finished testCreateRecipeWithMultipleSameTags");
     }
 }

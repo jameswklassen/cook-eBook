@@ -1,6 +1,7 @@
 package com.cook_ebook.persistence;
 
 import com.cook_ebook.objects.Recipe;
+import com.cook_ebook.objects.RecipeTag;
 
 import java.util.*;
 
@@ -14,7 +15,11 @@ public interface RecipePersistence {
 
     List<Recipe> getRecipeListByCookingTime(int cookingTime);
 
-    List<Recipe> getRecipeListByTag(String tag);
+    List<Recipe> getRecipeListByTagName(String tagName);
+
+    List<Recipe> getRecipeListByTagId(int tagId);
+
+    List<Recipe> getRecipeListByTag(RecipeTag tag);
 
     List<Recipe> getRecipeListByFavourite(boolean isFavourite);
 

@@ -1,6 +1,7 @@
 package com.cook_ebook.logic;
 
 import com.cook_ebook.objects.Recipe;
+import com.cook_ebook.objects.RecipeTag;
 import com.cook_ebook.persistence.RecipePersistence;
 
 import java.util.Date;
@@ -34,7 +35,17 @@ public class RecipeHandler {
     }
 
     // should throw exception if recipe doesn't exist
-    public List<Recipe> getRecipeListByTag(String tag) {
+    public List<Recipe> getRecipeListByTagName(String tagName) {
+        return dataAccessRecipe.getRecipeListByTagName(tagName);
+    }
+
+    // should throw exception if recipe doesn't exist
+    public List<Recipe> getRecipeListByTagId(int tagId) {
+        return dataAccessRecipe.getRecipeListByTagId(tagId);
+    }
+
+    // should throw exception if recipe doesn't exist
+    public List<Recipe> getRecipeListByTag(RecipeTag tag) {
         return dataAccessRecipe.getRecipeListByTag(tag);
     }
 
