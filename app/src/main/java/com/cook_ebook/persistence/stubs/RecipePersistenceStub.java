@@ -168,24 +168,72 @@ public class RecipePersistenceStub implements RecipePersistence {
 
     @Override
     public List<Recipe> getRecipeListByTagName(String tagName) {
-        List<Recipe> recipeListByTag = new ArrayList<>();
+        List<Recipe> recipeListByTagName = new ArrayList<>();
 
         for(int i = 0; i < recipeList.size(); i ++) {
-            if(recipeList.get(i).getRecipeTagSet().contains(tagName)) {
-                recipeListByTag.add(recipeList.get(i));
+            Iterator<RecipeTag> iterator = recipeList.get(i).getRecipeTagSet().iterator();
+
+            while (iterator.hasNext()) {
+                RecipeTag temp = iterator.next();
+                if(temp.getTagName().equals(tagName)) {
+                    recipeListByTagName.add(recipeList.get(i));
+                }
             }
         }
-        return recipeListByTag;
+
+        //sort the result by recipeId in ascending order
+        Collections.sort(recipeListByTagName, new Comparator<Recipe>() {
+            public int compare(Recipe recipe1, Recipe recipe2) {
+                return Integer.valueOf(recipe1.getRecipeID()).compareTo(recipe2.getRecipeID());
+            }
+        });
+
+        return recipeListByTagName;
     }
 
     @Override
     public List<Recipe> getRecipeListByTagId(int tagId){
+        List<Recipe> recipeListByTagId = new ArrayList<>();
 
+        for(int i = 0; i < recipeList.size(); i ++) {
+            Iterator<RecipeTag> iterator = recipeList.get(i).getRecipeTagSet().iterator();
+
+            while (iterator.hasNext()) {
+                RecipeTag temp = iterator.next();
+                if(temp.getTagID() == tagId) {
+                    recipeListByTagId.add(recipeList.get(i));
+                }
+            }
+        }
+
+        //sort the result by recipeId in ascending order
+        Collections.sort(recipeListByTagId, new Comparator<Recipe>() {
+            public int compare(Recipe recipe1, Recipe recipe2) {
+                return Integer.valueOf(recipe1.getRecipeID()).compareTo(recipe2.getRecipeID());
+            }
+        });
+
+        return recipeListByTagId;
     }
 
     @Override
     public List<Recipe> getRecipeListByTag(RecipeTag tag){
+        List<Recipe> recipeListByTag = new ArrayList<>();
 
+        for(int i = 0; i < recipeList.size(); i ++) {
+            if(recipeList.get(i).getRecipeTagSet().contains(tag)) {
+                recipeListByTag.add(recipeList.get(i));
+            }
+        }
+
+        //sort the result by recipeId in ascending order
+        Collections.sort(recipeListByTag, new Comparator<Recipe>() {
+            public int compare(Recipe recipe1, Recipe recipe2) {
+                return Integer.valueOf(recipe1.getRecipeID()).compareTo(recipe2.getRecipeID());
+            }
+        });
+
+        return recipeListByTag;
     }
 
     @Override
@@ -278,6 +326,4 @@ public class RecipePersistenceStub implements RecipePersistence {
             }
         }
     }
-
-
 }

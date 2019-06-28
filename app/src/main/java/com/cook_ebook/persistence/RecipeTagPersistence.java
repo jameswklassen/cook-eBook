@@ -7,9 +7,9 @@ import java.util.*;
 public interface RecipeTagPersistence {
     Set<RecipeTag> getAllTags();
 
-    int getTagNameById(String tagName);
+    int getTagIdByName(String tagName);
 
-    String getTagIdByName(int tagId);
+    String getTagNameById(int tagId);
 
     RecipeTag getTagById(int tagId);
 
@@ -20,4 +20,6 @@ public interface RecipeTagPersistence {
     void deleteOneTag(RecipeTag targetTag);
 
     boolean doesTagExist(RecipeTag targetTag);
+
+    boolean doesTagNameExist(String targetTagName);
 }

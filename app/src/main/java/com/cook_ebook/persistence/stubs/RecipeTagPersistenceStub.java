@@ -23,11 +23,11 @@ public class RecipeTagPersistenceStub implements RecipeTagPersistence {
     }
 
     @Override
-    public int getTagNameById(String tagName) {
+    public int getTagIdByName(String tagName) {
         Iterator<RecipeTag> iterator = recipeTagSet.iterator();
-        while (iterator.hasNext()) {
+        while(iterator.hasNext()) {
             RecipeTag temp = iterator.next();
-            if(temp.getTagName() == tagName) {
+            if(temp.getTagName().equals(tagName)) {
                 return temp.getTagID();
             }
         }
@@ -36,9 +36,9 @@ public class RecipeTagPersistenceStub implements RecipeTagPersistence {
     }
 
     @Override
-    public String getTagIdByName(int tagId) {
+    public String getTagNameById(int tagId) {
         Iterator<RecipeTag> iterator = recipeTagSet.iterator();
-        while (iterator.hasNext()) {
+        while(iterator.hasNext()) {
             RecipeTag temp = iterator.next();
             if(temp.getTagID() == tagId) {
                 return temp.getTagName();
@@ -51,7 +51,7 @@ public class RecipeTagPersistenceStub implements RecipeTagPersistence {
     @Override
     public RecipeTag getTagById(int tagId){
         Iterator<RecipeTag> iterator = recipeTagSet.iterator();
-        while (iterator.hasNext()) {
+        while(iterator.hasNext()) {
             RecipeTag temp = iterator.next();
             if(temp.getTagID() == tagId) {
                 return temp;
@@ -64,9 +64,9 @@ public class RecipeTagPersistenceStub implements RecipeTagPersistence {
     @Override
     public RecipeTag getTagByName(String tagName){
         Iterator<RecipeTag> iterator = recipeTagSet.iterator();
-        while (iterator.hasNext()) {
+        while(iterator.hasNext()) {
             RecipeTag temp = iterator.next();
-            if(temp.getTagName() == tagName) {
+            if(temp.getTagName().equals(tagName)) {
                 return temp;
             }
         }
@@ -93,5 +93,19 @@ public class RecipeTagPersistenceStub implements RecipeTagPersistence {
     @Override
     public boolean doesTagExist(RecipeTag targetTag){
         return recipeTagSet.contains(targetTag);
+    }
+
+    @Override
+    public boolean doesTagNameExist(String targetTagName) {
+        Iterator<RecipeTag> iterator = recipeTagSet.iterator();
+
+        while (iterator.hasNext()) {
+            RecipeTag temp = iterator.next();
+            if(temp.getTagName().equals(targetTagName)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

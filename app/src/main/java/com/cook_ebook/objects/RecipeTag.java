@@ -6,7 +6,8 @@ public class RecipeTag {
     private int tagId;
     private String tagName;
 
-    public RecipeTag() {
+    public RecipeTag(final int tagId) {
+        this.tagId = tagId;
         this.tagName = "";
     }
 
@@ -28,8 +29,8 @@ public class RecipeTag {
         return tagName;
     }
 
-    public void setTagName(String newTagName) {
-        this.tagName = newTagName;
+    public void setTagName(String tagName) {
+        this.tagName = tagName;
     }
 
     @Override

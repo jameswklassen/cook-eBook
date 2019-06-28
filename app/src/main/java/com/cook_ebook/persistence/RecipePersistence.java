@@ -32,10 +32,4 @@ public interface RecipePersistence {
     void deleteRecipe(Recipe recipe);
 
     void deleteRecipeById(int recipeId);
-
-    void deleteTagInRecipeTagByTagId();
-
-    void deleteRecipeTagByTagName();
-
-    void deleteRecipeTag ();
 }
