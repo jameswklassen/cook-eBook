@@ -1,6 +1,6 @@
 package com.cook_ebook.tests.business;
 
-import com.cook_ebook.logic.RecipeTagSetHandler;
+import com.cook_ebook.logic.RecipeTagHandler;
 import com.cook_ebook.objects.RecipeTag;
 
 import org.junit.Before;
@@ -8,12 +8,12 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class RecipeTagHandlerTest {
-    private RecipeTagSetHandler tagSetHandler;
+    private RecipeTagHandler tagSetHandler;
 
     @Before
     public void setup() {
-        System.out.println("Starting test for RecipeTagSetHandler");
-        tagSetHandler = new RecipeTagSetHandler();
+        System.out.println("Starting test for RecipeTagHandler");
+        tagSetHandler = new RecipeTagHandler();
     }
 
     @Test
@@ -43,7 +43,7 @@ public class RecipeTagHandlerTest {
         System.out.println("\nStarting testGetTagNameById");
 
         // this test will be implemented after we have true database
-        assertNull(tagSetHandler.getTagNameById(-1));
+        assertEquals("Tag Id does not exist!", tagSetHandler.getTagNameById(-1));
 
         System.out.println("Finished testGetTagNameById.");
     }
@@ -53,7 +53,7 @@ public class RecipeTagHandlerTest {
         System.out.println("\nStarting testGetTagById");
 
         // this test will be implemented after we have true database
-        assertNull(tagSetHandler.getTagNameById(-1));
+        assertNull(tagSetHandler.getTagById(-1));
 
         System.out.println("Finished testGetTagById.");
     }

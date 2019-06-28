@@ -5,7 +5,7 @@ import com.cook_ebook.objects.RecipeTag;
 import java.util.*;
 
 public interface RecipeTagPersistence {
-    Set<RecipeTag> getAllTags();
+    List<RecipeTag> getAllTags();
 
     int getTagIdByName(String tagName);
 

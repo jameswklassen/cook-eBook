@@ -171,15 +171,7 @@ public class RecipePersistenceStub implements RecipePersistence {
         List<Recipe> recipeListByTagName = new ArrayList<>();
 
         for(int i = 0; i < recipeList.size(); i ++) {
-//            Iterator<RecipeTag> iterator = recipeList.get(i).getRecipeTagSet().iterator();
-//
-//            while (iterator.hasNext()) {
-//                RecipeTag temp = iterator.next();
-//                if(temp.getTagName().equals(tagName)) {
-//                    recipeListByTagName.add(recipeList.get(i));
-//                }
-//            }
-            if(recipeList.get(i).getRecipeTagSet().contains(new RecipeTag("tagName"))) {
+            if(recipeList.get(i).doesTagBelongsToRecipe(new RecipeTag(tagName))) {
                 recipeListByTagName.add(recipeList.get(i));
             }
         }
@@ -224,7 +216,7 @@ public class RecipePersistenceStub implements RecipePersistence {
         List<Recipe> recipeListByTag = new ArrayList<>();
 
         for(int i = 0; i < recipeList.size(); i ++) {
-            if(recipeList.get(i).getRecipeTagSet().contains(tag)) {
+            if(recipeList.get(i).doesTagBelongsToRecipe(tag)) {
                 recipeListByTag.add(recipeList.get(i));
             }
         }

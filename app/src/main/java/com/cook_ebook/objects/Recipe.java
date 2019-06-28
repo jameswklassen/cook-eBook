@@ -74,15 +74,8 @@ public class Recipe {
         return recipeImages;
     }
 
-    public List<RecipeTag> getRecipeTagSet() {
-        Iterator<RecipeTag> iterator = recipeTagSet.iterator();
-        List<RecipeTag> tagList = new ArrayList<>();
-
-        while(iterator.hasNext()) {
-            tagList.add(iterator.next());
-        }
-
-        return tagList;
+    public Set<RecipeTag> getRecipeTagSet() {
+        return recipeTagSet;
     }
 
     public Boolean getRecipeIsFavourite() {
@@ -111,6 +104,21 @@ public class Recipe {
 
     public void setRecipeImages(String recipeImages) {
         this.recipeImages = recipeImages;
+    }
+
+    public boolean doesTagBelongsToRecipe(RecipeTag tag) {
+        Iterator<RecipeTag> iterator = recipeTagSet.iterator();
+        List<RecipeTag> tagList = new ArrayList<>();
+
+        while(iterator.hasNext()) {
+            tagList.add(iterator.next());
+        }
+
+        if(tagList.contains(tag)) {
+            return true;
+        }
+
+        return false;
     }
 
     public RecipeTag addRecipeTag(RecipeTag newTag) {
