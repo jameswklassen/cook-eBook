@@ -3,6 +3,7 @@ package com.cook_ebook.tests.business;
 import com.cook_ebook.logic.RecipeTagHandler;
 import com.cook_ebook.objects.RecipeTag;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -21,7 +22,14 @@ public class RecipeTagHandlerTest {
         System.out.println("\nStarting testTagSet");
 
         assertNotNull(tagSetHandler.getAllRecipeTags());
+
         assertEquals(4, tagSetHandler.getAllRecipeTags().size());
+        assertTrue(tagSetHandler.getAllRecipeTags().contains(new RecipeTag("dessert")));
+        assertTrue(tagSetHandler.getAllRecipeTags().contains(new RecipeTag("cake")));
+        assertTrue(tagSetHandler.getAllRecipeTags().contains(new RecipeTag("pasta")));
+        assertTrue(tagSetHandler.getAllRecipeTags().contains(new RecipeTag("salad")));
+
+        assertFalse(tagSetHandler.getAllRecipeTags().contains(new RecipeTag("haha")));
 
         System.out.println("Finished testTagSet.");
     }
@@ -77,10 +85,6 @@ public class RecipeTagHandlerTest {
         tagSetHandler.insertOneTag(new RecipeTag("dessert"));
         assertEquals(4, tagSetHandler.getAllRecipeTags().size());
 
-        tagSetHandler.insertOneTag(new RecipeTag("sweet"));
-        assertEquals(5, tagSetHandler.getAllRecipeTags().size());
-
-        tagSetHandler.deleteOneTag(new RecipeTag("sweet"));
         System.out.println("Finished testInsertTag.");
     }
 
@@ -91,10 +95,6 @@ public class RecipeTagHandlerTest {
         tagSetHandler.deleteOneTag(new RecipeTag("haha"));
         assertEquals(4, tagSetHandler.getAllRecipeTags().size());
 
-        tagSetHandler.deleteOneTag(new RecipeTag("cake"));
-        assertEquals(3, tagSetHandler.getAllRecipeTags().size());
-
-        tagSetHandler.insertOneTag(new RecipeTag("cake"));
         System.out.println("Finished testDeleteTag.");
     }
 
