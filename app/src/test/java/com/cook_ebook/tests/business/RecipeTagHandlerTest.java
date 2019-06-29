@@ -82,8 +82,15 @@ public class RecipeTagHandlerTest {
     public void testInsertTag() {
         System.out.println("\nStarting testInsertTag");
 
+        int expectNum = 4;
+
         tagSetHandler.insertOneTag(new RecipeTag("dessert"));
-        assertEquals(4, tagSetHandler.getAllRecipeTags().size());
+        assertEquals(expectNum, tagSetHandler.getAllRecipeTags().size());
+
+        tagSetHandler.insertOneTag(new RecipeTag("I am a new tag"));
+        assertEquals(expectNum + 1, tagSetHandler.getAllRecipeTags().size());
+
+        tagSetHandler.deleteOneTag(new RecipeTag("I am a new tag"));
 
         System.out.println("Finished testInsertTag.");
     }
@@ -92,8 +99,15 @@ public class RecipeTagHandlerTest {
     public void testDeleteTag() {
         System.out.println("\nStarting testDeleteTag");
 
-        tagSetHandler.deleteOneTag(new RecipeTag("haha"));
+        int expectNum = 4;
+
+        tagSetHandler.deleteOneTag(new RecipeTag("I am not an existed tag"));
         assertEquals(4, tagSetHandler.getAllRecipeTags().size());
+
+        tagSetHandler.deleteOneTag(new RecipeTag("dessert"));
+        assertEquals(expectNum - 1, tagSetHandler.getAllRecipeTags().size());
+
+        tagSetHandler.insertOneTag(new RecipeTag("dessert"));
 
         System.out.println("Finished testDeleteTag.");
     }
@@ -103,7 +117,7 @@ public class RecipeTagHandlerTest {
         System.out.println("\nStarting testDoesTagExist");
 
         assertTrue(tagSetHandler.doesTagExist(new RecipeTag("salad")));
-        assertFalse(tagSetHandler.doesTagExist(new RecipeTag("haha")));
+        assertFalse(tagSetHandler.doesTagExist(new RecipeTag("I am not an existed tag")));
 
         System.out.println("Finished testDoesTagExist.");
     }
@@ -113,7 +127,7 @@ public class RecipeTagHandlerTest {
         System.out.println("\nStarting testDoesTagNameExist");
 
         assertTrue(tagSetHandler.doesTagNameExist("salad"));
-        assertFalse(tagSetHandler.doesTagNameExist("haha"));
+        assertFalse(tagSetHandler.doesTagNameExist("I am not an existed tag"));
 
         System.out.println("Finished testDoesTagNameExist.");
     }

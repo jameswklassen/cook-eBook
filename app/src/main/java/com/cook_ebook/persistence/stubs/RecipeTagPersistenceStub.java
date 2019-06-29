@@ -6,37 +6,29 @@ import com.cook_ebook.persistence.RecipeTagPersistence;
 import java.util.*;
 
 public class RecipeTagPersistenceStub implements RecipeTagPersistence {
-    private Set<RecipeTag> recipeTagSet;
+    private List<RecipeTag> recipeTagList;
 
     public RecipeTagPersistenceStub() {
-        this.recipeTagSet = new HashSet<>();
+        this.recipeTagList = new ArrayList<>();
 
-        recipeTagSet.add(new RecipeTag("dessert"));
-        recipeTagSet.add(new RecipeTag("cake"));
-        recipeTagSet.add(new RecipeTag("pasta"));
-        recipeTagSet.add(new RecipeTag("salad"));
+        recipeTagList.add(new RecipeTag("dessert"));
+        recipeTagList.add(new RecipeTag("cake"));
+        recipeTagList.add(new RecipeTag("pasta"));
+        recipeTagList.add(new RecipeTag("salad"));
     }
 
     @Override
     public List<RecipeTag> getAllTags(){
-        List<RecipeTag> tagList = new ArrayList<>();
-
-        Iterator<RecipeTag> iterator = recipeTagSet.iterator();
-
-        while(iterator.hasNext()) {
-            tagList.add(iterator.next());
-        }
-
-        return tagList;
+        return Collections.unmodifiableList(recipeTagList);
     }
 
     @Override
     public int getTagIdByName(String tagName) {
-        Iterator<RecipeTag> iterator = recipeTagSet.iterator();
-        while(iterator.hasNext()) {
-            RecipeTag temp = iterator.next();
-            if(temp.getTagName().equals(tagName)) {
-                return temp.getTagID();
+        if(recipeTagList.contains(new RecipeTag(tagName))) {
+            for(int i = 0; i < recipeTagList.size(); i ++) {
+                if(recipeTagList.get(i).getTagName().equals(tagName)) {
+                    return recipeTagList.get(i).getTagID();
+                }
             }
         }
 
@@ -45,11 +37,9 @@ public class RecipeTagPersistenceStub implements RecipeTagPersistence {
 
     @Override
     public String getTagNameById(int tagId) {
-        Iterator<RecipeTag> iterator = recipeTagSet.iterator();
-        while(iterator.hasNext()) {
-            RecipeTag temp = iterator.next();
-            if(temp.getTagID() == tagId) {
-                return temp.getTagName();
+        for(int i = 0; i < recipeTagList.size(); i ++) {
+            if(recipeTagList.get(i).getTagID() == tagId) {
+                return recipeTagList.get(i).getTagName();
             }
         }
 
@@ -58,11 +48,9 @@ public class RecipeTagPersistenceStub implements RecipeTagPersistence {
 
     @Override
     public RecipeTag getTagById(int tagId){
-        Iterator<RecipeTag> iterator = recipeTagSet.iterator();
-        while(iterator.hasNext()) {
-            RecipeTag temp = iterator.next();
-            if(temp.getTagID() == tagId) {
-                return temp;
+        for(int i = 0; i < recipeTagList.size(); i ++) {
+            if(recipeTagList.get(i).getTagID() == tagId) {
+                return recipeTagList.get(i);
             }
         }
 
@@ -71,11 +59,11 @@ public class RecipeTagPersistenceStub implements RecipeTagPersistence {
 
     @Override
     public RecipeTag getTagByName(String tagName){
-        Iterator<RecipeTag> iterator = recipeTagSet.iterator();
-        while(iterator.hasNext()) {
-            RecipeTag temp = iterator.next();
-            if(temp.getTagName().equals(tagName)) {
-                return temp;
+        if(recipeTagList.contains(new RecipeTag(tagName))) {
+            for(int i = 0; i < recipeTagList.size(); i ++) {
+                if(recipeTagList.get(i).getTagName().equals(tagName)) {
+                    return recipeTagList.get(i);
+                }
             }
         }
 
@@ -84,16 +72,8 @@ public class RecipeTagPersistenceStub implements RecipeTagPersistence {
 
     @Override
     public RecipeTag insertOneTag(RecipeTag targetTag){
-        List<RecipeTag> tagList = new ArrayList<>();
-
-        Iterator<RecipeTag> iterator = recipeTagSet.iterator();
-
-        while(iterator.hasNext()) {
-            tagList.add(iterator.next());
-        }
-
-        if(!tagList.contains(targetTag)) {
-            recipeTagSet.add(targetTag);
+        if(!recipeTagList.contains(targetTag)) {
+            recipeTagList.add(targetTag);
         }
 
         return targetTag;
@@ -101,51 +81,18 @@ public class RecipeTagPersistenceStub implements RecipeTagPersistence {
 
     @Override
     public void deleteOneTag(RecipeTag targetTag){
-        List<RecipeTag> tagList = new ArrayList<>();
-
-        Iterator<RecipeTag> iterator1 = recipeTagSet.iterator();
-
-        while(iterator1.hasNext()) {
-            tagList.add(iterator1.next());
-        }
-
-        if (tagList.contains(targetTag)) {
-
-            Iterator<RecipeTag> iterator2 = recipeTagSet.iterator();
-
-            while (iterator2.hasNext()) {
-                RecipeTag temp = iterator2.next();
-                if(temp.getTagName().equals(targetTag.getTagName())) {
-                    recipeTagSet.remove(temp);
-                }
-            }
+        if (recipeTagList.contains(targetTag)) {
+            recipeTagList.remove(targetTag);
         }
     }
 
     @Override
     public boolean doesTagExist(RecipeTag targetTag){
-        List<RecipeTag> tagList = new ArrayList<>();
-
-        Iterator<RecipeTag> iterator = recipeTagSet.iterator();
-
-        while(iterator.hasNext()) {
-            tagList.add(iterator.next());
-        }
-
-        return tagList.contains(targetTag);
+        return recipeTagList.contains(targetTag);
     }
 
     @Override
     public boolean doesTagNameExist(String targetTagName) {
-        Iterator<RecipeTag> iterator = recipeTagSet.iterator();
-
-        while (iterator.hasNext()) {
-            RecipeTag temp = iterator.next();
-            if(temp.getTagName().equals(targetTagName)) {
-                return true;
-            }
-        }
-
-        return false;
+        return recipeTagList.contains(new RecipeTag(targetTagName));
     }
 }

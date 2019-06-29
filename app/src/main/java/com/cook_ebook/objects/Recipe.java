@@ -10,7 +10,7 @@ public class Recipe {
     private String recipeIngredients;
     private int recipeCookingTime;
     private String recipeImages;
-    private Set<RecipeTag> recipeTagSet;
+    private List<RecipeTag> recipeTagList;
     private Boolean recipeIsFavourite;
     private Date date;
     private int recipeID;
@@ -22,7 +22,7 @@ public class Recipe {
         this.recipeIngredients = null;
         this.recipeCookingTime = -1;
         this.recipeImages = null;
-        this.recipeTagSet = new HashSet<>();
+        this.recipeTagList = new ArrayList<>();
         this.recipeIsFavourite = null;
         this.date = new Date(); // Current date
     }
@@ -40,7 +40,7 @@ public class Recipe {
         this.recipeIngredients = recipeIngredients;
         this.recipeCookingTime = recipeCookingTime;
         this.recipeImages = recipeImages;
-        this.recipeTagSet = new HashSet<>();
+        this.recipeTagList = new ArrayList<>();
         this.recipeIsFavourite = recipeIsFavourite;
         this.date = new Date(); // Current date
     }
@@ -74,8 +74,8 @@ public class Recipe {
         return recipeImages;
     }
 
-    public Set<RecipeTag> getRecipeTagSet() {
-        return recipeTagSet;
+    public List<RecipeTag> getRecipeTagList() {
+        return recipeTagList;
     }
 
     public Boolean getRecipeIsFavourite() {
@@ -107,46 +107,17 @@ public class Recipe {
         this.recipeImages = recipeImages;
     }
 
-    public boolean doesTagBelongsToRecipe(RecipeTag tag) {
-        Iterator<RecipeTag> iterator = recipeTagSet.iterator();
-        List<RecipeTag> tagList = new ArrayList<>();
-
-        while(iterator.hasNext()) {
-            tagList.add(iterator.next());
-        }
-
-        if(tagList.contains(tag)) {
-            return true;
-        }
-
-        return false;
-    }
-
     public RecipeTag addRecipeTag(RecipeTag newTag) {
-        Iterator<RecipeTag> iterator = recipeTagSet.iterator();
-        List<RecipeTag> tagList = new ArrayList<>();
-
-        while(iterator.hasNext()) {
-            tagList.add(iterator.next());
-        }
-
-        if(!tagList.contains(newTag)) {
-            recipeTagSet.add(newTag);
+        if(!recipeTagList.contains(newTag)) {
+            recipeTagList.add(newTag);
         }
 
         return newTag;
     }
 
     public void deleteRecipeTag(RecipeTag targetTag) {
-        Iterator<RecipeTag> iterator = recipeTagSet.iterator();
-        List<RecipeTag> tagList = new ArrayList<>();
-
-        while(iterator.hasNext()) {
-            tagList.add(iterator.next());
-        }
-
-        if(tagList.contains(targetTag)) {
-            recipeTagSet.remove(targetTag);
+        if(recipeTagList.contains(targetTag)) {
+            recipeTagList.remove(targetTag);
         }
     }
 
@@ -167,7 +138,7 @@ public class Recipe {
                 ", recipeIngredients='" + recipeIngredients + '\'' +
                 ", recipeCookingTime=" + recipeCookingTime +
                 ", recipeImages='" + recipeImages + '\'' +
-                ", recipeTagSet='" + recipeTagSet + '\'' +
+                ", recipeTagList='" + recipeTagList.toString() + '\'' +
                 ", recipeIsFavourite=" + recipeIsFavourite +
                 '}';
     }
@@ -176,9 +147,7 @@ public class Recipe {
     public boolean equals(Object o) {
         if(o instanceof Recipe) {
             Recipe newRecipe = (Recipe)o;
-            if(this.getRecipeID() == newRecipe.getRecipeID()) {
-                return true;
-            }
+            return this.getRecipeID() == newRecipe.getRecipeID();
         }
 
         return false;

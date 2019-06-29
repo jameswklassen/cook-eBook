@@ -31,16 +31,14 @@ public class RecipeTag {
 
     @Override
     public String toString() {
-        return "RecipeTag: "  + tagId + ". " + tagName;
+        return tagName;
     }
 
     @Override
     public boolean equals(Object o) {
         if(o instanceof RecipeTag) {
             RecipeTag newRecipeTag = (RecipeTag) o;
-            if(this.getTagName().equals(newRecipeTag.getTagName())) {
-                return true;
-            }
+            return this.getTagName().equals(newRecipeTag.getTagName());
         }
 
         return false;

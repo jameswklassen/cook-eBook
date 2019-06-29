@@ -57,12 +57,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 myIntent.putExtra("recipeFavourite", recipes.get(i).getRecipeIsFavourite());
 
                 String tags = "";
-                Iterator<RecipeTag> iterator = recipes.get(i).getRecipeTagSet().iterator();
-                List<String> tagsList = new ArrayList<> ();
-                while(iterator.hasNext()) {
-                    RecipeTag temp = iterator.next();
-                    tagsList.add(temp.getTagName());
-                    tags = tagsToString(tagsList);
+                for(int k = 0; k < recipes.get(i).getRecipeTagList().size(); k ++) {
+                    tags += recipes.get(i).getRecipeTagList().get(k).getTagName() + "\n";
                 }
 
                 myIntent.putExtra("recipeTags", tags);
