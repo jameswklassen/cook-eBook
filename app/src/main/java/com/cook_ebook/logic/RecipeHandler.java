@@ -1,27 +1,77 @@
 package com.cook_ebook.logic;
 
+import com.cook_ebook.logic.comparators.AscendingDateComparator;
+import com.cook_ebook.logic.comparators.AscendingTitleComparator;
+import com.cook_ebook.logic.comparators.DescendingDateComparator;
+import com.cook_ebook.logic.comparators.DescendingTitleComparator;
 import com.cook_ebook.objects.Recipe;
 import com.cook_ebook.objects.RecipeTag;
 import com.cook_ebook.persistence.RecipePersistence;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Collections;
 
 public class RecipeHandler {
 
     private RecipePersistence dataAccessRecipe;
+    private List<String> filters;
+    private Comparator <Recipe> sort;
 
     public RecipeHandler() {
         //default get recipeList sorted by date in ascending order
         dataAccessRecipe = Services.getRecipePersistence();
+        sort = new DescendingDateComparator();
+        filters = new ArrayList<>();
+    }
+
+    public void setSort(String newSort) {
+        switch(newSort)
+        {
+            case "Date-Ascending":
+                sort = new AscendingDateComparator();
+                break;
+            case "Date-Descending":
+                sort = new DescendingDateComparator();
+                break;
+            case "Title-Ascending":
+                sort = new AscendingTitleComparator();
+                break;
+            default :
+                sort = new DescendingTitleComparator();
+                break;
+        }
+    }
+
+    public void setFilter(String newFilter) {
+        int index = filters.indexOf(newFilter);
+        if(index != 0)
+            filters.add(newFilter);
+        else
+            filters.remove(index);
+    }
+
+    public void resetSort() {
+        sort = new DescendingDateComparator();
+    }
+
+    public void resetFilter() {
+        filters = new ArrayList<>();
+    }
+
+    public Comparator<Recipe> getSort() {
+        return sort;
+    }
+
+    public List<String> getFilter() {
+        return filters;
     }
 
     public List<Recipe> getAllRecipes() {
-        return dataAccessRecipe.getRecipeList();
-    }
-
-    public List<Recipe> getRecipeListByDescendingDate() {
-        return dataAccessRecipe.getRecipeListByDescendingDate();
+        List<Recipe> recipeList = dataAccessRecipe.getRecipeList();
+        Collections.sort(recipeList, sort);
+        return recipeList;
     }
 
     // should throw exception if recipe doesn't exist
@@ -52,11 +102,6 @@ public class RecipeHandler {
     // should throw exception if recipe doesn't exist
     public List<Recipe> getRecipeListByFavourite(boolean isFavourite){
         return dataAccessRecipe.getRecipeListByFavourite(isFavourite);
-    }
-
-    // should throw exception if recipe doesn't exist
-    public List<Recipe> getRecipeListByDate(Date date) {
-        return dataAccessRecipe.getRecipeListByDate(date);
     }
 
     // should throw an exception for an invalid recipe

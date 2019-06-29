@@ -9,8 +9,6 @@ public interface RecipePersistence {
 
     List<Recipe> getRecipeList(); //default sorted by date in ascending order
 
-    List<Recipe> getRecipeListByDescendingDate();
-
     Recipe getRecipeById(int recipeId);
 
     List<Recipe> getRecipeListByCookingTime(int cookingTime);
@@ -22,8 +20,6 @@ public interface RecipePersistence {
     List<Recipe> getRecipeListByTag(RecipeTag tag);
 
     List<Recipe> getRecipeListByFavourite(boolean isFavourite);
-
-    List<Recipe> getRecipeListByDate(Date date);
 
     Recipe insertRecipe(Recipe recipe);
 
