@@ -93,11 +93,18 @@ public class RecipePersistenceStub implements RecipePersistence {
                 "salad images",
                 false));
 
-        recipeList.get(0).getRecipeTagSet().add(new RecipeTag("dessert"));
-        recipeList.get(0).getRecipeTagSet().add(new RecipeTag("cake"));
-        recipeList.get(1).getRecipeTagSet().add(new RecipeTag(("dessert")));
-        recipeList.get(2).getRecipeTagSet().add(new RecipeTag(("pasta")));
-        recipeList.get(3).getRecipeTagSet().add(new RecipeTag(("salad")));
+        List<RecipeTag> TagList1 = recipeList.get(0).getRecipeTagList();
+        TagList1.add(new RecipeTag("dessert"));
+        TagList1.add(new RecipeTag("cake"));
+
+        List<RecipeTag> TagList2 = recipeList.get(1).getRecipeTagList();
+        TagList2.add(new RecipeTag(("dessert")));
+
+        List<RecipeTag> TagList3 = recipeList.get(2).getRecipeTagList();
+        TagList3.add(new RecipeTag(("pasta")));
+
+        List<RecipeTag> TagList4 = recipeList.get(3).getRecipeTagList();
+        TagList4.add(new RecipeTag(("salad")));
     }
 
     @Override
@@ -116,24 +123,6 @@ public class RecipePersistenceStub implements RecipePersistence {
         });
 
         return recipeListSortByDateAscending;
-    }
-
-    @Override
-    public List<Recipe> getRecipeListByDescendingDate() {
-        //sorted by date in descending order
-        List<Recipe> recipeListSortByDateDescending = new ArrayList<>();
-
-        for(int i = 0; i < recipeList.size(); i ++) {
-            recipeListSortByDateDescending.add(recipeList.get(i));
-        }
-
-        Collections.sort(recipeListSortByDateDescending, new Comparator<Recipe>() {
-            public int compare(Recipe recipe1, Recipe recipe2) {
-                return Integer.valueOf(recipe2.getRecipeID()).compareTo(recipe1.getRecipeID());
-            }
-        });
-
-        return recipeListSortByDateDescending;
     }
 
     @Override
@@ -171,7 +160,7 @@ public class RecipePersistenceStub implements RecipePersistence {
         List<Recipe> recipeListByTagName = new ArrayList<>();
 
         for(int i = 0; i < recipeList.size(); i ++) {
-            if(recipeList.get(i).doesTagBelongsToRecipe(new RecipeTag(tagName))) {
+            if(recipeList.get(i).getRecipeTagList().contains(new RecipeTag(tagName))) {
                 recipeListByTagName.add(recipeList.get(i));
             }
         }
@@ -191,7 +180,7 @@ public class RecipePersistenceStub implements RecipePersistence {
         List<Recipe> recipeListByTagId = new ArrayList<>();
 
         for(int i = 0; i < recipeList.size(); i ++) {
-            Iterator<RecipeTag> iterator = recipeList.get(i).getRecipeTagSet().iterator();
+            Iterator<RecipeTag> iterator = recipeList.get(i).getRecipeTagList().iterator();
 
             while (iterator.hasNext()) {
                 RecipeTag temp = iterator.next();
@@ -216,7 +205,7 @@ public class RecipePersistenceStub implements RecipePersistence {
         List<Recipe> recipeListByTag = new ArrayList<>();
 
         for(int i = 0; i < recipeList.size(); i ++) {
-            if(recipeList.get(i).doesTagBelongsToRecipe(tag)) {
+            if(recipeList.get(i).getRecipeTagList().contains(tag)) {
                 recipeListByTag.add(recipeList.get(i));
             }
         }
@@ -249,26 +238,6 @@ public class RecipePersistenceStub implements RecipePersistence {
         });
 
         return recipeListByFavourite;
-    }
-
-    @Override
-    public List<Recipe> getRecipeListByDate(Date date) {
-        List<Recipe> recipeListByDate = new ArrayList<>();
-
-        for(int i = 0; i < recipeList.size(); i ++) {
-            if(recipeList.get(i).getRecipeDate().equals(date)) {
-                recipeListByDate.add(recipeList.get(i));
-            }
-        }
-
-        //sort the result by recipeId in ascending order
-        Collections.sort(recipeListByDate, new Comparator<Recipe>() {
-            public int compare(Recipe recipe1, Recipe recipe2) {
-                return Integer.valueOf(recipe1.getRecipeID()).compareTo(recipe2.getRecipeID());
-            }
-        });
-
-        return recipeListByDate;
     }
 
     @Override

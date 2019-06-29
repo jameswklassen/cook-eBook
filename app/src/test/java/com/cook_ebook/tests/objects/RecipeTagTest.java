@@ -9,10 +9,8 @@ import static org.junit.Assert.*;
 public class RecipeTagTest {
     @Test
     public void testCreateATag() {
-        RecipeTag recipeTag;
-
         System.out.println("\nStarting testCreateATag");
-        recipeTag = new RecipeTag("egg");
+        RecipeTag recipeTag = new RecipeTag("egg");
 
         assertNotNull(recipeTag);
         assertEquals("egg", recipeTag.getTagName());
