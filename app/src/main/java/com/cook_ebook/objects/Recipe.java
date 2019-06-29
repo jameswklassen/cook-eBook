@@ -102,6 +102,7 @@ public class Recipe {
         this.recipeCookingTime = recipeCookingTime;
     }
 
+
     public void setRecipeImages(String recipeImages) {
         this.recipeImages = recipeImages;
     }
