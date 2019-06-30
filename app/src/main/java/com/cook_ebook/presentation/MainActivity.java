@@ -1,5 +1,7 @@
 package com.cook_ebook.presentation;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,12 +15,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
 
+import com.cook_ebook.logic.RecipeTagHandler;
 import com.cook_ebook.objects.Recipe;
 import com.cook_ebook.objects.RecipeTag;
 import com.cook_ebook.logic.RecipeHandler;
 import com.cook_ebook.R;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -30,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     //Temporary variables until we have database placeholders merged in
     private List<Recipe> recipes = new ArrayList<>();
     private RecipeHandler handler = new RecipeHandler();
+    private RecipeTagHandler tagHandler = new RecipeTagHandler();
     private RecyclerViewAdapter adapter;
 
     @Override
@@ -55,6 +60,23 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        menu.findItem(R.id.filter_number).setVisible(false);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu (Menu menu) {
+        if(handler.getFilter().size() > 0) {
+            String text = "" + handler.getFilter().size();
+            text += handler.getFilter().size() == 1 ? " Filter" : " Filters";
+
+            menu.findItem(R.id.filter_number).setVisible(true);
+            menu.findItem(R.id.filter_number).setTitle(text);
+        }
+        else {
+            menu.findItem(R.id.filter_number).setVisible(false);
+        }
+
         return true;
     }
 
@@ -88,8 +110,9 @@ public class MainActivity extends AppCompatActivity {
             Recipe newRecipe = buildRecipe(time, title, tags, ingredients, description);
 
             handler.insertRecipe(newRecipe);
-            recipes.add(recipes.size(), newRecipe);
-            adapter.notifyItemInserted(recipes.size());
+            recipes = handler.getAllRecipes();
+            adapter.setNewList(recipes);
+            ((RecyclerView)findViewById(R.id.recycleView)).setAdapter(adapter); //Force a redraw.
         } else if(requestCode == SINGLE_ACTIVITY && data != null) {
             deleteRecipe(extras.getInt("doDelete"));
         }
@@ -140,9 +163,139 @@ public class MainActivity extends AppCompatActivity {
         } else if(id == R.id.delete_recipe) {
             deleteRecipe(0);
             return true;
+        } else if(id == R.id.sort_list) {
+            showSortListDialog();
+        } else if(id == R.id.filter_list) {
+            showFilterListDialog();
+        } else if(id == R.id.filter_number) {
+            clearAllFilters();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showSortListDialog() {
+        final String[] sorts = new String[] {
+            "Date-Ascending",
+            "Date-Descending",
+            "Title-Ascending",
+            "Title-Descending"
+        };
+
+        //For some reason I can't assign to a non-array from within the onClick listener.
+        final int[] checkedOption = new int[1];
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Sort By");
+        builder.setSingleChoiceItems(sorts, 0, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                checkedOption[0] = which;
+            }
+        });
+
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                handler.setSort(sorts[checkedOption[0]]);
+                doFullRecyclerViewReset(handler.getAllRecipes());
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Do nothing.
+            }
+        });
+
+        builder.show();
+    }
+
+    private void showFilterListDialog() {
+        List<RecipeTag> tags = tagHandler.getAllRecipeTags();
+        final String[] tagList = new String[tags.size()];
+
+        for(int i = 0; i < tagList.length; i++)
+            tagList[i] = tags.get(i).getTagName();
+
+        final boolean[] checkedArray = new boolean[tagList.length];
+
+        AlertDialog.Builder builder  = new AlertDialog.Builder(this);
+        builder.setTitle("Filter By");
+
+        builder.setMultiChoiceItems(tagList, checkedArray, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                checkedArray[which] = isChecked;
+            }
+        });
+
+        builder.setPositiveButton("Apply", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                applyFilters(tagList, checkedArray);
+            }
+        });
+
+        builder.setNegativeButton("Clear", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                clearAllFilters();
+            }
+        });
+
+        builder.show();
+    }
+
+    private void applyFilters(String[] tagList, boolean[] checkedArray) {
+        handler.resetFilter();
+
+        for(int i = 0; i < checkedArray.length; i++) {
+            if(checkedArray[i]) {
+                handler.setFilter(tagList[i]);
+            }
+        }
+
+        //Apply the actual filtering operation
+        List<Recipe> allRecipes = handler.getAllRecipes();
+        List<String> filters = handler.getFilter();
+
+        if(filters.size() > 0) {
+            for (Iterator<Recipe> iter = allRecipes.iterator(); iter.hasNext(); ) {
+                Recipe next = iter.next();
+
+                boolean hasTagFromFilter = false;
+
+                for (String tag : filters)
+                    if (next.getRecipeTagList().contains(new RecipeTag(tag)))
+                        hasTagFromFilter = true;
+
+                if(!hasTagFromFilter)
+                    iter.remove();
+            }
+        }
+
+        //Set the menu text appropriately
+        invalidateOptionsMenu();
+
+        //Do a full reset of the recycler view
+        doFullRecyclerViewReset(allRecipes);
+    }
+
+    private void clearAllFilters() {
+        handler.resetFilter();
+        doFullRecyclerViewReset(handler.getAllRecipes());
+        invalidateOptionsMenu();
+    }
+
+    private void doFullRecyclerViewReset(List<Recipe> newRecipeList) {
+        recipes = newRecipeList;
+        adapter.setNewList(newRecipeList);
+        adapter.notifyDataSetChanged();
+        ((RecyclerView)findViewById(R.id.recycleView)).setAdapter(adapter); //Force a redraw.
+        invalidateOptionsMenu();
+
     }
 
     private void getRecipes() {

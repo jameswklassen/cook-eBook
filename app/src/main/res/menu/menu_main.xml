@@ -3,8 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.cook_ebook.presentation.MainActivity">
     <item
+        android:id="@+id/filter_number"
+        android:orderInCategory="0"
+        android:title="123 Filters Applied"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/add_recipe"
-        android:orderInCategory="100"
+        android:orderInCategory="1"
         android:title="@string/add_recipe"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/sort_list"
+        android:orderInCategory="2"
+        android:title="Sort List"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/filter_list"
+        android:orderInCategory="3"
+        android:title="Filter List"
         app:showAsAction="never" />
 </menu>
