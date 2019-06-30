@@ -17,6 +17,7 @@ public class RecipeHandler {
 
     private RecipePersistence dataAccessRecipe;
     private List<String> filters;
+    private boolean favourite;
     private Comparator <Recipe> sort;
 
     public RecipeHandler() {
@@ -24,6 +25,7 @@ public class RecipeHandler {
         dataAccessRecipe = Services.getRecipePersistence();
         sort = new DescendingDateComparator();
         filters = new ArrayList<>();
+        favourite = false;
     }
 
     public void setSort(String newSort) {
@@ -52,12 +54,20 @@ public class RecipeHandler {
             filters.remove(index);
     }
 
+    public void setFavourite(boolean favourite) {
+        this.favourite = favourite;
+    }
+
     public void resetSort() {
         sort = new DescendingDateComparator();
     }
 
     public void resetFilter() {
         filters = new ArrayList<>();
+    }
+
+    public void resetFavourite() {
+        this.favourite = false;
     }
 
     public Comparator<Recipe> getSort() {
@@ -70,6 +80,9 @@ public class RecipeHandler {
 
     public List<Recipe> getAllRecipes() {
         List<Recipe> recipeList = dataAccessRecipe.getRecipeList();
+        if(favourite) {
+            recipeList = getRecipeListByFavourite(favourite);
+        }
         Collections.sort(recipeList, sort);
         return recipeList;
     }
