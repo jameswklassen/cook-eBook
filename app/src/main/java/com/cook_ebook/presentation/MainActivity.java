@@ -8,12 +8,14 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
+import android.widget.Toast;
 
 import com.cook_ebook.logic.RecipeTagHandler;
 import com.cook_ebook.objects.Recipe;
@@ -337,5 +339,27 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT)
+        {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                // Item swiped.
+                int pos = viewHolder.getAdapterPosition();
+                Recipe recipe = recipes.get(pos);
+                String message = recipe.getRecipeTitle() + " recipe deleted";
+                Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
+                deleteRecipe(recipe.getRecipeID());
+            }
+
+        };
+
+        // Attach it to recyclerview
+        new ItemTouchHelper(simpleCallback).attachToRecyclerView(recyclerView);
     }
 }
