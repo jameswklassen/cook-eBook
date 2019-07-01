@@ -31,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     public static final int ADD_ACTIVITY = 1;
     public static final int SINGLE_ACTIVITY = 2;
 
+    private boolean viewingFavourites = false;
+
     //Temporary variables until we have database placeholders merged in
     private List<Recipe> recipes = new ArrayList<>();
     private RecipeHandler handler = new RecipeHandler();
@@ -66,15 +68,26 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu (Menu menu) {
+        MenuItem filterNumber = menu.findItem(R.id.filter_number),
+                 filterOption = menu.findItem(R.id.filter_list);
+
         if(handler.getFilter().size() > 0) {
             String text = "" + handler.getFilter().size();
             text += handler.getFilter().size() == 1 ? " Filter" : " Filters";
 
-            menu.findItem(R.id.filter_number).setVisible(true);
-            menu.findItem(R.id.filter_number).setTitle(text);
+            filterNumber.setVisible(true);
+            filterNumber.setTitle(text);
         }
         else {
-            menu.findItem(R.id.filter_number).setVisible(false);
+            filterNumber.setVisible(false);
+        }
+
+        if(viewingFavourites) {
+            menu.findItem(R.id.favourites_icon).setIcon(R.drawable.filled_favorite);
+            filterOption.setEnabled(false);
+        } else {
+            menu.findItem(R.id.favourites_icon).setIcon(R.drawable.outline_favorite);
+            filterOption.setEnabled(true);
         }
 
         return true;
@@ -169,6 +182,11 @@ public class MainActivity extends AppCompatActivity {
             showFilterListDialog();
         } else if(id == R.id.filter_number) {
             clearAllFilters();
+        } else if(id == R.id.favourites_icon) {
+            viewingFavourites = !viewingFavourites;
+
+            updateFavouritesView();
+            invalidateOptionsMenu();
         }
 
         return super.onOptionsItemSelected(item);
@@ -281,6 +299,14 @@ public class MainActivity extends AppCompatActivity {
 
         //Do a full reset of the recycler view
         doFullRecyclerViewReset(allRecipes);
+    }
+
+    private void updateFavouritesView() {
+        if(viewingFavourites)
+            handler.resetFilter();
+
+        handler.setFavourite(viewingFavourites);
+        doFullRecyclerViewReset(handler.getAllRecipes());
     }
 
     private void clearAllFilters() {
