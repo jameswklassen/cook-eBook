@@ -8,6 +8,12 @@
         android:title="123 Filters Applied"
         app:showAsAction="always" />
     <item
+        android:id="@+id/favourites_icon"
+        android:orderInCategory="0"
+        android:icon="@drawable/outline_favorite"
+        android:title="Favourites"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/add_recipe"
         android:orderInCategory="1"
         android:title="@string/add_recipe"
