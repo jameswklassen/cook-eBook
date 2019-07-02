@@ -23,12 +23,14 @@ import com.cook_ebook.persistence.RecipeTagPersistence;
 public class RecipePersistenceHSQLDB implements RecipePersistence {
 
     private final String dbPath;
+    private RecipeTagPersistence recipeTagPersistence;
     private List<Recipe> recipes;
 
     public RecipePersistenceHSQLDB(RecipeTagPersistence recipeTagPersistence, String dbPath) {
         this.dbPath = dbPath;
          this.recipes = new ArrayList<>();
-         loadRecipes(recipeTagPersistence);
+         this.recipeTagPersistence = recipeTagPersistence;
+         loadRecipes();
     }
 
     private Connection connect() throws SQLException {
@@ -49,15 +51,39 @@ public class RecipePersistenceHSQLDB implements RecipePersistence {
         return new Recipe(recipeID, recipeTitle, recipeDescription, recipeIngredients, recipeCookingTime, recipeImages, recipeIsFavourite, date);
     }
 
-    private void loadRecipes(RecipeTagPersistence recipeTagPersistence) {
+    private void loadRecipes() {
         System.out.println("[LOG] PERSISTENCE IS " + recipeTagPersistence.getAllTags());
+
         try (Connection connection = connect()) {
             final Statement statement = connection.createStatement();
             final ResultSet resultSet = statement.executeQuery("SELECT * FROM RECIPES");
 
             while (resultSet.next()) {
                 final Recipe recipe = fromResultSet(resultSet);
+                getTagsForRecipe(recipe);
                 this.recipes.add(recipe);
+            }
+        } catch (final SQLException e) {
+            Log.e("Connect SQL", e.getMessage() + e.getSQLState());
+            e.printStackTrace();
+        }
+    }
+
+    private void getTagsForRecipe(Recipe recipe) {
+
+        try (Connection connection = connect()) {
+            final PreparedStatement statement = connection.prepareStatement("SELECT tag_id FROM RECIPES_TAGS WHERE RECIPES_TAGS.recipe_id = ?");
+            statement.setInt(1, recipe.getRecipeID());
+
+            final ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                int tagId = resultSet.getInt("tag_id");
+                for (RecipeTag tag: recipeTagPersistence.getAllTags()) {
+                    if (tag.getTagID() == tagId) {
+                        recipe.addRecipeTag(tag);
+                        break;
+                    }
+                }
             }
         } catch (final SQLException e) {
             Log.e("Connect SQL", e.getMessage() + e.getSQLState());
