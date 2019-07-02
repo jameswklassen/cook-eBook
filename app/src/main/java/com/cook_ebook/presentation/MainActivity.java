@@ -18,6 +18,7 @@ import android.content.Intent;
 import android.widget.Toast;
 
 import com.cook_ebook.logic.RecipeTagHandler;
+import com.cook_ebook.logic.RecipeValidator;
 import com.cook_ebook.objects.Recipe;
 import com.cook_ebook.objects.RecipeTag;
 import com.cook_ebook.logic.RecipeHandler;
@@ -69,22 +70,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onPrepareOptionsMenu (Menu menu) {
+    public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem filterNumber = menu.findItem(R.id.filter_number),
-                 filterOption = menu.findItem(R.id.filter_list);
+                filterOption = menu.findItem(R.id.filter_list);
 
-        if(handler.getFilter().size() > 0) {
+        if (handler.getFilter().size() > 0) {
             String text = "" + handler.getFilter().size();
             text += handler.getFilter().size() == 1 ? " Filter" : " Filters";
 
             filterNumber.setVisible(true);
             filterNumber.setTitle(text);
-        }
-        else {
+        } else {
             filterNumber.setVisible(false);
         }
 
-        if(viewingFavourites) {
+        if (viewingFavourites) {
             menu.findItem(R.id.favourites_icon).setIcon(R.drawable.filled_favorite);
             filterOption.setEnabled(false);
         } else {
@@ -101,14 +101,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(resultCode != RESULT_OK) {
+        if (resultCode != RESULT_OK) {
             Log.d(TAG, "Result code was NOT okay. " + requestCode);
             return;
         }
 
         Bundle extras = data.getExtras();
 
-        if(requestCode == ADD_ACTIVITY) {
+        if (requestCode == ADD_ACTIVITY) {
             int time;
 
             try {
@@ -127,8 +127,8 @@ public class MainActivity extends AppCompatActivity {
             handler.insertRecipe(newRecipe);
             recipes = handler.getAllRecipes();
             adapter.setNewList(recipes);
-            ((RecyclerView)findViewById(R.id.recycleView)).setAdapter(adapter); //Force a redraw.
-        } else if(requestCode == SINGLE_ACTIVITY && data != null) {
+            ((RecyclerView) findViewById(R.id.recycleView)).setAdapter(adapter); //Force a redraw.
+        } else if (requestCode == SINGLE_ACTIVITY && data != null) {
             deleteRecipe(extras.getInt("doDelete"));
         }
     }
@@ -153,15 +153,15 @@ public class MainActivity extends AppCompatActivity {
         int index;
 
         handler.deleteRecipeById(id);
-        for(index = 0; index < recipes.size(); index++) {
-            if(recipes.get(index).getRecipeID() == id) {
+        for (index = 0; index < recipes.size(); index++) {
+            if (recipes.get(index).getRecipeID() == id) {
                 recipes.remove(index);
                 break;
             }
         }
 
         adapter.notifyItemRemoved(index);
-        ((RecyclerView)findViewById(R.id.recycleView)).setAdapter(adapter); //Force a redraw.
+        ((RecyclerView) findViewById(R.id.recycleView)).setAdapter(adapter); //Force a redraw.
     }
 
     @Override
@@ -175,16 +175,16 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.add_recipe) {
             addRecipe();
             return true;
-        } else if(id == R.id.delete_recipe) {
+        } else if (id == R.id.delete_recipe) {
             deleteRecipe(0);
             return true;
-        } else if(id == R.id.sort_list) {
+        } else if (id == R.id.sort_list) {
             showSortListDialog();
-        } else if(id == R.id.filter_list) {
+        } else if (id == R.id.filter_list) {
             showFilterListDialog();
-        } else if(id == R.id.filter_number) {
+        } else if (id == R.id.filter_number) {
             clearAllFilters();
-        } else if(id == R.id.favourites_icon) {
+        } else if (id == R.id.favourites_icon) {
             viewingFavourites = !viewingFavourites;
 
             updateFavouritesView();
@@ -195,11 +195,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showSortListDialog() {
-        final String[] sorts = new String[] {
-            "Date-Ascending",
-            "Date-Descending",
-            "Title-Ascending",
-            "Title-Descending"
+        final String[] sorts = new String[]{
+                "Date-Ascending",
+                "Date-Descending",
+                "Title-Ascending",
+                "Title-Descending"
         };
 
         //For some reason I can't assign to a non-array from within the onClick listener.
@@ -236,12 +236,12 @@ public class MainActivity extends AppCompatActivity {
         List<RecipeTag> tags = tagHandler.getAllRecipeTags();
         final String[] tagList = new String[tags.size()];
 
-        for(int i = 0; i < tagList.length; i++)
+        for (int i = 0; i < tagList.length; i++)
             tagList[i] = tags.get(i).getTagName();
 
         final boolean[] checkedArray = new boolean[tagList.length];
 
-        AlertDialog.Builder builder  = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Filter By");
 
         builder.setMultiChoiceItems(tagList, checkedArray, new DialogInterface.OnMultiChoiceClickListener() {
@@ -271,8 +271,8 @@ public class MainActivity extends AppCompatActivity {
     private void applyFilters(String[] tagList, boolean[] checkedArray) {
         handler.resetFilter();
 
-        for(int i = 0; i < checkedArray.length; i++) {
-            if(checkedArray[i]) {
+        for (int i = 0; i < checkedArray.length; i++) {
+            if (checkedArray[i]) {
                 handler.setFilter(tagList[i]);
             }
         }
@@ -281,7 +281,7 @@ public class MainActivity extends AppCompatActivity {
         List<Recipe> allRecipes = handler.getAllRecipes();
         List<String> filters = handler.getFilter();
 
-        if(filters.size() > 0) {
+        if (filters.size() > 0) {
             for (Iterator<Recipe> iter = allRecipes.iterator(); iter.hasNext(); ) {
                 Recipe next = iter.next();
 
@@ -291,7 +291,7 @@ public class MainActivity extends AppCompatActivity {
                     if (next.getRecipeTagList().contains(new RecipeTag(tag)))
                         hasTagFromFilter = true;
 
-                if(!hasTagFromFilter)
+                if (!hasTagFromFilter)
                     iter.remove();
             }
         }
@@ -304,7 +304,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateFavouritesView() {
-        if(viewingFavourites)
+        if (viewingFavourites)
             handler.resetFilter();
 
         handler.setFavourite(viewingFavourites);
@@ -321,9 +321,8 @@ public class MainActivity extends AppCompatActivity {
         recipes = newRecipeList;
         adapter.setNewList(newRecipeList);
         adapter.notifyDataSetChanged();
-        ((RecyclerView)findViewById(R.id.recycleView)).setAdapter(adapter); //Force a redraw.
+        ((RecyclerView) findViewById(R.id.recycleView)).setAdapter(adapter); //Force a redraw.
         invalidateOptionsMenu();
-
     }
 
     private void getRecipes() {
@@ -340,8 +339,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT)
-        {
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 return false;
@@ -353,7 +351,7 @@ public class MainActivity extends AppCompatActivity {
                 int pos = viewHolder.getAdapterPosition();
                 Recipe recipe = recipes.get(pos);
                 String message = recipe.getRecipeTitle() + " recipe deleted";
-                Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                 deleteRecipe(recipe.getRecipeID());
             }
 

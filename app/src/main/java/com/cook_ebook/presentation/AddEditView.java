@@ -1,5 +1,6 @@
 package com.cook_ebook.presentation;
 
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -7,6 +8,7 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.content.Intent;
 import com.cook_ebook.R;
+import com.cook_ebook.logic.RecipeValidator;
 
 public class AddEditView extends AppCompatActivity {
 
@@ -36,12 +38,34 @@ public class AddEditView extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.save_recipe) {
             Intent newRecipe = buildRecipe();
-            setResult(RESULT_OK, newRecipe);
-            finish();
+            Bundle extras = newRecipe.getExtras();
+
+            if (extras.getInt("isValid") == 0) {
+                setResult(RESULT_OK, newRecipe);
+                finish();
+            } else {
+                if(extras.getInt("isValid") == 1) {
+                    showErrormessageDialog("Can't entry an empty title!");
+                } else if(extras.getInt("isValid") == 2) {
+                    showErrormessageDialog("Can't entry an non-numeric / empty cooking time!");
+                } else if(extras.getInt("isValid") == 3) {
+                    showErrormessageDialog("Can't entry a non-positive cooking time!");
+                }
+            }
+
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showErrormessageDialog(String errorMessage) {
+        new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_delete)
+                .setTitle("Error message Dialog")
+                .setMessage(errorMessage)
+                .setNegativeButton("Got it!", null)
+                .show();
     }
 
     private Intent buildRecipe()
@@ -54,7 +78,19 @@ public class AddEditView extends AppCompatActivity {
         String ingredients = getIngredients();
 
         // generate a new intent object for the recipe
-        return  generateIntent(title, description, ingredients, time, tags);
+        if (RecipeValidator.validateTitle(title) && RecipeValidator.validateCookingTimeNumeric(time) && RecipeValidator.validateCookingTimePositive(time)) {
+            return generateIntent(title, description, ingredients, time, tags, 0);
+        } else {
+            if(!RecipeValidator.validateTitle(title)) {
+                return generateIntent(title, description, ingredients, time, tags, 1);
+            } else if(!RecipeValidator.validateCookingTimeNumeric(time)) {
+                return generateIntent(title, description, ingredients, time, tags, 2);
+            } else if(!RecipeValidator.validateCookingTimePositive(time)) {
+                return generateIntent(title, description, ingredients, time, tags, 3);
+            }
+        }
+
+        return null;
     }
 
     private String getTime()
@@ -87,7 +123,7 @@ public class AddEditView extends AppCompatActivity {
         return textBox.getText().toString();
     }
 
-    private Intent generateIntent(String title, String description, String ingredients, String time, String tags)
+    private Intent generateIntent(String title, String description, String ingredients, String time, String tags, int isValid)
     {
         Intent myIntent = new Intent();
         myIntent.putExtra("recipeTitle", title);
@@ -95,6 +131,8 @@ public class AddEditView extends AppCompatActivity {
         myIntent.putExtra("recipeIngredients", ingredients);
         myIntent.putExtra("recipeTime", time);
         myIntent.putExtra("recipeTags", tags);
+        myIntent.putExtra("isValid", isValid);
+
         return myIntent;
     }
 }
