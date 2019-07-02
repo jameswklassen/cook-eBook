@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem filterNumber = menu.findItem(R.id.filter_number),
-                filterOption = menu.findItem(R.id.filter_list);
+                 filterOption = menu.findItem(R.id.filter_list);
 
         if (handler.getFilter().size() > 0) {
             String text = "" + handler.getFilter().size();
@@ -136,9 +136,20 @@ public class MainActivity extends AppCompatActivity {
             recipes = handler.getAllRecipes();
             adapter.setNewList(recipes);
             ((RecyclerView) findViewById(R.id.recycleView)).setAdapter(adapter); //Force a redraw.
-        } else if (requestCode == SINGLE_ACTIVITY && data != null) {
-            deleteRecipe(extras.getInt("doDelete"));
+        } else if(requestCode == SINGLE_ACTIVITY && data != null) {
+            if(extras.containsKey("doDelete")) {
+                deleteRecipe(extras.getInt("doDelete"));
+            }else if (extras.containsKey("toggleFavourite")) {
+                Recipe recipe = recipes.get(extras.getInt("toggleFavourite"));
+                recipe.setRecipeIsFavourite(!recipe.getRecipeIsFavourite());
+                updateRecipe(recipe);
+            }
+
         }
+    }
+
+    public void updateRecipe(Recipe recipe) {
+        handler.updateRecipe(recipe);
     }
 
     private Recipe buildRecipe(int time, String title, String tags, String ingredients, String description) {
@@ -203,11 +214,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showSortListDialog() {
-        final String[] sorts = new String[]{
-                "Date-Ascending",
-                "Date-Descending",
-                "Title-Ascending",
-                "Title-Descending"
+        final String[] sorts = new String[] {
+            "Date-Ascending",
+            "Date-Descending",
+            "Title-Ascending",
+            "Title-Descending"
         };
 
         //For some reason I can't assign to a non-array from within the onClick listener.
