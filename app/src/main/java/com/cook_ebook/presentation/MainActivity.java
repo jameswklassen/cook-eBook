@@ -23,6 +23,9 @@ import com.cook_ebook.objects.Recipe;
 import com.cook_ebook.objects.RecipeTag;
 import com.cook_ebook.logic.RecipeHandler;
 import com.cook_ebook.R;
+import com.cook_ebook.persistence.utils.DBHelper;
+
+import org.hsqldb.lib.tar.DbBackup;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -38,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Temporary variables until we have database placeholders merged in
     private List<Recipe> recipes = new ArrayList<>();
-    private RecipeHandler handler = new RecipeHandler();
+    private RecipeHandler handler;
     private RecipeTagHandler tagHandler = new RecipeTagHandler();
     private RecyclerViewAdapter adapter;
 
@@ -46,6 +49,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        DBHelper.copyDatabaseToDevice(this);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -57,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        handler = new RecipeHandler();
 
         getRecipes();
     }

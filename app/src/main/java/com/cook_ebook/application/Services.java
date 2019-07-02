@@ -1,7 +1,8 @@
-package com.cook_ebook.logic;
+package com.cook_ebook.application;
 
 import com.cook_ebook.persistence.RecipePersistence;
 import com.cook_ebook.persistence.RecipeTagPersistence;
+import com.cook_ebook.persistence.hsqldb.RecipePersistenceHSQLDB;
 import com.cook_ebook.persistence.stubs.RecipePersistenceStub;
 import com.cook_ebook.persistence.stubs.RecipeTagPersistenceStub;
 
@@ -12,7 +13,8 @@ public class Services {
 
     public static synchronized RecipePersistence getRecipePersistence() {
         if(recipePersistence == null) {
-            recipePersistence = new RecipePersistenceStub(recipeTagPersistence);
+//            recipePersistence = new RecipePersistenceStub(recipeTagPersistence);
+            recipePersistence = new RecipePersistenceHSQLDB(Main.getDBPathName());
         }
 
         return recipePersistence;
