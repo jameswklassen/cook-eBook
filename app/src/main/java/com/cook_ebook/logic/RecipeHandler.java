@@ -4,6 +4,10 @@ import com.cook_ebook.logic.comparators.AscendingDateComparator;
 import com.cook_ebook.logic.comparators.AscendingTitleComparator;
 import com.cook_ebook.logic.comparators.DescendingDateComparator;
 import com.cook_ebook.logic.comparators.DescendingTitleComparator;
+import com.cook_ebook.logic.exceptions.InvalidRecipeException;
+import com.cook_ebook.logic.exceptions.InvalidRecipeTitle;
+import com.cook_ebook.logic.exceptions.NonPositiveCookingTimeException;
+import com.cook_ebook.logic.exceptions.NotATimeException;
 import com.cook_ebook.objects.Recipe;
 import com.cook_ebook.objects.RecipeTag;
 import com.cook_ebook.persistence.RecipePersistence;
@@ -87,54 +91,45 @@ public class RecipeHandler {
         return recipeList;
     }
 
-    // should throw exception if recipe doesn't exist
-    public Recipe getRecipeById(int recipeId) {
+    public Recipe getRecipeById(int recipeId) throws InvalidRecipeException {
         return dataAccessRecipe.getRecipeById(recipeId);
     }
 
-    // should throw exception if recipe doesn't exist
     public List<Recipe> getRecipeListByCookingTime(int cookingTime) {
         return dataAccessRecipe.getRecipeListByCookingTime(cookingTime);
     }
 
-    // should throw exception if recipe doesn't exist
     public List<Recipe> getRecipeListByTagName(String tagName) {
         return dataAccessRecipe.getRecipeListByTagName(tagName);
     }
 
-    // should throw exception if recipe doesn't exist
     public List<Recipe> getRecipeListByTagId(int tagId) {
         return dataAccessRecipe.getRecipeListByTagId(tagId);
     }
 
-    // should throw exception if recipe doesn't exist
     public List<Recipe> getRecipeListByTag(RecipeTag tag) {
         return dataAccessRecipe.getRecipeListByTag(tag);
     }
 
-    // should throw exception if recipe doesn't exist
-    public List<Recipe> getRecipeListByFavourite(boolean isFavourite){
+    public List<Recipe> getRecipeListByFavourite(boolean isFavourite) {
         return dataAccessRecipe.getRecipeListByFavourite(isFavourite);
     }
 
-    // should throw an exception for an invalid recipe
-    public Recipe insertRecipe(Recipe recipe) {
+    public Recipe insertRecipe(Recipe recipe) throws InvalidRecipeException {
         return dataAccessRecipe.insertRecipe(recipe);
     }
 
     // should throw an exception for an invalid recipe
     // should take care if two recipes have same Id
-    public Recipe updateRecipe(Recipe newRecipe) {
+    public Recipe updateRecipe(Recipe newRecipe) throws InvalidRecipeException {
         return dataAccessRecipe.updateRecipe(newRecipe);
     }
 
-    // should throw an exception if the recipe doesn't exist
-    public void deleteRecipe(Recipe recipe) {
+    public void deleteRecipe(Recipe recipe) throws InvalidRecipeException {
         dataAccessRecipe.deleteRecipe(recipe);
     }
 
-    // should throw an exception if the recipe doesn't exist
-    public void deleteRecipeById(int recipeId) {
+    public void deleteRecipeById(int recipeId) throws InvalidRecipeException {
         dataAccessRecipe.deleteRecipeById(recipeId);
     }
 }
