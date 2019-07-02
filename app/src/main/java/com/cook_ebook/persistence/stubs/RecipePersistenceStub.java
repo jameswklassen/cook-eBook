@@ -14,7 +14,7 @@ import java.util.Comparator;
 public class RecipePersistenceStub implements RecipePersistence {
     private List<Recipe> recipeList;
 
-    public RecipePersistenceStub(RecipeTagPersistence recipeTagsPersistence) {
+    public RecipePersistenceStub() {
         this.recipeList = new ArrayList<>();
 
         recipeList.add(new Recipe("Cheese Cake",

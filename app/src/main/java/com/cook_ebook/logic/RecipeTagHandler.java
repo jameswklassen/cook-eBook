@@ -11,9 +11,9 @@ import java.util.List;
 public class RecipeTagHandler {
     private RecipeTagPersistence dataAccessRecipeTag;
 
-    public RecipeTagHandler() {
+    public RecipeTagHandler(boolean forProduction) {
         //default get recipeTagSet
-        dataAccessRecipeTag = Services.getRecipeTagPersistence();
+        dataAccessRecipeTag = Services.getRecipeTagPersistence(forProduction);
     }
 
     public List<RecipeTag> getAllRecipeTags() throws InvalidTagException {
