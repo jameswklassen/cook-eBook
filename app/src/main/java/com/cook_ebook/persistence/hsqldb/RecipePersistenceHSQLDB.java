@@ -18,15 +18,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.cook_ebook.persistence.RecipeTagPersistence;
+
 public class RecipePersistenceHSQLDB implements RecipePersistence {
 
     private final String dbPath;
     private List<Recipe> recipes;
 
-    public RecipePersistenceHSQLDB(String dbPath) {
+    public RecipePersistenceHSQLDB(RecipeTagPersistence recipeTagPersistence, String dbPath) {
         this.dbPath = dbPath;
          this.recipes = new ArrayList<>();
-         loadRecipes();
+         loadRecipes(recipeTagPersistence);
     }
 
     private Connection connect() throws SQLException {
@@ -47,7 +49,8 @@ public class RecipePersistenceHSQLDB implements RecipePersistence {
         return new Recipe(recipeID, recipeTitle, recipeDescription, recipeIngredients, recipeCookingTime, recipeImages, recipeIsFavourite, date);
     }
 
-    private void loadRecipes() {
+    private void loadRecipes(RecipeTagPersistence recipeTagPersistence) {
+        System.out.println("[LOG] PERSISTENCE IS " + recipeTagPersistence.getAllTags());
         try (Connection connection = connect()) {
             final Statement statement = connection.createStatement();
             final ResultSet resultSet = statement.executeQuery("SELECT * FROM RECIPES");
