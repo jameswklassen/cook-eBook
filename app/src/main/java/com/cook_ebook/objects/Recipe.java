@@ -34,7 +34,6 @@ public class Recipe {
         int recipeCookingTime,
         String recipeImages,
         Boolean recipeIsFavourite) {
-        recipeID = setRecipeID();
         this.recipeTitle = recipeTitle;
         this.recipeDescription = recipeDescription;
         this.recipeIngredients = recipeIngredients;

@@ -20,9 +20,12 @@ import java.util.List;
 public class RecipePersistenceHSQLDB implements RecipePersistence {
 
     private final String dbPath;
+    private List<Recipe> recipes;
 
     public RecipePersistenceHSQLDB(String dbPath) {
         this.dbPath = dbPath;
+         this.recipes = new ArrayList<>();
+         loadRecipes();
     }
 
     private Connection connect() throws SQLException {
@@ -43,21 +46,23 @@ public class RecipePersistenceHSQLDB implements RecipePersistence {
         return new Recipe(recipeID, recipeTitle, recipeDescription, recipeIngredients, recipeCookingTime, recipeImages, recipeIsFavourite, date);
     }
 
-    @Override
-    public List<Recipe> getRecipeList() {
-        List<Recipe> recipes = new ArrayList<>();
+    private void loadRecipes() {
         try (Connection connection = connect()) {
             final Statement statement = connection.createStatement();
             final ResultSet resultSet = statement.executeQuery("SELECT * FROM RECIPES");
 
             while (resultSet.next()) {
                 final Recipe recipe = fromResultSet(resultSet);
-                recipes.add(recipe);
+                this.recipes.add(recipe);
             }
         } catch (final SQLException e) {
             Log.e("Connect SQL", e.getMessage() + e.getSQLState());
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public List<Recipe> getRecipeList() {
         return recipes;
     }
 
@@ -134,8 +139,9 @@ public class RecipePersistenceHSQLDB implements RecipePersistence {
             statement.setBoolean(6, recipe.getRecipeIsFavourite());
             statement.setString(7, dateString);
 
-            System.out.println(statement);
             statement.executeUpdate();
+            recipes.add(recipe);
+
             return recipe;
 
         } catch (final SQLException e) {
@@ -159,8 +165,11 @@ public class RecipePersistenceHSQLDB implements RecipePersistence {
             statement.setString(7, dateString);
             statement.setInt(8, newRecipe.getRecipeID());
 
-            System.out.println(statement);
             statement.executeUpdate();
+
+            int index = recipes.indexOf(newRecipe);
+            recipes.set(index, newRecipe);
+
             return newRecipe;
 
         } catch (final SQLException e) {
@@ -171,14 +180,24 @@ public class RecipePersistenceHSQLDB implements RecipePersistence {
     }
 
     public void deleteRecipe(Recipe recipe) {
+        System.out.println("[LOG] Deleting recipe");
         deleteRecipeById(recipe.getRecipeID());
     }
 
     public void deleteRecipeById(int recipeId) {
+        System.out.println("[LOG] Deleting recipe by ID " + recipeId);
+
         try (Connection connection = connect()) {
             final PreparedStatement statement = connection.prepareStatement("DELETE FROM RECIPES WHERE id = ?");
             statement.setString(1, Integer.toString(recipeId));
             statement.executeUpdate();
+
+            for (Recipe recipe : recipes) {
+                if (recipe.getRecipeID() == recipeId) {
+                    recipes.remove(recipe);
+                    break;
+                }
+            }
 
         } catch (final SQLException e) {
             Log.e("Connect SQL", e.getMessage() + e.getSQLState());
