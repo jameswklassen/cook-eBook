@@ -45,6 +45,26 @@ public class Recipe {
         this.date = new Date(); // Current date
     }
 
+    public Recipe(
+            int recipeID,
+            String recipeTitle,
+            String recipeDescription,
+            String recipeIngredients,
+            int recipeCookingTime,
+            String recipeImages,
+            Boolean recipeIsFavourite,
+            Date date) {
+        this.recipeID = recipeID;
+        this.recipeTitle = recipeTitle;
+        this.recipeDescription = recipeDescription;
+        this.recipeIngredients = recipeIngredients;
+        this.recipeCookingTime = recipeCookingTime;
+        this.recipeImages = recipeImages;
+        this.recipeTagList = new ArrayList<>();
+        this.recipeIsFavourite = recipeIsFavourite;
+        this.date = new Date(); // Current date
+    }
+
     private int setRecipeID() {
         counter ++;
         return counter;
