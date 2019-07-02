@@ -70,11 +70,15 @@ public class SingleRecipe extends AppCompatActivity implements View.OnClickListe
     private void updateFavourite() {
         if(favourite_btn != null) {
             if (favourite) {
-                favourite_btn.setImageResource(R.drawable.heart_empty);
-                favourite = false;
-            } else {
                 favourite_btn.setImageResource(R.drawable.heart_filled);
+                favourite = false;
+                Intent intent = favouriteIntent();
+                setResult(RESULT_OK, intent);
+            } else {
+                favourite_btn.setImageResource(R.drawable.heart_empty);
                 favourite = true;
+                Intent intent = favouriteIntent();
+                setResult(RESULT_OK, intent);
             }
         }
     }
@@ -95,14 +99,21 @@ public class SingleRecipe extends AppCompatActivity implements View.OnClickListe
     }
 
     private void deleteRecipe() {
-        Intent intent = generateIntent(true);
+        Intent intent = deleteIntent();
         setResult(RESULT_OK, intent);
         finish();
     }
 
-    private Intent generateIntent(boolean doDelete) {
+    private Intent deleteIntent() {
         Intent myIntent = new Intent();
         myIntent.putExtra("doDelete", extras.getInt("recipeID"));
+
+        return myIntent;
+    }
+
+    private Intent favouriteIntent() {
+        Intent myIntent = new Intent();
+        myIntent.putExtra("toggleFavourite", extras.getInt("recipeID"));
 
         return myIntent;
     }
