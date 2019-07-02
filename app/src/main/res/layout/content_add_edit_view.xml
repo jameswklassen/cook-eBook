@@ -2,35 +2,65 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/scrollView2"
+    android:id="@+id/mainScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.AddEditView"
     tools:showIn="@layout/activity_add_edit_view">
 
-    <android.support.constraint.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
         tools:context=".presentation.AddEditView"
-        tools:showIn="@layout/activity_add_edit_view">>
+        tools:showIn="@layout/activity_add_edit_view">
 
-    <EditText
-        android:id="@+id/addDescription"
-        android:layout_width="280dp"
-        android:layout_height="240dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:ems="10"
-        android:hint="Add a Description"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addTime"
-        app:layout_constraintVertical_bias="0.142" />
+        <EditText
+            android:id="@+id/addTitle"
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:ems="10"
+            android:hint="@string/add_a_title"
+            android:inputType="textPersonName" />
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:gravity="center_horizontal"
+            android:layout_marginRight="150dp"
+            android:layout_marginLeft="150dp">
+            <EditText
+                android:id="@+id/addDescription"
+                android:layout_width="280dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:hint="@string/add_a_description" />
+        </android.support.v4.widget.NestedScrollView>
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:gravity="center_horizontal"
+            android:layout_marginRight="150dp"
+            android:layout_marginLeft="150dp">
+            <EditText
+                android:id="@+id/addIngredients"
+                android:layout_width="280dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:hint="@string/add_the_ingredients" />
+        </android.support.v4.widget.NestedScrollView>
 
         <EditText
             android:id="@+id/addTime"
@@ -41,78 +71,31 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:ems="10"
-            android:hint="Set a Cooking Time (in minutes)"
-            android:inputType="textPersonName"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.22" />
-
-    <EditText
-        android:id="@+id/addTitle"
-        android:layout_width="280dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:ems="10"
-        android:hint="Add a Title"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/addTime"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.425" />
-
-    <EditText
-        android:id="@+id/addTags"
-        android:layout_width="280dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="100dp"
-        android:ems="10"
-        android:hint="Add the Tags"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent" />
+            android:hint="@string/set_a_cooking_time_in_minutes"
+            android:inputType="numberSigned" />
 
         <EditText
-            android:id="@+id/addIngredients"
+            android:id="@+id/addTags"
             android:layout_width="280dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="100dp"
+            android:ems="10"
+            android:hint="@string/add_the_tags"
+            android:inputType="textPersonName" />
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="69dp"
+            android:layout_height="69dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="-70dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:ems="10"
-            android:hint="Add the Ingredients"
-            android:inputType="textPersonName"
-            app:layout_constraintBottom_toTopOf="@+id/addTags"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/addDescription"
-            app:layout_constraintVertical_bias="0.432" />
+            tools:srcCompat="@android:drawable/ic_menu_gallery" />
 
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addTags"
-        app:srcCompat="@android:drawable/ic_menu_gallery" />
-
-    </android.support.constraint.ConstraintLayout>
+    </LinearLayout>
 
 </ScrollView>
