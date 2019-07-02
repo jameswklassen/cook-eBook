@@ -349,6 +349,28 @@ public class MainActivity extends AppCompatActivity {
         initRecyclerView();
     }
 
+    private void showConfirmationDialog(final Recipe recipe) {
+        new android.support.v7.app.AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_delete)
+                .setTitle("Confirmation Dialog")
+                .setMessage("Are you sure you'd like to delete this recipe? This action cannot be undone.")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String message = recipe.getRecipeTitle() + " recipe deleted";
+                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                        deleteRecipe(recipe.getRecipeID());
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        doFullRecyclerViewReset(handler.getAllRecipes());
+                    }
+                 })
+                .show();
+    }
+
     private void initRecyclerView() {
         Log.d(TAG, "InitRecyclerView: init recycler view.");
 
@@ -369,11 +391,8 @@ public class MainActivity extends AppCompatActivity {
                 // Item swiped.
                 int pos = viewHolder.getAdapterPosition();
                 Recipe recipe = recipes.get(pos);
-                String message = recipe.getRecipeTitle() + " recipe deleted";
-                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-                deleteRecipe(recipe.getRecipeID());
+                showConfirmationDialog(recipe);
             }
-
         };
 
         // Attach it to recyclerview
