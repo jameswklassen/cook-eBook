@@ -2,6 +2,7 @@ package com.cook_ebook.logic;
 
 import com.cook_ebook.application.Services;
 import com.cook_ebook.logic.exceptions.InvalidTagException;
+import com.cook_ebook.logic.exceptions.TagNotFoundException;
 import com.cook_ebook.objects.Recipe;
 import com.cook_ebook.objects.RecipeTag;
 import com.cook_ebook.persistence.RecipeTagPersistence;
@@ -37,15 +38,27 @@ public class RecipeTagHandler {
     }
 
     public RecipeTag insertOneTag(RecipeTag tag) throws InvalidTagException  {
-        return dataAccessRecipeTag.insertOneTag(tag);
+        if(RecipeTagValidator.validateRecipeTag(tag)) {
+            return dataAccessRecipeTag.insertOneTag(tag);
+        } else {
+            throw new TagNotFoundException("The tag being inserted does not exist.");
+        }
     }
 
     public void deleteOneTag(RecipeTag tag) throws InvalidTagException  {
-        dataAccessRecipeTag.deleteOneTag(tag);
+        if(RecipeTagValidator.validateRecipeTag(tag)) {
+            dataAccessRecipeTag.insertOneTag(tag);
+        } else {
+            throw new TagNotFoundException("The tag being deleted does not exist.");
+        }
     }
 
     public boolean doesTagExist(RecipeTag tag) throws InvalidTagException  {
-        return dataAccessRecipeTag.doesTagExist(tag);
+        if(RecipeTagValidator.validateRecipeTag(tag)) {
+            return dataAccessRecipeTag.doesTagExist(tag);
+        } else {
+            throw new TagNotFoundException("The tag does not exist.");
+        }
     }
 
     public boolean doesTagNameExist(String tagName)  throws InvalidTagException {
