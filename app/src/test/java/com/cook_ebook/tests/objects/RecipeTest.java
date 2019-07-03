@@ -1,12 +1,19 @@
 package com.cook_ebook.tests.objects;
 
+import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import com.cook_ebook.logic.RecipeTagHandler;
 import com.cook_ebook.objects.Recipe;
 import com.cook_ebook.objects.RecipeTag;
 
 public class RecipeTest {
+
+    @Before
+    public void setup() {
+        System.out.println("Starting test for Recipe");
+    }
 
     @Test
     public void testCreateRecipeWithoutTag() {
