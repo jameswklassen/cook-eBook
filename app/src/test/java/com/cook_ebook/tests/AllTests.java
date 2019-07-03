@@ -4,6 +4,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 // Import the individual test files
+import com.cook_ebook.tests.business.ExceptionsTest;
 import com.cook_ebook.tests.business.InitBusinessTest;
 import com.cook_ebook.tests.business.RecipeHandlerTest;
 import com.cook_ebook.tests.business.RecipeTagHandlerTest;
@@ -18,7 +19,8 @@ import com.cook_ebook.tests.objects.RecipeTest;
         RecipeTest.class,
         RecipeHandlerTest.class,
         RecipeTagTest.class,
-        RecipeTagHandlerTest.class
+        RecipeTagHandlerTest.class,
+        ExceptionsTest.class
 })
 
 public class AllTests
