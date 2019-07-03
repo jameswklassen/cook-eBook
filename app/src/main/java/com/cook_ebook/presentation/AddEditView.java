@@ -40,17 +40,22 @@ public class AddEditView extends AppCompatActivity {
             Intent newRecipe = buildRecipe();
             Bundle extras = newRecipe.getExtras();
 
-            if (extras.getInt("isValid") == 0) {
+            int status = extras.getInt("status");
+
+            if (status == 0) {
                 setResult(RESULT_OK, newRecipe);
                 finish();
             } else {
-                if(extras.getInt("isValid") == 1) {
-                    showErrormessageDialog("Can't entry an empty title!");
-                } else if(extras.getInt("isValid") == 2) {
-                    showErrormessageDialog("Can't entry an non-numeric / empty cooking time!");
-                } else if(extras.getInt("isValid") == 3) {
-                    showErrormessageDialog("Can't entry a non-positive cooking time!");
-                }
+                String message = "Invalid recipe.";
+
+                if(status == 1)
+                    message = "The title of the recipe can't be empty.";
+                else if(status == 2)
+                    message = "Cooking time has to be a valid number.";
+                else if(status == 3)
+                    message = "Cooking time can't be a negative number.";
+
+                showErrormessageDialog(message);
             }
 
             return true;
@@ -70,27 +75,22 @@ public class AddEditView extends AppCompatActivity {
 
     private Intent buildRecipe()
     {
-        // get all the pieces
         String description =  getDescription();
         String time = getTime();
         String title = getRecipeTitle();
         String tags = getTags();
         String ingredients = getIngredients();
 
-        // generate a new intent object for the recipe
-        if (RecipeValidator.validateTitle(title) && RecipeValidator.validateCookingTimeNumeric(time) && RecipeValidator.validateCookingTimePositive(time)) {
-            return generateIntent(title, description, ingredients, time, tags, 0);
-        } else {
-            if(!RecipeValidator.validateTitle(title)) {
-                return generateIntent(title, description, ingredients, time, tags, 1);
-            } else if(!RecipeValidator.validateCookingTimeNumeric(time)) {
-                return generateIntent(title, description, ingredients, time, tags, 2);
-            } else if(!RecipeValidator.validateCookingTimePositive(time)) {
-                return generateIntent(title, description, ingredients, time, tags, 3);
-            }
-        }
+        int status = 0;
 
-        return null;
+        if(!RecipeValidator.validateTitle(title))
+            status = 1;
+        else if(!RecipeValidator.validateCookingTimeNumeric(time))
+            status = 2;
+        else if(!RecipeValidator.validateCookingTimePositive(time))
+            status = 3;
+
+        return generateIntent(title, description, ingredients, time, tags, status);
     }
 
     private String getTime()
@@ -123,7 +123,7 @@ public class AddEditView extends AppCompatActivity {
         return textBox.getText().toString();
     }
 
-    private Intent generateIntent(String title, String description, String ingredients, String time, String tags, int isValid)
+    private Intent generateIntent(String title, String description, String ingredients, String time, String tags, int status)
     {
         Intent myIntent = new Intent();
         myIntent.putExtra("recipeTitle", title);
@@ -131,7 +131,7 @@ public class AddEditView extends AppCompatActivity {
         myIntent.putExtra("recipeIngredients", ingredients);
         myIntent.putExtra("recipeTime", time);
         myIntent.putExtra("recipeTags", tags);
-        myIntent.putExtra("isValid", isValid);
+        myIntent.putExtra("status", status);
 
         return myIntent;
     }
