@@ -102,7 +102,7 @@ public class RecipePersistenceHSQLDB implements RecipePersistence {
     }
 
     private void removeRecipeTagRelations(Connection connection, int tagId) throws SQLException {
-        final PreparedStatement statement = connection.prepareStatement("DELETE FROM RECIPETAGS where tag_id = ?");
+        final PreparedStatement statement = connection.prepareStatement("DELETE FROM RECIPES_TAGS where tag_id = ?");
         statement.setInt(1, tagId);
         statement.executeUpdate();
         statement.close();
