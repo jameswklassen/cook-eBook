@@ -103,6 +103,17 @@ public class RecipePersistenceHSQLDB implements RecipePersistence {
 
     @Override
     public List<Recipe> getRecipeList() {
+        /*
+         * TODO: remove these two lines
+         *   Since current filter implementation mutates the list
+         *   we need to get the full list from the db each time this is called.
+         *   This is not good performance-wise, but works
+         *   until filters call queries to retrieve a recipe list.
+         *   This function will just return 'recipes' once queries have been added
+         */
+        recipes = new ArrayList<>();
+        loadRecipes();
+
         return recipes;
     }
 
