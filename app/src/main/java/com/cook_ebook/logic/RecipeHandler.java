@@ -76,6 +76,10 @@ public class RecipeHandler {
         this.favourite = false;
     }
 
+    public boolean getFavourite() {
+        return this.favourite;
+    }
+
     public Comparator<Recipe> getSort() {
         return sort;
     }

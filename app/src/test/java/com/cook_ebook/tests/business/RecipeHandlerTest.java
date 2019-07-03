@@ -173,6 +173,26 @@ public class RecipeHandlerTest {
     }
 
     @Test
+    public void testResetFavourite() {
+        System.out.println("\nStarting testResetFavourite");
+        recipeHandler.resetFavourite();
+        assertFalse(recipeHandler.getFavourite());
+        System.out.println("Finished testResetFavourite");
+    }
+
+    @Test
+    public void testSetFavourite() {
+        System.out.println("\nStarting testSetFavourite");
+        recipeHandler.setFavourite(true);
+        assertTrue(recipeHandler.getFavourite());
+        List<Recipe> recipeList = recipeHandler.getAllRecipes();
+        for (Recipe recipe: recipeList) {
+            assertTrue(recipe.getRecipeIsFavourite());
+        }
+        System.out.println("Finished testSetFavourite");
+    }
+
+    @Test
     public void testSetFilter() {
         System.out.println("\nStarting testSetFilter");
         recipeHandler.setFilter("Cake");
