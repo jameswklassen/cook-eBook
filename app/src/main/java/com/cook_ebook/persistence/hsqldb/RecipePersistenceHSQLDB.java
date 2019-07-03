@@ -60,7 +60,7 @@ public class RecipePersistenceHSQLDB implements RecipePersistence {
 
             while (resultSet.next()) {
                 final Recipe recipe = fromResultSet(resultSet);
-                getTagsForRecipe(recipe);
+                connectRecipeWithTags(recipe);
                 this.recipes.add(recipe);
             }
         } catch (final SQLException e) {
@@ -69,7 +69,7 @@ public class RecipePersistenceHSQLDB implements RecipePersistence {
         }
     }
 
-    private void getTagsForRecipe(Recipe recipe) {
+    private void connectRecipeWithTags(Recipe recipe) {
 
         try (Connection connection = connect()) {
             final PreparedStatement statement = connection.prepareStatement("SELECT tag_id FROM RECIPES_TAGS WHERE RECIPES_TAGS.recipe_id = ?");
@@ -88,6 +88,16 @@ public class RecipePersistenceHSQLDB implements RecipePersistence {
         } catch (final SQLException e) {
             Log.e("Connect SQL", e.getMessage() + e.getSQLState());
             e.printStackTrace();
+        }
+    }
+
+    private void addRecipeTagRelation(Connection connection, List<RecipeTag> tags, int recipeId) throws SQLException {
+        for (RecipeTag tag : tags) {
+            final PreparedStatement statement = connection.prepareStatement("INSERT INTO RECIPES_TAGS VALUES(?, ?)");
+            statement.setInt(1, recipeId);
+            statement.setInt(2, tag.getTagID());
+            statement.executeUpdate();
+            statement.close();
         }
     }
 
@@ -170,6 +180,9 @@ public class RecipePersistenceHSQLDB implements RecipePersistence {
             statement.setString(7, dateString);
 
             statement.executeUpdate();
+            statement.close();
+
+            addRecipeTagRelation(connection, recipe.getRecipeTagList(), recipe.getRecipeID());
             recipes.add(recipe);
 
             return recipe;
