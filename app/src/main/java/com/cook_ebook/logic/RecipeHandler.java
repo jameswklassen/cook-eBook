@@ -158,17 +158,29 @@ public class RecipeHandler {
     }
 
     public Recipe insertRecipe(Recipe recipe) throws InvalidRecipeException {
-        return dataAccessRecipe.insertRecipe(recipe);
+        if(RecipeValidator.validateRecipe(recipe)) {
+            return dataAccessRecipe.insertRecipe(recipe);
+        } else {
+            throw new InvalidRecipeException("The new recipe is invalid!");
+        }
     }
 
     // should throw an exception for an invalid recipe
     // should take care if two recipes have same Id
     public Recipe updateRecipe(Recipe newRecipe) throws InvalidRecipeException {
-        return dataAccessRecipe.updateRecipe(newRecipe);
+        if(RecipeValidator.validateRecipe(newRecipe)) {
+            return dataAccessRecipe.updateRecipe(newRecipe);
+        } else {
+            throw new InvalidRecipeException("The new recipe is invalid!");
+        }
     }
 
     public void deleteRecipe(Recipe recipe) throws InvalidRecipeException {
-        dataAccessRecipe.deleteRecipe(recipe);
+        if(RecipeValidator.validateRecipe(recipe)) {
+            dataAccessRecipe.deleteRecipe(recipe);
+        } else {
+            throw new InvalidRecipeException("The new recipe is invalid!");
+        }
     }
 
     public void deleteRecipeById(int recipeId) throws InvalidRecipeException {
