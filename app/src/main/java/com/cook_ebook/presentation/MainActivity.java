@@ -143,10 +143,13 @@ public class MainActivity extends AppCompatActivity {
         } else if(requestCode == SINGLE_ACTIVITY && data != null) {
             if(extras.containsKey("doDelete")) {
                 deleteRecipe(extras.getInt("doDelete"));
-            }else if (extras.containsKey("toggleFavourite")) {
-                Recipe recipe = recipes.get(extras.getInt("toggleFavourite"));
-                recipe.setRecipeIsFavourite(!recipe.getRecipeIsFavourite());
-                //updateRecipe(recipe);
+            } else if (extras.containsKey("toggleFavourite")) {
+                int index = extras.getInt("toggleFavourite");
+                if (index < recipes.size()) {
+                    Recipe recipe = recipes.get(index);
+                    recipe.setRecipeIsFavourite(!recipe.getRecipeIsFavourite());
+                    updateRecipe(recipe);
+                }
             }
 
         }
