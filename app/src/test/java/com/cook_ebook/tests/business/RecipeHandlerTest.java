@@ -9,6 +9,7 @@ import com.cook_ebook.logic.comparators.AscendingDateComparator;
 import com.cook_ebook.logic.comparators.DescendingDateComparator;
 import com.cook_ebook.logic.comparators.AscendingTitleComparator;
 import com.cook_ebook.logic.comparators.DescendingTitleComparator;
+import com.cook_ebook.logic.exceptions.InvalidRecipeException;
 import com.cook_ebook.objects.Recipe;
 import com.cook_ebook.objects.RecipeTag;
 
@@ -210,6 +211,21 @@ public class RecipeHandlerTest {
         System.out.println("Finished testSetFilter");
     }
 
+    // this will be updated when we change how filter is
+    @Test
+    public void testFilter() {
+        System.out.println("\nStarting testFilter");
+        String [] tags = {"Chicken", "Cake"};
+        boolean [] checked = {true, false};
+        RecipeTag newTag = new RecipeTag("Chicken");
+        List <Recipe> recipeList = recipeHandler.filter(tags, checked);
+        for (Recipe recipe: recipeList) {
+            List<RecipeTag> tagList = recipe.getRecipeTagList();
+            assertTrue(tagList.contains(newTag));
+        }
+        System.out.println("Finished testFilter");
+    }
+
     @Test
     public void testSetSort() {
         System.out.println("\nStarting testSetSort");
@@ -310,6 +326,16 @@ public class RecipeHandlerTest {
         recipeHandler.insertRecipe(recipe);
 
         assertEquals(expectedSize, recipeHandler.getAllRecipes().size());
+        boolean caught = false;
+        try{
+            recipe = null;
+
+            recipeHandler.insertRecipe(recipe);
+        }catch(InvalidRecipeException e)
+        {
+            caught = true;
+        }
+        assertTrue(caught);
 
         System.out.println("Finished testInsertRecipe");
     }
@@ -323,6 +349,17 @@ public class RecipeHandlerTest {
 
         recipeHandler.updateRecipe(recipe);
         assertEquals("I'm a test description.", recipeHandler.getAllRecipes().get(0).getRecipeDescription());
+
+        boolean caught = false;
+        try{
+            recipe = null;
+
+            recipeHandler.updateRecipe(recipe);
+        }catch(InvalidRecipeException e)
+        {
+            caught = true;
+        }
+        assertTrue(caught);
 
         System.out.println("Finished testUpdateRecipe");
     }
@@ -341,6 +378,17 @@ public class RecipeHandlerTest {
 
         assertEquals(expectedSize, recipeHandler.getAllRecipes().size());
         assertEquals(recipe, recipeHandler.insertRecipe(recipe));
+
+        boolean caught = false;
+        try{
+            recipe = null;
+
+            recipeHandler.insertRecipe(recipe);
+        }catch(InvalidRecipeException e)
+        {
+            caught = true;
+        }
+        assertTrue(caught);
 
         System.out.println("Finished testDeleteRecipe");
     }
