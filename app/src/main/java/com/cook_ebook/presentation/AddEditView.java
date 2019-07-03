@@ -30,9 +30,10 @@ public class AddEditView extends AppCompatActivity {
         createRecipe = recipe == null;
 
         //Fill the textboxes if the recipe is being edited
-        if (!createRecipe)
+        if (!createRecipe) {
             fillTextBoxes(recipe);
             recipeId = recipe.getInt("recipeID");
+        }
     }
 
     @Override
