@@ -101,6 +101,32 @@ public class RecipePersistenceHSQLDB implements RecipePersistence {
         }
     }
 
+    private void removeRecipeTagRelations(Connection connection, int tagId) throws SQLException {
+        final PreparedStatement statement = connection.prepareStatement("DELETE FROM RECIPETAGS where tag_id = ?");
+        statement.setInt(1, tagId);
+        statement.executeUpdate();
+        statement.close();
+    }
+
+    private void removeTag(Connection connection, int tagId) throws SQLException {
+        final PreparedStatement statement = connection.prepareStatement("DELETE FROM TAGS WHERE id = ?");
+        statement.setInt(1, tagId);
+        statement.executeUpdate();
+        statement.close();
+    }
+
+    private void removeAssociatedTags(Connection connection, int recipeId) throws SQLException {
+        final PreparedStatement statement = connection.prepareStatement("SELECT tag_id FROM RECIPETAGS where recipe_id = ? ");
+        statement.setInt(1, recipeId);
+        final ResultSet resultSet = statement.executeQuery();
+
+        while (resultSet.next()) {
+            int tagId = resultSet.getInt("tag_id");
+            removeRecipeTagRelations(connection, tagId);
+            removeTag(connection, tagId);
+        }
+    }
+
     @Override
     public List<Recipe> getRecipeList() {
         return recipes;
@@ -211,6 +237,10 @@ public class RecipePersistenceHSQLDB implements RecipePersistence {
             statement.setInt(8, newRecipe.getRecipeID());
 
             statement.executeUpdate();
+            statement.close();
+
+            removeRecipeTagRelations(connection, newRecipe.getRecipeID());
+            addRecipeTagRelation(connection, newRecipe.getRecipeTagList(), newRecipe.getRecipeID());
 
             int index = recipes.indexOf(newRecipe);
 
@@ -239,6 +269,10 @@ public class RecipePersistenceHSQLDB implements RecipePersistence {
             final PreparedStatement statement = connection.prepareStatement("DELETE FROM RECIPES WHERE id = ?");
             statement.setString(1, Integer.toString(recipeId));
             statement.executeUpdate();
+            statement.close();
+
+            removeAssociatedTags(connection, recipeId);
+            removeRecipeTagRelations(connection, recipeId);
 
             for (Recipe recipe : recipes) {
                 if (recipe.getRecipeID() == recipeId) {
