@@ -148,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
                 if (index < recipes.size()) {
                     Recipe recipe = recipes.get(index);
                     recipe.setRecipeIsFavourite(!recipe.getRecipeIsFavourite());
-                    updateRecipe(recipe);
+                    //updateRecipe(recipe);
                 }
             }
 
