@@ -7,18 +7,23 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.widget.TextView;
 
 import com.cook_ebook.R;
+import com.cook_ebook.objects.Recipe;
 
 public class SingleRecipe extends AppCompatActivity implements View.OnClickListener {
 
     private FloatingActionButton favourite_btn;
     private boolean favourite = false;
+    private static final String TAG = "SingleActivity";
+    public static final int ADD_ACTIVITY = 1;
 
     private Bundle extras;
 
@@ -70,11 +75,15 @@ public class SingleRecipe extends AppCompatActivity implements View.OnClickListe
     private void updateFavourite() {
         if(favourite_btn != null) {
             if (favourite) {
-                favourite_btn.setImageResource(android.R.drawable.star_big_off);
+                favourite_btn.setImageResource(R.drawable.heart_filled);
                 favourite = false;
+                Intent intent = favouriteIntent();
+                setResult(RESULT_OK, intent);
             } else {
-                favourite_btn.setImageResource(android.R.drawable.star_big_on);
+                favourite_btn.setImageResource(R.drawable.heart_empty);
                 favourite = true;
+                Intent intent = favouriteIntent();
+                setResult(RESULT_OK, intent);
             }
         }
     }
@@ -95,17 +104,46 @@ public class SingleRecipe extends AppCompatActivity implements View.OnClickListe
     }
 
     private void deleteRecipe() {
-        Intent intent = generateIntent(true);
+        Intent intent = deleteIntent();
         setResult(RESULT_OK, intent);
         finish();
     }
 
-    private Intent generateIntent(boolean doDelete) {
+    private Intent deleteIntent() {
         Intent myIntent = new Intent();
+        System.out.println(extras.getInt("recipeID"));
         myIntent.putExtra("doDelete", extras.getInt("recipeID"));
 
         return myIntent;
     }
+
+    private Intent favouriteIntent() {
+        Intent myIntent = new Intent();
+        myIntent.putExtra("toggleFavourite", extras.getInt("recipeID"));
+
+        return myIntent;
+    }
+
+    private void editRecipe(){
+        Intent intent = new Intent(getApplicationContext(),AddEditView.class);
+        System.out.println("SINGLE" + extras.getInt("recipeID"));
+        intent.putExtra("recipe_key",extras);
+        startActivityForResult(intent, ADD_ACTIVITY);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != RESULT_OK) {
+            Log.d(TAG, "Result code was NOT okay. " + requestCode);
+            return;
+        }
+
+        if (requestCode == ADD_ACTIVITY) {
+            setResult(RESULT_OK, data);
+            finish();
+        }
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -117,6 +155,10 @@ public class SingleRecipe extends AppCompatActivity implements View.OnClickListe
         //noinspection SimplifiableIfStatement
         if (id == R.id.delete_recipe) {
             showConfirmationDialog();
+            return true;
+        }
+        else if (id == R.id.edit_recipe){
+            editRecipe();
             return true;
         }
 

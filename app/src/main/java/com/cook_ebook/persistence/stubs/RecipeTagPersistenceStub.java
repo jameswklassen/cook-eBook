@@ -1,63 +1,98 @@
 package com.cook_ebook.persistence.stubs;
 
-import com.cook_ebook.objects.RecipeTagSet;
+import com.cook_ebook.objects.RecipeTag;
 import com.cook_ebook.persistence.RecipeTagPersistence;
 
 import java.util.*;
-import java.util.Iterator;
 
 public class RecipeTagPersistenceStub implements RecipeTagPersistence {
-    private RecipeTagSet recipeTagSet;
+    private List<RecipeTag> recipeTagList;
 
     public RecipeTagPersistenceStub() {
-        this.recipeTagSet = new RecipeTagSet();
+        this.recipeTagList = new ArrayList<>();
 
-        recipeTagSet.addTag("dessert");
-        recipeTagSet.addTag("pasta");
-        recipeTagSet.addTag("cake");
-        recipeTagSet.addTag("salad");
+        recipeTagList.add(new RecipeTag("dessert"));
+        recipeTagList.add(new RecipeTag("cake"));
+        recipeTagList.add(new RecipeTag("pasta"));
+        recipeTagList.add(new RecipeTag("salad"));
     }
 
     @Override
-    public Set<String> getAllTags(){
-        return recipeTagSet.getAllTags();
+    public List<RecipeTag> getAllTags(){
+        return Collections.unmodifiableList(recipeTagList);
     }
 
-
-    // we may not need this method,
-    // but I will keep it here until we finish true database
     @Override
-    public RecipeTagSet insertMultipleTags(RecipeTagSet currentTagSet){
-        Iterator<String> iter = currentTagSet.getAllTags().iterator();
-        while (iter.hasNext()) {
-            recipeTagSet.addTag(iter.next());
+    public int getTagIdByName(String tagName) {
+        if(recipeTagList.contains(new RecipeTag(tagName))) {
+            for(int i = 0; i < recipeTagList.size(); i ++) {
+                if(recipeTagList.get(i).getTagName().equals(tagName)) {
+                    return recipeTagList.get(i).getTagID();
+                }
+            }
         }
-        return currentTagSet;
+
+        return -1;
     }
 
     @Override
-    public RecipeTagSet insertOneTag(String targetTag){
-        recipeTagSet.addTag(targetTag);
-        return recipeTagSet;
+    public String getTagNameById(int tagId) {
+        for(int i = 0; i < recipeTagList.size(); i ++) {
+            if(recipeTagList.get(i).getTagID() == tagId) {
+                return recipeTagList.get(i).getTagName();
+            }
+        }
+
+        return "Tag Id does not exist!";
     }
 
     @Override
-    public void deleteMultipleTags(RecipeTagSet currentTagSet){
-        Iterator<String> iter = currentTagSet.getAllTags().iterator();
-        while (iter.hasNext()) {
-            recipeTagSet.deleteTag(iter.next());
+    public RecipeTag getTagById(int tagId){
+        for(int i = 0; i < recipeTagList.size(); i ++) {
+            if(recipeTagList.get(i).getTagID() == tagId) {
+                return recipeTagList.get(i);
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public RecipeTag getTagByName(String tagName){
+        if(recipeTagList.contains(new RecipeTag(tagName))) {
+            for(int i = 0; i < recipeTagList.size(); i ++) {
+                if(recipeTagList.get(i).getTagName().equals(tagName)) {
+                    return recipeTagList.get(i);
+                }
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public RecipeTag insertOneTag(RecipeTag targetTag){
+        if(!recipeTagList.contains(targetTag)) {
+            recipeTagList.add(targetTag);
+        }
+
+        return targetTag;
+    }
+
+    @Override
+    public void deleteOneTag(RecipeTag targetTag){
+        if (recipeTagList.contains(targetTag)) {
+            recipeTagList.remove(targetTag);
         }
     }
 
     @Override
-    public void deleteOneTag(String targetTag){
-        if (recipeTagSet.getAllTags().contains(targetTag)) {
-            recipeTagSet.deleteTag(targetTag);
-        }
+    public boolean doesTagExist(RecipeTag targetTag){
+        return recipeTagList.contains(targetTag);
     }
 
     @Override
-    public boolean doesTagExist(String targetTag){
-        return recipeTagSet.getAllTags().contains(targetTag);
+    public boolean doesTagNameExist(String targetTagName) {
+        return recipeTagList.contains(new RecipeTag(targetTagName));
     }
 }

@@ -1,0 +1,31 @@
+CREATE SCHEMA PUBLIC AUTHORIZATION DBA
+CREATE MEMORY TABLE PUBLIC.RECIPES(id INTEGER IDENTITY, title VARCHAR(100) NOT NULL, description VARCHAR(500), ingredients VARCHAR(500), cooking_time INTEGER, image VARCHAR(100), favourite INTEGER NOT NULL, creation_date DATETIME, PRIMARY KEY(id))
+CREATE MEMORY TABLE PUBLIC.TAGS(id INTEGER IDENTITY, title VARCHAR(100), PRIMARY KEY(id))
+CREATE MEMORY TABLE PUBLIC.RECIPES_TAGS(recipe_id INTEGER NOT NULL, tag_id INTEGER NOT NULL)
+CREATE USER SA PASSWORD DIGEST 'd41d8cd98f00b204e9800998ecf8427e'
+ALTER USER SA SET LOCAL TRUE
+CREATE SCHEMA PUBLIC AUTHORIZATION DBA
+SET DATABASE DEFAULT INITIAL SCHEMA PUBLIC
+GRANT DBA TO SA
+SET WRITE_DELAY 20
+SET FILES SCALE 32
+SET SCHEMA public
+INSERT INTO RECIPES VALUES (1, 'Chocolate Chip Cookies','Crisp edges, chewy middles, and so, so easy to make. Try this wildly-popular chocolate chip cookie recipe for yourself.', '1/4 cups of all purpose flour. 1 tsp baking soda. 1/2 cup of butter. 1 tsp salt ( use 1/2 tsp if you are using salted butter) 1 cup of packed brown sugar. 1/2 cup of granulated sugar. 1 1/2 tsp vanilla. 2 eggs.', 30,'/add/path/to/resource/later', 0,'2019-02-14 02:30:00')
+INSERT INTO RECIPES VALUES (2, 'Scrambled Eggs', 'BEAT eggs, milk, salt and pepper in medium bowl until blended. HEAT butter in large nonstick skillet over medium heat until hot. POUR IN egg mixture. As eggs begin to set, GENTLY PULL the eggs across the pan with a spatula, forming large soft curds. CONTINUE cooking, pulling, lifting and folding eggs until thickened and no visible liquid egg remains. Do not stir constantly. REMOVE from heat. SERVE immediately.', '4 EGGS, 1/4 cup milk salt and pepper, as desired, 2 tsp. butter', 15, '/add/path/to/resource/later', 0, '2019-05-30 08:00:00')
+INSERT INTO RECIPES VALUES (3, 'Honey Garlic Pork Chops', 'Preheat grill for medium heat and lightly oil the grate. Whisk ketchup, honey, soy sauce, and garlic together in a bowl to make a glaze. Sear the pork chops on both sides on the preheated grill. Lightly brush glaze onto each side of the chops as they cook; grill until no longer pink in the center, about 7 to 9 minutes per side. An instant-read thermometer inserted into the center should read 145 degrees F (63 degrees C).', '1/2 cup ketchup 2 2/3 tablespoons honey 2 tablespoons low-sodium soy sauce 2 cloves garlic, crushed', 90, '/add/path/to/resource/later', 0, '2018-07-04 12:00:00')
+INSERT INTO RECIPES VALUES (4, 'Garlic Chicken', 'Preheat oven to 425 degrees F (220 degrees C). Heat olive oil and garlic in a small saucepan over low heat until warmed, 1 to 2 minutes. Transfer garlic and oil to a shallow bowl. Combine bread crumbs and Parmesan cheese in a separate shallow bowl. Dip chicken breasts in the olive oil-garlic mixture using tongs; transfer to bread crumb mixture and turn to evenly coat. Transfer coated chicken to a shallow baking dish. Bake in the preheated oven until no longer pink and juices run clear, 30 to 35 minutes. An instant-read thermometer inserted into the center should read at least 165 degrees F (74 degrees C).', '1/4 cup olive oil, 2 cloves garlic, crushed, 1/4 cup Italian-seasoned bread crumbs, 1/4 cup grated Parmesan cheese', 60, '/add/path/to/resource/later', 0, '2018-12-10 4:00:00')
+INSERT INTO TAGS VALUES (1, 'meal')
+INSERT INTO TAGS VALUES (2, 'dessert')
+INSERT INTO TAGS VALUES (3, 'salty')
+INSERT INTO TAGS VALUES (4, 'savoury')
+INSERT INTO TAGS VALUES (5, 'breakfast')
+INSERT INTO RECIPES_TAGS VALUES (1, 2)
+INSERT INTO RECIPES_TAGS VALUES (2, 1)
+INSERT INTO RECIPES_TAGS VALUES (2, 3)
+INSERT INTO RECIPES_TAGS VALUES (2, 5)
+INSERT INTO RECIPES_TAGS VALUES (3, 1)
+INSERT INTO RECIPES_TAGS VALUES (3, 3)
+INSERT INTO RECIPES_TAGS VALUES (3, 4)
+INSERT INTO RECIPES_TAGS VALUES (4, 1)
+INSERT INTO RECIPES_TAGS VALUES (4, 3)
+INSERT INTO RECIPES_TAGS VALUES (4, 4)

@@ -5,7 +5,10 @@ cook-eBook is a new app that will allow users to store, view and edit their own 
 
 ## Iteration Documents
 For the markers:
-[Iteration 1](https://code.cs.umanitoba.ca/comp3350-summer2019/cook-eBook/blob/master/docs/Iteration1.md)
+
+[Iteration 1](https://code.cs.umanitoba.ca/comp3350-summer2019/cook-eBook/blob/update-architecture-docs/docs/Iteration1.md)
+
+[Iteration 2](https://code.cs.umanitoba.ca/comp3350-summer2019/cook-eBook/blob/update-architecture-2/docs/Iteration2.md)
 
 
 ## Vision Statement

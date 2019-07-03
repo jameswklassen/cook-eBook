@@ -5,9 +5,15 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import com.cook_ebook.logic.RecipeHandler;
+import com.cook_ebook.logic.comparators.AscendingDateComparator;
+import com.cook_ebook.logic.comparators.DescendingDateComparator;
+import com.cook_ebook.logic.comparators.AscendingTitleComparator;
+import com.cook_ebook.logic.comparators.DescendingTitleComparator;
+import com.cook_ebook.logic.exceptions.InvalidRecipeException;
 import com.cook_ebook.objects.Recipe;
-import com.cook_ebook.objects.RecipeTagSet;
+import com.cook_ebook.objects.RecipeTag;
 
+import java.util.Date;
 import java.util.List;
 
 public class RecipeHandlerTest {
@@ -15,9 +21,9 @@ public class RecipeHandlerTest {
     private RecipeHandler recipeHandler;
 
     @Before
-    public void setUp() {
+    public void setup() {
         System.out.println("Starting test for RecipeHandler");
-        recipeHandler = new RecipeHandler();
+        recipeHandler = new RecipeHandler(false);
     }
 
     @Test
@@ -37,19 +43,107 @@ public class RecipeHandlerTest {
     }
 
     @Test
-    public void testSortRecipeListByDescendingDate() {
-        // this test will be updated after we have true database,
-        // because recipe date is assigned as current date(),
-        // our mock data can't identify it right now.
-        // as the result, we only test that we can get all recipes in the list
+    public void testDescendingDateCompare(){
+        System.out.println("\nStarting testDescendingDateCompare");
+        DescendingDateComparator testComparator = new DescendingDateComparator();
+        List<Recipe> actualRecipeList = recipeHandler.getAllRecipes();
+        int result = testComparator.compare(actualRecipeList.get(0), actualRecipeList.get(1));
+        assertTrue(result <= 0);
+        System.out.println("Finished testDescendingDateCompare");
+    }
 
-        System.out.println("\nStarting testSortRecipeListByDescendingDate");
-        List<Recipe> actualRecipeList = recipeHandler.getRecipeListByDescendingDate();
+    @Test
+    public void testAscendingDateCompare(){
+        System.out.println("\nStarting testAscendingDateCompare");
+        AscendingDateComparator testComparator = new AscendingDateComparator();
+        List<Recipe> actualRecipeList = recipeHandler.getAllRecipes();
+        int result = testComparator.compare(actualRecipeList.get(0), actualRecipeList.get(1));
+        assertTrue(result >= 0);
+        System.out.println("Finished testAscendingDateCompare");
+    }
 
-        assertNotNull(actualRecipeList);
-        assertEquals(4, actualRecipeList.size());
+    @Test
+    public void testDescendingTitleCompare(){
+        System.out.println("\nStarting testDescendingTitleCompare");
+        DescendingTitleComparator testComparator = new DescendingTitleComparator();
+        List<Recipe> actualRecipeList = recipeHandler.getAllRecipes();
+        int result = testComparator.compare(actualRecipeList.get(0), actualRecipeList.get(1));
+        assertTrue(result <= 0);
+        System.out.println("Finished testDescendingTitleCompare");
+    }
 
-        System.out.println("Finished testSortRecipeListByDescendingDate");
+    @Test
+    public void testAscendingTitleCompare(){
+        System.out.println("\nStarting testAscendingTitleCompare");
+        AscendingTitleComparator testComparator = new AscendingTitleComparator();
+        List<Recipe> actualRecipeList = recipeHandler.getAllRecipes();
+        int result = testComparator.compare(actualRecipeList.get(0), actualRecipeList.get(1));
+        assertTrue(result >= 0);
+        System.out.println("Finished testAscendingTitleCompare");
+    }
+
+    @Test
+    public void testAscendingDateSort(){
+        System.out.println("\nStarting testAscendingDateSort");
+        recipeHandler.setSort("Date-Ascending");
+        List<Recipe> actualRecipeList = recipeHandler.getAllRecipes();
+
+        for(int i = 1; i < actualRecipeList.size(); i++) {
+            Recipe r1 = actualRecipeList.get(i-1);
+            Recipe r2 = actualRecipeList.get(i);
+            Date d1 = r1.getRecipeDate();
+            Date d2 = r2.getRecipeDate();
+            assertTrue(d1.after(d2) || d1.equals(d2));
+        }
+        System.out.println("Finished testAscendingDateSort");
+    }
+
+    @Test
+    public void testDescendingDateSort(){
+        System.out.println("\nStarting testDescendingDateSort");
+        recipeHandler.setSort("Date-Descending");
+        List<Recipe> actualRecipeList = recipeHandler.getAllRecipes();
+
+        for(int i = 1; i < actualRecipeList.size(); i++) {
+            Recipe r1 = actualRecipeList.get(i-1);
+            Recipe r2 = actualRecipeList.get(i);
+            Date d1 = r1.getRecipeDate();
+            Date d2 = r2.getRecipeDate();
+            assertTrue(d1.before(d2) || d1.equals(d2));
+        }
+        System.out.println("Finished testDescendingDateSort");
+    }
+
+    @Test
+    public void testAscendingTitleSort(){
+        System.out.println("\nStarting testAscendingTitleSort");
+        recipeHandler.setSort("Title-Ascending");
+        List<Recipe> actualRecipeList = recipeHandler.getAllRecipes();
+
+        for(int i = 1; i < actualRecipeList.size(); i++) {
+            Recipe r1 = actualRecipeList.get(i-1);
+            Recipe r2 = actualRecipeList.get(i);
+            String s1 = r1.getRecipeTitle();
+            String s2 = r2.getRecipeTitle();
+            assertTrue(s1.compareTo(s2) < 0 || s1.equals(s2));
+        }
+        System.out.println("Finished testAscendingTitleSort");
+    }
+
+    @Test
+    public void testDescendingTitleSort(){
+        System.out.println("\nStarting testDescendingTitleSort");
+        recipeHandler.setSort("Title-Descending");
+        List<Recipe> actualRecipeList = recipeHandler.getAllRecipes();
+
+        for(int i = 1; i < actualRecipeList.size(); i++) {
+            Recipe r1 = actualRecipeList.get(i-1);
+            Recipe r2 = actualRecipeList.get(i);
+            String s1 = r1.getRecipeTitle();
+            String s2 = r2.getRecipeTitle();
+            assertTrue(s1.compareTo(s2) > 0 || s1.equals(s2));
+        }
+        System.out.println("Finished testDescendingTitleSort");
     }
 
     @Test
@@ -57,9 +151,97 @@ public class RecipeHandlerTest {
         System.out.println("\nStarting testGetRecipeById");
         Recipe targetRecipe1 = recipeHandler.getRecipeById(3);
 
-        assertEquals(3, targetRecipe1.getRecipeID());
+        //this method will be implenmented after we have true database
 
         System.out.println("Finished testGetRecipeById");
+    }
+
+    @Test
+    public void testResetFilter() {
+        System.out.println("\nStarting testResetFilter");
+        recipeHandler.resetFilter();
+        int length = recipeHandler.getFilter().size();
+        assertEquals(0, length);
+        System.out.println("Finished testResetFilter");
+    }
+
+    @Test
+    public void testResetSort() {
+        System.out.println("\nStarting testResetSort");
+        recipeHandler.resetSort();
+        assertTrue(recipeHandler.getSort() instanceof DescendingDateComparator);
+        System.out.println("Finished testResetSort");
+    }
+
+    @Test
+    public void testResetFavourite() {
+        System.out.println("\nStarting testResetFavourite");
+        recipeHandler.resetFavourite();
+        assertFalse(recipeHandler.getFavourite());
+        System.out.println("Finished testResetFavourite");
+    }
+
+    @Test
+    public void testSetFavourite() {
+        System.out.println("\nStarting testSetFavourite");
+        recipeHandler.setFavourite(true);
+        assertTrue(recipeHandler.getFavourite());
+        List<Recipe> recipeList = recipeHandler.getAllRecipes();
+        for (Recipe recipe: recipeList) {
+            assertTrue(recipe.getRecipeIsFavourite());
+        }
+        System.out.println("Finished testSetFavourite");
+    }
+
+    @Test
+    public void testSetFilter() {
+        System.out.println("\nStarting testSetFilter");
+        recipeHandler.setFilter("Cake");
+        int length = recipeHandler.getFilter().size();
+        assertEquals(1, length);
+
+        recipeHandler.setFilter("Chicken");
+        length = recipeHandler.getFilter().size();
+        assertEquals(2, length);
+
+        recipeHandler.setFilter("Cake");
+        length = recipeHandler.getFilter().size();
+        assertEquals(1, length);
+
+        System.out.println("Finished testSetFilter");
+    }
+
+    // this will be updated when we change how filter is
+    @Test
+    public void testFilter() {
+        System.out.println("\nStarting testFilter");
+        String [] tags = {"Chicken", "Cake"};
+        boolean [] checked = {true, false};
+        RecipeTag newTag = new RecipeTag("Chicken");
+        List <Recipe> recipeList = recipeHandler.filter(tags, checked);
+        for (Recipe recipe: recipeList) {
+            List<RecipeTag> tagList = recipe.getRecipeTagList();
+            assertTrue(tagList.contains(newTag));
+        }
+        System.out.println("Finished testFilter");
+    }
+
+    @Test
+    public void testSetSort() {
+        System.out.println("\nStarting testSetSort");
+        recipeHandler.setSort("Date-Ascending");
+        assertTrue(recipeHandler.getSort() instanceof AscendingDateComparator);
+
+        recipeHandler.setSort("Date-Descending");
+        assertTrue(recipeHandler.getSort() instanceof DescendingDateComparator);
+
+        recipeHandler.setSort("Title-Ascending");
+        assertTrue(recipeHandler.getSort() instanceof AscendingTitleComparator);
+
+        recipeHandler.setSort("Title-Descending");
+        assertTrue(recipeHandler.getSort() instanceof DescendingTitleComparator);
+
+        System.out.println("Finished testSetSort");
     }
 
     @Test
@@ -77,15 +259,38 @@ public class RecipeHandlerTest {
     }
 
     @Test
+    public void testGetRecipeListByTagName() {
+        System.out.println("\nStarting testGetRecipeListByTagName");
+
+        List<Recipe> actualRecipeList1 = recipeHandler.getRecipeListByTagName("cake");
+        assertEquals(1, actualRecipeList1.size());
+
+        List<Recipe> actualRecipeList2 = recipeHandler.getRecipeListByTagName("dessert");
+        assertEquals(2, actualRecipeList2.size());
+
+        System.out.println("Finished testGetRecipeListByTagName");
+    }
+
+    @Test
+    public void testGetRecipeListByTagId() {
+        System.out.println("\nStarting testGetRecipeListByTagId");
+
+        // this test will be implemented after we have true database
+        List<Recipe> actualRecipeList1 = recipeHandler.getRecipeListByTagId(-1);
+        assertEquals(0, actualRecipeList1.size());
+
+        System.out.println("Finished testGetRecipeListByTagId");
+    }
+
+    @Test
     public void testGetRecipeListByTag() {
         System.out.println("\nStarting testGetRecipeListByTag");
-        List<Recipe> actualRecipeList = recipeHandler.getRecipeListByTag("cake");
 
-        assertEquals(1, actualRecipeList.size());
+        List<Recipe> actualRecipeList1 = recipeHandler.getRecipeListByTag(new RecipeTag("cake"));
+        assertEquals(1, actualRecipeList1.size());
 
-        for(int i = 0; i < actualRecipeList.size(); i ++) {
-            assertEquals("cake", actualRecipeList.get(i).getRecipeTagSet().get(0));
-        }
+        List<Recipe> actualRecipeList2 = recipeHandler.getRecipeListByTag(new RecipeTag("dessert"));
+        assertEquals(2, actualRecipeList2.size());
 
         System.out.println("Finished testGetRecipeListByTag");
     }
@@ -105,30 +310,32 @@ public class RecipeHandlerTest {
     }
 
     @Test
-    public void testGetRecipeListByDate() {
-        System.out.println("\nStarting testGetRecipeListByDate");
-        // this test will be modified after we have true database,
-        // because all recipes' date are assigned as current date
-        System.out.println("Finished testGetRecipeListByDate");
-    }
-
-    @Test
     public void testInsertRecipe() {
         System.out.println("\nStarting testInsertRecipe");
+
+        int initialSize = recipeHandler.getAllRecipes().size();
+        int expectedSize = initialSize + 1;
 
         Recipe recipe = new Recipe("pasta3",
                 "pasta3 description",
                 "egg, water",
                 10,
                 "pasta3 images",
-                new RecipeTagSet(),
                 true);
 
         recipeHandler.insertRecipe(recipe);
-        List<Recipe> actualRecipeList = recipeHandler.getAllRecipes();
 
-        assertEquals(5, actualRecipeList.size());
-        assertTrue(recipeHandler.deleteRecipe(recipe));
+        assertEquals(expectedSize, recipeHandler.getAllRecipes().size());
+        boolean caught = false;
+        try{
+            recipe = null;
+
+            recipeHandler.insertRecipe(recipe);
+        }catch(InvalidRecipeException e)
+        {
+            caught = true;
+        }
+        assertTrue(caught);
 
         System.out.println("Finished testInsertRecipe");
     }
@@ -143,6 +350,17 @@ public class RecipeHandlerTest {
         recipeHandler.updateRecipe(recipe);
         assertEquals("I'm a test description.", recipeHandler.getAllRecipes().get(0).getRecipeDescription());
 
+        boolean caught = false;
+        try{
+            recipe = null;
+
+            recipeHandler.updateRecipe(recipe);
+        }catch(InvalidRecipeException e)
+        {
+            caught = true;
+        }
+        assertTrue(caught);
+
         System.out.println("Finished testUpdateRecipe");
     }
 
@@ -150,13 +368,27 @@ public class RecipeHandlerTest {
     public void testDeleteRecipe() {
         System.out.println("\nStarting testDeleteRecipe");
 
-        Recipe recipe = recipeHandler.getAllRecipes().get(0);
+        List<Recipe> initialList = recipeHandler.getAllRecipes();
+
+        int initialSize = initialList.size();
+        int expectedSize = initialSize - 1;
+        Recipe recipe = initialList.get(0);
+
         recipeHandler.deleteRecipe(recipe);
-        List<Recipe> actualRecipeList = recipeHandler.getAllRecipes();
 
-        assertEquals(3, actualRecipeList.size());
+        assertEquals(expectedSize, recipeHandler.getAllRecipes().size());
+        assertEquals(recipe, recipeHandler.insertRecipe(recipe));
 
-        assertTrue(recipeHandler.insertRecipe(recipe));
+        boolean caught = false;
+        try{
+            recipe = null;
+
+            recipeHandler.insertRecipe(recipe);
+        }catch(InvalidRecipeException e)
+        {
+            caught = true;
+        }
+        assertTrue(caught);
 
         System.out.println("Finished testDeleteRecipe");
     }
@@ -165,14 +397,15 @@ public class RecipeHandlerTest {
     public void testDeleteRecipeById() {
         System.out.println("\nStarting testDeleteRecipeById");
 
-        Recipe recipe = recipeHandler.getRecipeById(3);
-        recipeHandler.deleteRecipeById(3);
+        List<Recipe> initialRecipeList = recipeHandler.getAllRecipes();
 
-        List<Recipe> actualRecipeList = recipeHandler.getAllRecipes();
+        int initialSize = initialRecipeList.size();
+        int expectedSize = initialSize - 1;
+        Recipe recipe = initialRecipeList.get(0);
 
-        assertEquals(3, actualRecipeList.size());
+        recipeHandler.deleteRecipeById(recipe.getRecipeID());
 
-        assertTrue(recipeHandler.insertRecipe(recipe));
+        assertEquals(expectedSize, recipeHandler.getAllRecipes().size());
 
         System.out.println("Finished testDeleteRecipeById");
     }

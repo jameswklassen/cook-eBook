@@ -1,18 +1,27 @@
 package com.cook_ebook.persistence;
 
-import com.cook_ebook.objects.RecipeTagSet;
+import com.cook_ebook.objects.RecipeTag;
+
 import java.util.*;
 
 public interface RecipeTagPersistence {
-    Set<String> getAllTags();
+    List<RecipeTag> getAllTags();
 
-    RecipeTagSet insertMultipleTags(RecipeTagSet currentTagSet);
+    int getTagIdByName(String tagName);
 
-    RecipeTagSet insertOneTag(String targetTag);
+    String getTagNameById(int tagId);
 
-    void deleteMultipleTags(RecipeTagSet currentTagSet);
+    RecipeTag getTagById(int tagId);
 
-    void deleteOneTag(String targetTag);
+    RecipeTag getTagByName(String tagName);
 
-    boolean doesTagExist(String targetTag);
+    RecipeTag insertOneTag(RecipeTag targetTag);
+
+    void deleteOneTag(RecipeTag targetTag);
+
+    boolean doesTagExist(RecipeTag targetTag);
+
+    // we may not need this method, I am not not sure, so I keep it for temp
+    // if we do not need it, we can delete this method before merge to master
+    boolean doesTagNameExist(String targetTagName);
 }

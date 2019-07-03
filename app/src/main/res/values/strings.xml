@@ -6,4 +6,10 @@
     <string name="view_recipe">View Recipe</string>
     <string name="save_recipe">Save Recipe</string>
     <string name="large_text">Test</string>
+    <string name="edit_recipe">Edit Recipe</string>
+    <string name="set_a_cooking_time_in_minutes">Set a Cooking Time (in minutes)</string>
+    <string name="add_a_description">Add a Description</string>
+    <string name="add_the_tags">Add the Tags</string>
+    <string name="add_the_ingredients">Add the Ingredients</string>
+    <string name="add_a_title">Add a Title</string>
 </resources>
