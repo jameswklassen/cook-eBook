@@ -47,7 +47,7 @@ public class RecipeTagHandler {
 
     public void deleteOneTag(RecipeTag tag) throws InvalidTagException  {
         if(RecipeTagValidator.validateRecipeTag(tag)) {
-            dataAccessRecipeTag.insertOneTag(tag);
+            dataAccessRecipeTag.deleteOneTag(tag);
         } else {
             throw new TagNotFoundException("The tag being deleted does not exist.");
         }
