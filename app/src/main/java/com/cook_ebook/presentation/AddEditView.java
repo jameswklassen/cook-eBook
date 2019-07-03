@@ -127,12 +127,16 @@ public class AddEditView extends AppCompatActivity {
 
         int status = 0;
 
-        if(!RecipeValidator.validateTitle(title))
-            status = 1;
-        else if(!RecipeValidator.validateCookingTimeNumeric(time))
-            status = 2;
-        else if(!RecipeValidator.validateCookingTimePositive(time))
-            status = 3;
+        try {
+            if (!RecipeValidator.validateTitle(title))
+                status = 1;
+            else if (!RecipeValidator.validateCookingTimeNumeric(time))
+                status = 2;
+            else if (!RecipeValidator.validateCookingTimePositive(time))
+                status = 3;
+        } catch(Exception e) {
+            System.err.println(e.getMessage());
+        }
 
         return generateIntent(title, description, ingredients, time, tags, status);
     }
