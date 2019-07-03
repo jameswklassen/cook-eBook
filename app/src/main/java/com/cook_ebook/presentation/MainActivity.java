@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import java.util.*;
+
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
@@ -116,23 +118,25 @@ public class MainActivity extends AppCompatActivity {
 
         Bundle extras = data.getExtras();
 
-        if (requestCode == ADD_ACTIVITY) {
-            int time;
-
-            try {
-                time = Integer.parseInt(extras.getString("recipeTime"));
-            } catch (NumberFormatException | NullPointerException nfe) {
-                time = -1; //something is wrong
-            }
-
+        if (requestCode == ADD_ACTIVITY || (requestCode == SINGLE_ACTIVITY && extras.containsKey("update"))) {
+            int time = Integer.parseInt(extras.getString("recipeTime"));
             String title = extras.getString("recipeTitle");
             String tags = extras.getString("recipeTags");
             String ingredients = extras.getString("recipeIngredients");
             String description = extras.getString("recipeDescription");
 
-            Recipe newRecipe = buildRecipe(time, title, tags, ingredients, description);
 
-            handler.insertRecipe(newRecipe);
+            if (extras.containsKey("update")) {
+                // change this once code is pulled
+                int recipeId = extras.getInt("recipeID");
+                Date date = new Date();
+                Recipe newRecipe = buildRecipe(recipeId, time, title, tags, ingredients, description, date);
+                updateRecipe(newRecipe);
+            }else{
+                Recipe newRecipe = buildRecipe(time, title, tags, ingredients, description);
+                handler.insertRecipe(newRecipe);
+            }
+
             recipes = handler.getAllRecipes();
             adapter.setNewList(recipes);
             ((RecyclerView) findViewById(R.id.recycleView)).setAdapter(adapter); //Force a redraw.
@@ -142,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
             }else if (extras.containsKey("toggleFavourite")) {
                 Recipe recipe = recipes.get(extras.getInt("toggleFavourite"));
                 recipe.setRecipeIsFavourite(!recipe.getRecipeIsFavourite());
-                updateRecipe(recipe);
+                //updateRecipe(recipe);
             }
 
         }
@@ -162,6 +166,24 @@ public class MainActivity extends AppCompatActivity {
                 time,
                 null,
                 false);
+
+        newRecipe.addRecipeTag(newSet);
+
+        return newRecipe;
+    }
+
+    private Recipe buildRecipe(int id, int time, String title, String tags, String ingredients, String description, Date date) {
+        RecipeTag newSet = new RecipeTag(tags);
+
+        Recipe newRecipe = new Recipe(
+                id,
+                title,
+                description,
+                ingredients,
+                time,
+                null,
+                false,
+                date);
 
         newRecipe.addRecipeTag(newSet);
 

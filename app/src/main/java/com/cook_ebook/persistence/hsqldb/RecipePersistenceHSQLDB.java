@@ -1,5 +1,6 @@
 package com.cook_ebook.persistence.hsqldb;
 
+import com.cook_ebook.logic.exceptions.RecipeNotFoundException;
 import com.cook_ebook.objects.Recipe;
 import com.cook_ebook.objects.RecipeTag;
 import com.cook_ebook.persistence.RecipePersistence;
@@ -151,7 +152,9 @@ public class RecipePersistenceHSQLDB implements RecipePersistence {
         return null;
     }
 
+    // TODO: throw RecipeNotFoundException
     public Recipe updateRecipe(Recipe newRecipe) {
+        System.out.println("[LOG] UPDATE RECIPE");
         String dateString = DBHelper.getSQLDateString(newRecipe.getRecipeDate());
 
         try (Connection connection = connect()) {
@@ -168,7 +171,9 @@ public class RecipePersistenceHSQLDB implements RecipePersistence {
             statement.executeUpdate();
 
             int index = recipes.indexOf(newRecipe);
-            recipes.set(index, newRecipe);
+
+            if(index >= 0)
+                recipes.set(index, newRecipe);
 
             return newRecipe;
 
@@ -176,6 +181,7 @@ public class RecipePersistenceHSQLDB implements RecipePersistence {
             Log.e("Connect SQL", e.getMessage() + e.getSQLState());
             e.printStackTrace();
         }
+
         return null;
     }
 

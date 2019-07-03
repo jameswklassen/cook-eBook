@@ -7,10 +7,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.content.Intent;
+import android.widget.TextView;
 import com.cook_ebook.R;
 import com.cook_ebook.logic.RecipeValidator;
 
 public class AddEditView extends AppCompatActivity {
+
+    //This boolean dictates whether a new recipe is being created or being edited
+    private static boolean createRecipe;
+    private static int recipeId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +24,15 @@ public class AddEditView extends AppCompatActivity {
 
         //Add a back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //if a recipe needs to be edited rather than created store the bundle containing
+        //that recipe and set new recipe accordingly
+        Bundle recipe = getIntent().getBundleExtra("recipe_key");
+        createRecipe = recipe == null;
+
+        //Fill the textboxes if the recipe is being edited
+        if (!createRecipe)
+            fillTextBoxes(recipe);
+            recipeId = recipe.getInt("recipeID");
     }
 
     @Override
@@ -39,10 +53,13 @@ public class AddEditView extends AppCompatActivity {
         if (id == R.id.save_recipe) {
             Intent newRecipe = buildRecipe();
             Bundle extras = newRecipe.getExtras();
-
             int status = extras.getInt("status");
 
             if (status == 0) {
+                if(!createRecipe){
+                    newRecipe.putExtra("update", true);
+                    newRecipe.putExtra("recipeID", recipeId);
+                }
                 setResult(RESULT_OK, newRecipe);
                 finish();
             } else {
@@ -57,11 +74,38 @@ public class AddEditView extends AppCompatActivity {
 
                 showErrormessageDialog(message);
             }
-
-            return true;
         }
-
         return super.onOptionsItemSelected(item);
+    }
+
+    //This method fills all the textboxes with the recipe details
+    private void fillTextBoxes(Bundle recipe) {
+        fillSingleTextBox(R.id.addTitle,recipe.getString("recipeTitle"));
+        fillSingleTextBox(R.id.addTime,recipe.getInt("recipeTime")+"");
+        fillSingleTextBox(R.id.addDescription,recipe.getString("recipeDescription"));
+        fillSingleTextBox(R.id.addIngredients,recipe.getString("recipeIngredients"));
+        fillSingleTextBox(R.id.addTags,recipe.getString("recipeTags"));
+    }
+
+    //This method fills the a textbox given the textbox's id, and input string
+    private void fillSingleTextBox(int id, String text){
+        ((EditText)findViewById(id)).setText(text, TextView.BufferType.EDITABLE);
+    }
+
+    private boolean validateRecipe(Bundle extras){
+        if (extras.getInt("isValid") == 0) {
+            return true;
+        } else {
+            //Display corresponding error message
+            if(extras.getInt("isValid") == 1) {
+                showErrormessageDialog("Can't entry an empty title!");
+            } else if(extras.getInt("isValid") == 2) {
+                showErrormessageDialog("Can't entry an non-numeric / empty cooking time!");
+            } else if(extras.getInt("isValid") == 3) {
+                showErrormessageDialog("Can't entry a non-positive cooking time!");
+            }
+            return false;
+        }
     }
 
     private void showErrormessageDialog(String errorMessage) {
