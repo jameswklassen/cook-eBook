@@ -103,23 +103,34 @@ public class RecipeHandler {
 
         //Apply the actual filtering operation
         List<Recipe> allRecipes = getAllRecipes();
+
+        /*
+         * TODO: refactor to not copy the list,
+         *      but to query the database for any filtering.
+         *      For now, just copy the list of recipes which can
+         *      then be mutated for filtering.
+         */
+        List<Recipe> filtered = new ArrayList<>(allRecipes.size());
+        for (Recipe r : allRecipes) filtered.add(r);
+
         List<String> filters = getFilter();
 
         if (filters.size() > 0) {
-            for (Iterator<Recipe> iter = allRecipes.iterator(); iter.hasNext(); ) {
+            for (Iterator<Recipe> iter = filtered.iterator(); iter.hasNext(); ) {
                 Recipe next = iter.next();
 
                 boolean hasTagFromFilter = false;
 
                 for (String tag : filters)
-                    if (next.getRecipeTagList().contains(new RecipeTag(tag)))
+                    if (next.getRecipeTagList().contains(new RecipeTag(tag))) {
                         hasTagFromFilter = true;
+                    }
 
                 if (!hasTagFromFilter)
                     iter.remove();
             }
         }
-        return allRecipes;
+        return filtered;
     }
 
     public Recipe getRecipeById(int recipeId) throws InvalidRecipeException {

@@ -6,9 +6,9 @@ public class RecipeTag {
     private int tagId;
     private String tagName;
 
-    public RecipeTag(final int tagId) {
+    public RecipeTag(final int tagId, String tagName) {
         this.tagId = tagId;
-        this.tagName = "";
+        this.tagName = tagName;
     }
 
     public RecipeTag(String tagName) {
