@@ -27,6 +27,30 @@ public class Recipe {
         this.date = new Date(); // Current date
     }
 
+    /*
+     *  Recipe constructor
+     *      - used when DB creates Recipes with data straight from the database.
+     *      - Allows for full control over recipe creation (set the id and the date)
+     */
+    public Recipe(
+            int recipeID,
+            String recipeTitle,
+            String recipeDescription,
+            String recipeIngredients,
+            int recipeCookingTime,
+            String recipeImages,
+            Boolean recipeIsFavourite,
+            Date date) {
+        this(recipeTitle, recipeDescription, recipeIngredients, recipeCookingTime, recipeImages, recipeIsFavourite);
+        this.recipeID = recipeID;
+        this.date = date; // Current date
+    }
+
+    /*
+     * Recipe constructor
+     *      - used by the app when a new recipe is being created
+     *      - Doesn't set an ID, and sets the date to current date
+     */
     public Recipe(
         String recipeTitle,
         String recipeDescription,
@@ -42,31 +66,6 @@ public class Recipe {
         this.recipeTagList = new ArrayList<>();
         this.recipeIsFavourite = recipeIsFavourite;
         this.date = new Date(); // Current date
-    }
-
-    public Recipe(
-            int recipeID,
-            String recipeTitle,
-            String recipeDescription,
-            String recipeIngredients,
-            int recipeCookingTime,
-            String recipeImages,
-            Boolean recipeIsFavourite,
-            Date date) {
-        this.recipeID = recipeID;
-        this.recipeTitle = recipeTitle;
-        this.recipeDescription = recipeDescription;
-        this.recipeIngredients = recipeIngredients;
-        this.recipeCookingTime = recipeCookingTime;
-        this.recipeImages = recipeImages;
-        this.recipeTagList = new ArrayList<>();
-        this.recipeIsFavourite = recipeIsFavourite;
-        this.date = new Date(); // Current date
-    }
-
-    private int setRecipeID() {
-        counter ++;
-        return counter;
     }
 
     public int getRecipeID() {

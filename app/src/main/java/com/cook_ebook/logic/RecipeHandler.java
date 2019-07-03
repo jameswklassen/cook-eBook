@@ -26,9 +26,9 @@ public class RecipeHandler {
     private boolean favourite;
     private Comparator <Recipe> sort;
 
-    public RecipeHandler() {
+    public RecipeHandler(boolean forProduction) {
         //default get recipeList sorted by date in ascending order
-        dataAccessRecipe = Services.getRecipePersistence();
+        dataAccessRecipe = Services.getRecipePersistence(forProduction);
         sort = new DescendingDateComparator();
         filters = new ArrayList<>();
         favourite = false;

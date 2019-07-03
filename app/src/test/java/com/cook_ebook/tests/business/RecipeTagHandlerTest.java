@@ -14,7 +14,7 @@ public class RecipeTagHandlerTest {
     @Before
     public void setup() {
         System.out.println("Starting test for RecipeTagHandler");
-        tagSetHandler = new RecipeTagHandler();
+        tagSetHandler = new RecipeTagHandler(false);
     }
 
     @Test

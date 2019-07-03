@@ -22,7 +22,7 @@ public class RecipeHandlerTest {
     @Before
     public void setup() {
         System.out.println("Starting test for RecipeHandler");
-        recipeHandler = new RecipeHandler();
+        recipeHandler = new RecipeHandler(false);
     }
 
     @Test

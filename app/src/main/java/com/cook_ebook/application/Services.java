@@ -11,18 +11,26 @@ public class Services {
     private static RecipePersistence recipePersistence = null;
     private static RecipeTagPersistence recipeTagPersistence = null;
 
-    public static synchronized RecipePersistence getRecipePersistence() {
+    public static synchronized RecipePersistence getRecipePersistence(boolean forProduction) {
         if(recipePersistence == null) {
-//            recipePersistence = new RecipePersistenceStub(recipeTagPersistence);
-            recipePersistence = new RecipePersistenceHSQLDB(Main.getDBPathName());
+            if (forProduction) {
+                recipePersistence = new RecipePersistenceHSQLDB(Main.getDBPathName());
+            } else {
+                recipePersistence = new RecipePersistenceStub();
+            }
         }
 
         return recipePersistence;
     }
 
-    public static synchronized RecipeTagPersistence getRecipeTagPersistence() {
+    public static synchronized RecipeTagPersistence getRecipeTagPersistence(boolean forProduction) {
         if(recipeTagPersistence == null) {
-            recipeTagPersistence = new RecipeTagPersistenceStub();
+            if (forProduction) {
+                // todo: swap for HSQLDB implementation
+                recipeTagPersistence = new RecipeTagPersistenceStub();
+            } else {
+                recipeTagPersistence = new RecipeTagPersistenceStub();
+            }
         }
 
         return recipeTagPersistence;

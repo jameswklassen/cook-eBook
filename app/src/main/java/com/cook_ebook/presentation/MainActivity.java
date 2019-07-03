@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     //Temporary variables until we have database placeholders merged in
     private List<Recipe> recipes = new ArrayList<>();
     private RecipeHandler handler;
-    private RecipeTagHandler tagHandler = new RecipeTagHandler();
+    private RecipeTagHandler tagHandler = new RecipeTagHandler(true);
     private RecyclerViewAdapter adapter;
 
     @Override
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        handler = new RecipeHandler();
+        handler = new RecipeHandler(true);
 
         getRecipes();
     }
