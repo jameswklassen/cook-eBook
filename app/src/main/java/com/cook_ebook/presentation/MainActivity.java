@@ -289,31 +289,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void applyFilters(String[] tagList, boolean[] checkedArray) {
         handler.resetFilter();
-
-        for (int i = 0; i < checkedArray.length; i++) {
-            if (checkedArray[i]) {
-                handler.setFilter(tagList[i]);
-            }
-        }
-
-        //Apply the actual filtering operation
-        List<Recipe> allRecipes = handler.getAllRecipes();
-        List<String> filters = handler.getFilter();
-
-        if (filters.size() > 0) {
-            for (Iterator<Recipe> iter = allRecipes.iterator(); iter.hasNext(); ) {
-                Recipe next = iter.next();
-
-                boolean hasTagFromFilter = false;
-
-                for (String tag : filters)
-                    if (next.getRecipeTagList().contains(new RecipeTag(tag)))
-                        hasTagFromFilter = true;
-
-                if (!hasTagFromFilter)
-                    iter.remove();
-            }
-        }
+        List<Recipe> allRecipes = handler.filter(tagList, checkedArray);
 
         //Set the menu text appropriately
         invalidateOptionsMenu();

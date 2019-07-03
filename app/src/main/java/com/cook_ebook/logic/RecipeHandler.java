@@ -15,6 +15,7 @@ import com.cook_ebook.persistence.RecipePersistence;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Collections;
 
@@ -90,6 +91,35 @@ public class RecipeHandler {
         }
         Collections.sort(recipeList, sort);
         return recipeList;
+    }
+
+    // will be changed to use database queries
+    public List<Recipe> filter(String[] tagList, boolean[] checkedArray) {
+        for (int i = 0; i < checkedArray.length; i++) {
+            if (checkedArray[i]) {
+                setFilter(tagList[i]);
+            }
+        }
+
+        //Apply the actual filtering operation
+        List<Recipe> allRecipes = getAllRecipes();
+        List<String> filters = getFilter();
+
+        if (filters.size() > 0) {
+            for (Iterator<Recipe> iter = allRecipes.iterator(); iter.hasNext(); ) {
+                Recipe next = iter.next();
+
+                boolean hasTagFromFilter = false;
+
+                for (String tag : filters)
+                    if (next.getRecipeTagList().contains(new RecipeTag(tag)))
+                        hasTagFromFilter = true;
+
+                if (!hasTagFromFilter)
+                    iter.remove();
+            }
+        }
+        return allRecipes;
     }
 
     public Recipe getRecipeById(int recipeId) throws InvalidRecipeException {
