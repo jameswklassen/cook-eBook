@@ -7,21 +7,19 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.widget.TextView;
-
 import com.cook_ebook.R;
-import com.cook_ebook.objects.Recipe;
 
 public class SingleRecipe extends AppCompatActivity implements View.OnClickListener {
 
     private FloatingActionButton favourite_btn;
     private boolean favourite = false;
+    private boolean update = false;
     private static final String TAG = "SingleActivity";
     public static final int ADD_ACTIVITY = 1;
 
@@ -61,7 +59,7 @@ public class SingleRecipe extends AppCompatActivity implements View.OnClickListe
         date.setText(recipeDate);
 
         favourite = extras.getBoolean("recipeFavourite");
-        updateFavourite();
+        setFavouriteImage();
     }
 
     @Override
@@ -70,24 +68,25 @@ public class SingleRecipe extends AppCompatActivity implements View.OnClickListe
         return true;
     }
 
+
     @Override
     public void onClick(View v) {
         updateFavourite();
     }
 
-    // TODO: have this update the value in memory
     private void updateFavourite() {
+        if(favourite_btn != null) {
+            favourite = !favourite;
+            update = true;
+            setFavouriteImage();
+        }
+    }
+    private void setFavouriteImage() {
         if(favourite_btn != null) {
             if (favourite) {
                 favourite_btn.setImageResource(R.drawable.heart_filled);
-                favourite = false;
-                Intent intent = favouriteIntent();
-                setResult(RESULT_OK, intent);
             } else {
                 favourite_btn.setImageResource(R.drawable.heart_empty);
-                favourite = true;
-                Intent intent = favouriteIntent();
-                setResult(RESULT_OK, intent);
             }
         }
     }
@@ -124,6 +123,7 @@ public class SingleRecipe extends AppCompatActivity implements View.OnClickListe
     private Intent favouriteIntent() {
         Intent myIntent = new Intent();
         myIntent.putExtra("toggleFavourite", extras.getInt("recipeID"));
+        myIntent.putExtra("favourite", favourite);
 
         return myIntent;
     }
@@ -148,6 +148,15 @@ public class SingleRecipe extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        if(update) {
+            Intent intent = favouriteIntent();
+            setResult(RESULT_OK, intent);
+            finish();
+        }
+        super.onBackPressed();
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -160,12 +169,16 @@ public class SingleRecipe extends AppCompatActivity implements View.OnClickListe
         if (id == R.id.delete_recipe) {
             showConfirmationDialog();
             return true;
-        }
-        else if (id == R.id.edit_recipe){
+        } else if (id == R.id.edit_recipe){
             editRecipe();
             return true;
+        } else {
+            if(update) {
+                Intent intent = favouriteIntent();
+                setResult(RESULT_OK, intent);
+            }
+            finish();
+            return true;
         }
-
-        return super.onOptionsItemSelected(item);
     }
 }
