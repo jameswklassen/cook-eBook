@@ -5,8 +5,8 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import com.cook_ebook.logic.RecipeHandler;
-import com.cook_ebook.logic.comparators.AscendingDateComparator;
-import com.cook_ebook.logic.comparators.DescendingDateComparator;
+import com.cook_ebook.logic.comparators.OldestDateComparator;
+import com.cook_ebook.logic.comparators.LatestDateComparator;
 import com.cook_ebook.logic.comparators.AscendingTitleComparator;
 import com.cook_ebook.logic.comparators.DescendingTitleComparator;
 import com.cook_ebook.logic.exceptions.InvalidRecipeException;
@@ -45,7 +45,7 @@ public class RecipeHandlerTest {
     @Test
     public void testDescendingDateCompare(){
         System.out.println("\nStarting testDescendingDateCompare");
-        DescendingDateComparator testComparator = new DescendingDateComparator();
+        LatestDateComparator testComparator = new LatestDateComparator();
         List<Recipe> actualRecipeList = recipeHandler.getAllRecipes();
         int result = testComparator.compare(actualRecipeList.get(0), actualRecipeList.get(1));
         assertTrue(result <= 0);
@@ -55,7 +55,7 @@ public class RecipeHandlerTest {
     @Test
     public void testAscendingDateCompare(){
         System.out.println("\nStarting testAscendingDateCompare");
-        AscendingDateComparator testComparator = new AscendingDateComparator();
+        OldestDateComparator testComparator = new OldestDateComparator();
         List<Recipe> actualRecipeList = recipeHandler.getAllRecipes();
         int result = testComparator.compare(actualRecipeList.get(0), actualRecipeList.get(1));
         assertTrue(result >= 0);
@@ -169,7 +169,7 @@ public class RecipeHandlerTest {
     public void testResetSort() {
         System.out.println("\nStarting testResetSort");
         recipeHandler.resetSort();
-        assertTrue(recipeHandler.getSort() instanceof DescendingDateComparator);
+        assertTrue(recipeHandler.getSort() instanceof LatestDateComparator);
         System.out.println("Finished testResetSort");
     }
 
@@ -230,11 +230,11 @@ public class RecipeHandlerTest {
     @Test
     public void testSetSort() {
         System.out.println("\nStarting testSetSort");
-        recipeHandler.setSort("Date-Ascending");
-        assertTrue(recipeHandler.getSort() instanceof AscendingDateComparator);
+        recipeHandler.setSort("Date-Oldest");
+        assertTrue(recipeHandler.getSort() instanceof OldestDateComparator);
 
-        recipeHandler.setSort("Date-Descending");
-        assertTrue(recipeHandler.getSort() instanceof DescendingDateComparator);
+        recipeHandler.setSort("Date-Latest");
+        assertTrue(recipeHandler.getSort() instanceof LatestDateComparator);
 
         recipeHandler.setSort("Title-Ascending");
         assertTrue(recipeHandler.getSort() instanceof AscendingTitleComparator);

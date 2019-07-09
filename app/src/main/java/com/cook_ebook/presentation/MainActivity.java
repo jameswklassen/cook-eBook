@@ -240,8 +240,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void showSortListDialog() {
         final String[] sorts = new String[] {
-            "Date-Ascending",
-            "Date-Descending",
+            "Date-Oldest",
+            "Date-Latest",
             "Title-Ascending",
             "Title-Descending"
         };

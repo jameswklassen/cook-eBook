@@ -1,14 +1,11 @@
 package com.cook_ebook.logic;
 
 import com.cook_ebook.application.Services;
-import com.cook_ebook.logic.comparators.AscendingDateComparator;
+import com.cook_ebook.logic.comparators.OldestDateComparator;
 import com.cook_ebook.logic.comparators.AscendingTitleComparator;
-import com.cook_ebook.logic.comparators.DescendingDateComparator;
+import com.cook_ebook.logic.comparators.LatestDateComparator;
 import com.cook_ebook.logic.comparators.DescendingTitleComparator;
 import com.cook_ebook.logic.exceptions.InvalidRecipeException;
-import com.cook_ebook.logic.exceptions.InvalidRecipeTitle;
-import com.cook_ebook.logic.exceptions.NonPositiveCookingTimeException;
-import com.cook_ebook.logic.exceptions.NotATimeException;
 import com.cook_ebook.objects.Recipe;
 import com.cook_ebook.objects.RecipeTag;
 import com.cook_ebook.persistence.RecipePersistence;
@@ -29,7 +26,7 @@ public class RecipeHandler {
     public RecipeHandler(boolean forProduction) {
         //default get recipeList sorted by date in ascending order
         dataAccessRecipe = Services.getRecipePersistence(forProduction);
-        sort = new DescendingDateComparator();
+        sort = new LatestDateComparator();
         filters = new ArrayList<>();
         favourite = false;
     }
@@ -37,11 +34,11 @@ public class RecipeHandler {
     public void setSort(String newSort) {
         switch(newSort)
         {
-            case "Date-Ascending":
-                sort = new AscendingDateComparator();
+            case "Date-Oldest":
+                sort = new OldestDateComparator();
                 break;
-            case "Date-Descending":
-                sort = new DescendingDateComparator();
+            case "Date-Latest":
+                sort = new LatestDateComparator();
                 break;
             case "Title-Ascending":
                 sort = new AscendingTitleComparator();
@@ -65,7 +62,7 @@ public class RecipeHandler {
     }
 
     public void resetSort() {
-        sort = new DescendingDateComparator();
+        sort = new LatestDateComparator();
     }
 
     public void resetFilter() {
