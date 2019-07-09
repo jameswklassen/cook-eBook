@@ -56,6 +56,10 @@ public class SingleRecipe extends AppCompatActivity implements View.OnClickListe
         TextView tags = findViewById(R.id.tags);
         tags.setText(extras.getString("recipeTags"));
 
+        TextView date = findViewById(R.id.recipe_date);
+        String recipeDate = "Last Modified: " + extras.getString("recipeDate");
+        date.setText(recipeDate);
+
         favourite = extras.getBoolean("recipeFavourite");
         updateFavourite();
     }

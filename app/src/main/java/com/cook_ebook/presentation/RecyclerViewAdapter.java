@@ -60,6 +60,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 myIntent.putExtra("recipeIngredients", recipes.get(i).getRecipeIngredients());
                 myIntent.putExtra("recipeTime", recipes.get(i).getRecipeCookingTime());
                 myIntent.putExtra("recipeFavourite", recipes.get(i).getRecipeIsFavourite());
+                myIntent.putExtra("recipeDate", recipes.get(i).getRecipeDate().toString());
 
                 String tags = "";
                 for(int k = 0; k < recipes.get(i).getRecipeTagList().size(); k ++) {
