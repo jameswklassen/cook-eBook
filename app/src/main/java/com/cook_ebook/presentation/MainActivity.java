@@ -314,7 +314,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void applyFilters(String[] tagList, boolean[] checkedArray) {
         handler.resetFilter();
-        List<Recipe> allRecipes = handler.filter(tagList, checkedArray);
+        handler.filter(tagList, checkedArray);
+        List<Recipe> allRecipes = handler.getAllRecipes();
+        recipes = allRecipes;
 
         //Set the menu text appropriately
         invalidateOptionsMenu();

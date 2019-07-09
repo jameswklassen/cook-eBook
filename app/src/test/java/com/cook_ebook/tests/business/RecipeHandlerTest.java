@@ -218,7 +218,8 @@ public class RecipeHandlerTest {
         String [] tags = {"Chicken", "Cake"};
         boolean [] checked = {true, false};
         RecipeTag newTag = new RecipeTag("Chicken");
-        List <Recipe> recipeList = recipeHandler.filter(tags, checked);
+        recipeHandler.filter(tags, checked);
+        List <Recipe> recipeList = recipeHandler.getAllRecipes();
         for (Recipe recipe: recipeList) {
             List<RecipeTag> tagList = recipe.getRecipeTagList();
             assertTrue(tagList.contains(newTag));
