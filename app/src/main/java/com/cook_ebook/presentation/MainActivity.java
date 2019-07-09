@@ -115,7 +115,6 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "Result code was NOT okay. " + requestCode);
             return;
         }
-
         Bundle extras = data.getExtras();
 
         if (requestCode == ADD_ACTIVITY || (requestCode == SINGLE_ACTIVITY && extras.containsKey("update"))) {
@@ -144,12 +143,13 @@ public class MainActivity extends AppCompatActivity {
             if(extras.containsKey("doDelete")) {
                 deleteRecipe(extras.getInt("doDelete"));
             } else if (extras.containsKey("toggleFavourite")) {
-                int index = extras.getInt("toggleFavourite");
-                if (index < recipes.size()) {
-                    Recipe recipe = recipes.get(index);
-                    recipe.setRecipeIsFavourite(!recipe.getRecipeIsFavourite());
-                    //updateRecipe(recipe);
-                }
+                int id = extras.getInt("toggleFavourite");
+                boolean favourite = extras.getBoolean("favourite");
+                Recipe recipe = handler.getRecipeById(id);
+                recipe.setRecipeIsFavourite(favourite);
+                updateRecipe(recipe);
+                recipes = handler.getAllRecipes();
+                adapter.setNewList(recipes);
             }
 
         }
