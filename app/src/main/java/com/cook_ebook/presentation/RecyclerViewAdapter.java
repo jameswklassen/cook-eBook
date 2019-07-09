@@ -51,6 +51,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         Log.d(TAG, "onBindViewHolder: called.");
 
         viewHolder.recipeName.setText(recipes.get(i).getRecipeTitle());
+        viewHolder.recipeDate.setText("Last Modified: " + recipes.get(i).getRecipeDate());
+        viewHolder.recipeTime.setText("Cooking Time: " + recipes.get(i).getRecipeCookingTime());
         viewHolder.parent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -95,12 +97,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView recipeName;
+        TextView recipeDate;
+        TextView recipeTime;
         RelativeLayout parent;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             recipeName = itemView.findViewById(R.id.recipe_name);
+            recipeDate = itemView.findViewById(R.id.recipe_date);
+            recipeTime = itemView.findViewById(R.id.recipe_time);
             parent = itemView.findViewById(R.id.parent_relative_layout);
         }
     }
