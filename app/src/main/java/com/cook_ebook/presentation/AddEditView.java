@@ -1,10 +1,14 @@
 package com.cook_ebook.presentation;
 
+import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatImageButton;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.content.Intent;
 import android.widget.TextView;
@@ -18,6 +22,8 @@ public class AddEditView extends AppCompatActivity {
     private static boolean duplicateRecipe;
     private static int recipeId;
 
+    public static final int PICK_IMAGE = 100;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +31,15 @@ public class AddEditView extends AppCompatActivity {
 
         //Add a back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        AppCompatImageButton imageButton = getImageButton();
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openGallery();
+            }
+        });
+
         //if a recipe needs to be edited rather than created store the bundle containing
         //that recipe and set new recipe accordingly
         Intent intent = getIntent();
@@ -86,6 +101,11 @@ public class AddEditView extends AppCompatActivity {
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void openGallery() {
+        Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        startActivityForResult(gallery, PICK_IMAGE);
     }
 
     //This method fills all the textboxes with the recipe details
@@ -179,6 +199,11 @@ public class AddEditView extends AppCompatActivity {
     {
         EditText textBox = (findViewById(R.id.addTags));
         return textBox.getText().toString();
+    }
+
+    private AppCompatImageButton getImageButton()
+    {
+        return (AppCompatImageButton)(findViewById(R.id.imageButton));
     }
 
     private Intent generateIntent(String title, String description, String ingredients, String time, String tags, int status)

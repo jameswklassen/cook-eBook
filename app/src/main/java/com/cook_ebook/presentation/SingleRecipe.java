@@ -2,6 +2,7 @@ package com.cook_ebook.presentation;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -13,9 +14,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.widget.TextView;
+import android.widget.ImageView;
 import com.cook_ebook.R;
 import android.speech.tts.TextToSpeech;
 import java.util.Locale;
+
+import android.provider.MediaStore;
 
 public class SingleRecipe extends AppCompatActivity implements View.OnClickListener {
 
@@ -48,6 +52,9 @@ public class SingleRecipe extends AppCompatActivity implements View.OnClickListe
 
         final TextView description = findViewById(R.id.description);
         description.setText(extras.getString("recipeDescription"));
+
+        ImageView image = findViewById(R.id.image);
+
 
         final TextView ingredients = findViewById(R.id.ingredients);
         ingredients.setText(extras.getString("recipeIngredients"));
