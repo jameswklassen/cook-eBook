@@ -14,14 +14,19 @@ import android.view.View;
 import android.view.Menu;
 import android.widget.TextView;
 import com.cook_ebook.R;
+import android.speech.tts.TextToSpeech;
+import java.util.Locale;
 
 public class SingleRecipe extends AppCompatActivity implements View.OnClickListener {
 
     private FloatingActionButton favourite_btn;
+    private FloatingActionButton speech_button;
     private boolean favourite = false;
+    private boolean playSpeech = true;
     private boolean update = false;
     private static final String TAG = "SingleActivity";
     public static final int ADD_ACTIVITY = 1;
+    private TextToSpeech text_to_speech;
 
     private Bundle extras;
 
@@ -38,16 +43,16 @@ public class SingleRecipe extends AppCompatActivity implements View.OnClickListe
 
         extras = getIntent().getExtras();
 
-        CollapsingToolbarLayout layout = findViewById(R.id.toolbar_layout);
+        final CollapsingToolbarLayout layout = findViewById(R.id.toolbar_layout);
         layout.setTitle(extras.getString("recipeTitle"));
 
-        TextView description = findViewById(R.id.description);
+        final TextView description = findViewById(R.id.description);
         description.setText(extras.getString("recipeDescription"));
 
-        TextView ingredients = findViewById(R.id.ingredients);
+        final TextView ingredients = findViewById(R.id.ingredients);
         ingredients.setText(extras.getString("recipeIngredients"));
 
-        TextView time = findViewById(R.id.time);
+        final TextView time = findViewById(R.id.time);
         String cookTime = extras.getInt("recipeTime") + " minutes";
         time.setText(cookTime);
 
@@ -60,7 +65,59 @@ public class SingleRecipe extends AppCompatActivity implements View.OnClickListe
 
         favourite = extras.getBoolean("recipeFavourite");
         setFavouriteImage();
+
+        speech_button = findViewById(R.id.play_button);
+
+        text_to_speech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status != TextToSpeech.ERROR) {
+                    text_to_speech.setLanguage(Locale.UK);
+                }
+            }
+        });
+//
+        speech_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(playSpeech) {
+                    // recipe title
+                    String toSpeak = layout.getTitle() + " Recipe";
+                    text_to_speech.speak(toSpeak, TextToSpeech.QUEUE_ADD, null, null);
+                    text_to_speech.playSilentUtterance(1000, TextToSpeech.QUEUE_ADD, null);
+
+                    // cooking time
+                    toSpeak = "This Recipe has " + time.getText() + " cooking time. ";
+                    text_to_speech.speak(toSpeak, TextToSpeech.QUEUE_ADD, null, null);
+                    text_to_speech.playSilentUtterance(1000, TextToSpeech.QUEUE_ADD, null);
+
+                    // recipe ingredients
+                    toSpeak = "Ingredients " + ingredients.getText();
+                    text_to_speech.speak(toSpeak, TextToSpeech.QUEUE_ADD, null, null);
+                    text_to_speech.playSilentUtterance(1000, TextToSpeech.QUEUE_ADD, null);
+
+                    // recipe description
+                    toSpeak = "Description " + description.getText();
+                    text_to_speech.speak(toSpeak, TextToSpeech.QUEUE_ADD, null, null);
+                }else
+                {
+                    text_to_speech.stop();
+                }
+
+                setPlayImage();
+            }
+        });
     }
+
+    private void setPlayImage() {
+        if (playSpeech) {
+            speech_button.setImageResource(R.drawable.stop_icon);
+        } else {
+            speech_button.setImageResource(R.drawable.play_icon);
+        }
+        playSpeech = !playSpeech;
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
