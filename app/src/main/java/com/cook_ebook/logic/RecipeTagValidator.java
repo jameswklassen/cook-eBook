@@ -10,10 +10,6 @@ public class RecipeTagValidator {
      * Return false if tag is invalid
      */
     public static boolean validateRecipeTag(RecipeTag tag) throws InvalidTagException {
-        if(tag !=null) {
-            return true;
-        }
-
-        return false;
+        return tag !=null;
     }
 }
