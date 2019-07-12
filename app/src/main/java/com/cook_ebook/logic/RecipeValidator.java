@@ -38,4 +38,13 @@ public class RecipeValidator {
 
         return true;
     }
+    
+    /* validateCookingTimePositive()
+     *
+     * Return false if cooking time is non-positive
+     */
+    public static boolean validateCookingTimePositive(String cookingTime) throws NonPositiveCookingTimeException {
+        return Integer.parseInt(cookingTime) > 0;
+    }
+
 }
