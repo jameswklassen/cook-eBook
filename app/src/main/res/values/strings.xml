@@ -12,4 +12,5 @@
     <string name="add_the_tags">Add the Tags</string>
     <string name="add_the_ingredients">Add the Ingredients</string>
     <string name="add_a_title">Add a Title</string>
+    <string name="duplicate_recipe">Duplicate Recipe</string>
 </resources>

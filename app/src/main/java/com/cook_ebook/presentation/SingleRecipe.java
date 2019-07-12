@@ -165,6 +165,9 @@ public class SingleRecipe extends AppCompatActivity implements View.OnClickListe
             editRecipe();
             return true;
         }
+        else if (id == R.id.duplicate_recipe){
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
