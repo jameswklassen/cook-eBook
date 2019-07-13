@@ -46,7 +46,7 @@ public class RecipePersistenceHSQLDB implements RecipePersistence {
         int recipeCookingTime = rs.getInt("cooking_time");
         String recipeImages = rs.getString("image");
         Boolean recipeIsFavourite = rs.getBoolean("favourite");
-        Date date = rs.getDate("creation_date");
+        Date date = rs.getTimestamp("creation_date");
 
         return new Recipe(recipeID, recipeTitle, recipeDescription, recipeIngredients, recipeCookingTime, recipeImages, recipeIsFavourite, date);
     }
@@ -208,8 +208,8 @@ public class RecipePersistenceHSQLDB implements RecipePersistence {
             statement.executeUpdate();
             statement.close();
 
-            addRecipeTagRelation(connection, recipe.getRecipeTagList(), recipe.getRecipeID());
-            recipes.add(recipe);
+            this.recipes = new ArrayList<>();
+            loadRecipes();
 
             return recipe;
 
@@ -243,6 +243,7 @@ public class RecipePersistenceHSQLDB implements RecipePersistence {
             addRecipeTagRelation(connection, newRecipe.getRecipeTagList(), newRecipe.getRecipeID());
 
             int index = recipes.indexOf(newRecipe);
+            newRecipe = getRecipeById(newRecipe.getRecipeID());
 
             if(index >= 0)
                 recipes.set(index, newRecipe);
