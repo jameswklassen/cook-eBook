@@ -2,6 +2,7 @@
     <string name="app_name">Cook-eBook</string>
     <string name="add_recipe">Add Recipe</string>
     <string name="delete_recipe">Delete Recipe</string>
+    <string name="share_recipe">Share Recipe</string>
     <string name="title_activity_single_recipe">Chocolate Chip Cookies</string>
     <string name="view_recipe">View Recipe</string>
     <string name="save_recipe">Save Recipe</string>
