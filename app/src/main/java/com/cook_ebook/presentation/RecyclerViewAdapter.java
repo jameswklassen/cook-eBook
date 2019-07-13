@@ -52,7 +52,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         viewHolder.recipeName.setText(recipes.get(i).getRecipeTitle());
         viewHolder.recipeDate.setText("Last Modified: " + recipes.get(i).getRecipeDate());
-        viewHolder.recipeTime.setText("Cooking Time: " + recipes.get(i).getRecipeCookingTime());
+        viewHolder.recipeTime.setText("Cooking Time: " + recipes.get(i).getRecipeCookingTime() + " min");
         viewHolder.parent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
