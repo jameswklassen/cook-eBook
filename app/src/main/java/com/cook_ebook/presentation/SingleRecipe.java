@@ -237,6 +237,7 @@ public class SingleRecipe extends AppCompatActivity implements View.OnClickListe
         }
 
         if (requestCode == ADD_ACTIVITY) {
+            data.putExtra("favourite", favourite);
             setResult(RESULT_OK, data);
             finish();
         }
