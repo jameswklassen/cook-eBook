@@ -28,11 +28,6 @@ public class RecipeHandlerTest {
 
     @Test
     public void testRecipeList() {
-        // this test will be updated after we have true database,
-        // because recipe date is assigned as current date(),
-        // our mock data can't identify it right now.
-        // as the result, we only test that we can get all recipes in the list
-
         System.out.println("\nStarting testCreateRecipeList");
         List<Recipe> actualRecipeList = recipeHandler.getAllRecipes();
 
