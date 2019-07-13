@@ -100,19 +100,19 @@ public class RecipeHandlerIT {
 
         System.out.println("Finished testDescendingTitleCompare");
     }
-//
-//    @Test
-//    public void testAscendingTitleCompare(){
-//        System.out.println("\nStarting testAscendingTitleCompare");
-//
-//        AscendingTitleComparator testComparator = new AscendingTitleComparator();
-//        List<Recipe> actualRecipeList = recipeHandler.getAllRecipes();
-//
-//        int result = testComparator.compare(actualRecipeList.get(0), actualRecipeList.get(1));
-//        assertTrue(result >= 0);
-//
-//        System.out.println("Finished testAscendingTitleCompare");
-//    }
+
+    @Test
+    public void testAscendingTitleCompare(){
+        System.out.println("\nStarting testAscendingTitleCompare");
+
+        AscendingTitleComparator testComparator = new AscendingTitleComparator();
+        List<Recipe> actualRecipeList = recipeHandler.getAllRecipes();
+
+        int result = testComparator.compare(actualRecipeList.get(0), actualRecipeList.get(1));
+        assertTrue(result >= 0);
+
+        System.out.println("Finished testAscendingTitleCompare");
+    }
 
 //    @Test
 //    public void testAscendingDateSort(){
