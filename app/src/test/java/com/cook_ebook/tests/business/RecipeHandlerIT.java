@@ -97,15 +97,6 @@ public class RecipeHandlerIT {
         int result = testComparator.compare(actualRecipeList.get(0), actualRecipeList.get(1));
         assertTrue(result <= 0);
 
-        for(int i = 0; i < actualRecipeList.size(); i ++) {
-            System.out.println(actualRecipeList.get(i).toString());
-        }
-//        result = testComparator.compare(actualRecipeList.get(1), actualRecipeList.get(2));
-//        assertTrue(result <= 0);
-//
-//        result = testComparator.compare(actualRecipeList.get(2), actualRecipeList.get(3));
-//        assertTrue(result <= 0);
-
         System.out.println("Finished testDescendingTitleCompare");
     }
 
@@ -118,12 +109,6 @@ public class RecipeHandlerIT {
 
         int result = testComparator.compare(actualRecipeList.get(0), actualRecipeList.get(1));
         assertTrue(result >= 0);
-
-//        result = testComparator.compare(actualRecipeList.get(1), actualRecipeList.get(2));
-//        assertTrue(result >= 0);
-//
-//        result = testComparator.compare(actualRecipeList.get(2), actualRecipeList.get(3));
-//        assertTrue(result >= 0);
 
         System.out.println("Finished testAscendingTitleCompare");
     }
