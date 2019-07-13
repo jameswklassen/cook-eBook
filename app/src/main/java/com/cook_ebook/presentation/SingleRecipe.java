@@ -189,7 +189,13 @@ public class SingleRecipe extends AppCompatActivity implements View.OnClickListe
         Intent intent = new Intent(getApplicationContext(),AddEditView.class);
         System.out.println("SINGLE" + extras.getInt("recipeID"));
         intent.putExtra("recipe_key",extras);
+        intent.putExtra("createRecipe",false);
         startActivityForResult(intent, ADD_ACTIVITY);
+    }
+
+    private void duplicateRecipe(){
+        Intent intent = new Intent(getApplicationContext(),AddEditView.class);
+        intent.putExtra("recipe_key",extras);
     }
 
     @Override
@@ -229,7 +235,11 @@ public class SingleRecipe extends AppCompatActivity implements View.OnClickListe
         } else if (id == R.id.edit_recipe){
             editRecipe();
             return true;
-        } else {
+        } else if (id == R.id.duplicate_recipe){
+            duplicateRecipe();
+            return true;
+        }
+        else {
             if(update) {
                 Intent intent = favouriteIntent();
                 setResult(RESULT_OK, intent);
