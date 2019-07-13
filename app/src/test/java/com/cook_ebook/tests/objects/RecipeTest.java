@@ -32,7 +32,7 @@ public class RecipeTest {
         assertEquals("These cookies are amazing", recipe.getRecipeDescription());
         assertEquals("Flour, Eggs, Butter", recipe.getRecipeIngredients());
         assertEquals(60, recipe.getRecipeCookingTime());
-        assertEquals("", recipe.getRecipeImages());
+        assertEquals("", recipe.getRecipeImage());
         assertEquals(expectNumber, recipe.getRecipeTagList().size());
         assertEquals(true, recipe.getRecipeIsFavourite());
 
@@ -58,7 +58,7 @@ public class RecipeTest {
         assertEquals("These cakes are amazing", recipe.getRecipeDescription());
         assertEquals("Flour, Eggs, Butter", recipe.getRecipeIngredients());
         assertEquals(330, recipe.getRecipeCookingTime());
-        assertEquals("", recipe.getRecipeImages());
+        assertEquals("", recipe.getRecipeImage());
         assertEquals(expectNumber + 1, recipe.getRecipeTagList().size());
         assertTrue(recipe.getRecipeTagList().contains(new RecipeTag("sugar")));
         assertEquals(false, recipe.getRecipeIsFavourite());
@@ -86,7 +86,7 @@ public class RecipeTest {
         assertEquals("These cakes are amazing", recipe.getRecipeDescription());
         assertEquals("Flour, Eggs, Butter", recipe.getRecipeIngredients());
         assertEquals(320, recipe.getRecipeCookingTime());
-        assertEquals("", recipe.getRecipeImages());
+        assertEquals("", recipe.getRecipeImage());
         assertEquals(expectNumber + 2, recipe.getRecipeTagList().size());
         assertTrue(recipe.getRecipeTagList().contains(new RecipeTag("sugar")));
         assertTrue(recipe.getRecipeTagList().contains(new RecipeTag("egg")));
@@ -117,7 +117,7 @@ public class RecipeTest {
         assertEquals("These cakes are amazing", recipe.getRecipeDescription());
         assertEquals("Flour, Eggs, Butter", recipe.getRecipeIngredients());
         assertEquals(320, recipe.getRecipeCookingTime());
-        assertEquals("", recipe.getRecipeImages());
+        assertEquals("", recipe.getRecipeImage());
         assertEquals(expectNumber + 2, recipe.getRecipeTagList().size());
         assertTrue(recipe.getRecipeTagList().contains(new RecipeTag("sugar")));
         assertTrue(recipe.getRecipeTagList().contains(new RecipeTag("egg")));
