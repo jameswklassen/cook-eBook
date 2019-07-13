@@ -111,24 +111,4 @@ public class RecipeTagHandlerTest {
 
         System.out.println("Finished testDeleteTag.");
     }
-
-    @Test
-    public void testDoesTagExist() {
-        System.out.println("\nStarting testDoesTagExist");
-
-        assertTrue(tagSetHandler.doesTagExist(new RecipeTag("salad")));
-        assertFalse(tagSetHandler.doesTagExist(new RecipeTag("I am not an existed tag")));
-
-        System.out.println("Finished testDoesTagExist.");
-    }
-
-    @Test
-    public void testDoesTagNameExist() {
-        System.out.println("\nStarting testDoesTagNameExist");
-
-        assertTrue(tagSetHandler.doesTagNameExist("salad"));
-        assertFalse(tagSetHandler.doesTagNameExist("I am not an existed tag"));
-
-        System.out.println("Finished testDoesTagNameExist.");
-    }
 }
