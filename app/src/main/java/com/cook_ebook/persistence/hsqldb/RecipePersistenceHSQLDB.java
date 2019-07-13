@@ -201,7 +201,7 @@ public class RecipePersistenceHSQLDB implements RecipePersistence {
             statement.setString(2, recipe.getRecipeDescription());
             statement.setString(3, recipe.getRecipeIngredients());
             statement.setInt(4, recipe.getRecipeCookingTime());
-            statement.setString(5, recipe.getRecipeImages());
+            statement.setString(5, recipe.getRecipeImage());
             statement.setBoolean(6, recipe.getRecipeIsFavourite());
             statement.setString(7, dateString);
 
@@ -231,7 +231,7 @@ public class RecipePersistenceHSQLDB implements RecipePersistence {
             statement.setString(2, newRecipe.getRecipeDescription());
             statement.setString(3, newRecipe.getRecipeIngredients());
             statement.setInt(4, newRecipe.getRecipeCookingTime());
-            statement.setString(5, newRecipe.getRecipeImages());
+            statement.setString(5, newRecipe.getRecipeImage());
             statement.setBoolean(6, newRecipe.getRecipeIsFavourite());
             statement.setString(7, dateString);
             statement.setInt(8, newRecipe.getRecipeID());

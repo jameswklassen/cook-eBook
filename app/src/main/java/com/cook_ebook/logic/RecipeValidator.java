@@ -21,7 +21,7 @@ public class RecipeValidator {
      * Return false if title is invalid
      */
     public static boolean validateTitle(String title) throws InvalidRecipeTitle {
-        return !(title.equals("") || title == null);
+        return title != null && !(title.equals(""));
     }
 
     /* validateCookingTimeNumeric()
