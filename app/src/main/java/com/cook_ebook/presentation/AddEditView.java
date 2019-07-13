@@ -26,12 +26,15 @@ public class AddEditView extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //if a recipe needs to be edited rather than created store the bundle containing
         //that recipe and set new recipe accordingly
-        Bundle recipe = getIntent().getBundleExtra("recipe_key");
-        createRecipe = recipe == null;
+        Intent intent = getIntent();
+        Bundle recipe = intent.getBundleExtra("recipe_key");
+        boolean fillRecipe = recipe != null;
+        createRecipe = intent.getBooleanExtra("createRecipe",true);
 
         //Fill the textboxes if the recipe is being edited
-        if (!createRecipe) {
+        if(fillRecipe)
             fillTextBoxes(recipe);
+        if (!createRecipe) {
             recipeId = recipe.getInt("recipeID");
         }
     }
