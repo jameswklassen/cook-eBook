@@ -28,9 +28,9 @@ public class RecipePersistenceHSQLDB implements RecipePersistence {
 
     public RecipePersistenceHSQLDB(RecipeTagPersistence recipeTagPersistence, String dbPath) {
         this.dbPath = dbPath;
-         this.recipes = new ArrayList<>();
-         this.recipeTagPersistence = recipeTagPersistence;
-         loadRecipes();
+        this.recipes = new ArrayList<>();
+        this.recipeTagPersistence = recipeTagPersistence;
+        loadRecipes();
     }
 
     private Connection connect() throws SQLException {
