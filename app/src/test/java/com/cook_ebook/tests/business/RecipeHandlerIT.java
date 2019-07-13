@@ -2,6 +2,7 @@ package com.cook_ebook.tests.business;
 
 import com.cook_ebook.logic.RecipeHandler;
 import com.cook_ebook.logic.RecipeTagHandler;
+import com.cook_ebook.logic.comparators.LatestDateComparator;
 import com.cook_ebook.objects.Recipe;
 import com.cook_ebook.tests.utils.TestUtils;
 import static org.junit.Assert.*;
@@ -18,14 +19,12 @@ import static org.junit.Assert.assertNotNull;
 
 public class RecipeHandlerIT {
     private RecipeHandler recipeHandler;
-    //private RecipeTagHandler recipeTagHandler;
     private File tempDB;
 
     @Before
     public void setUp() throws IOException {
         System.out.println("Starting integration test for RecipeHandler");
         this.tempDB = TestUtils.copyDB();
-        //this.recipeTagHandler = new RecipeTagHandler(true);
         this.recipeHandler = new RecipeHandler(true);
 
         assertNotNull(this.recipeHandler);
@@ -54,6 +53,11 @@ public class RecipeHandlerIT {
     @Test
     public void testDescendingDateCompare(){
         System.out.println("\nStarting testDescendingDateCompare");
+
+        LatestDateComparator testComparator = new LatestDateComparator();
+        final List<Recipe> actualRecipeList = recipeHandler.getAllRecipes();
+        int result = testComparator.compare(actualRecipeList.get(0), actualRecipeList.get(1));
+        assertTrue(result <= 0);
 
         System.out.println("Finished testDescendingDateCompare");
     }
