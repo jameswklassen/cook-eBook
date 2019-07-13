@@ -82,23 +82,20 @@ public class SingleRecipe extends AppCompatActivity implements View.OnClickListe
             public void onClick(View v) {
                 if(playSpeech) {
                     // recipe title
-                    String toSpeak = layout.getTitle() + " Recipe";
-                    text_to_speech.speak(toSpeak, TextToSpeech.QUEUE_ADD, null, null);
-                    text_to_speech.playSilentUtterance(1000, TextToSpeech.QUEUE_ADD, null);
+                    String toSpeak = getRecipeTitle() + " Recipe";
+                    speakPhrase(toSpeak);
 
                     // cooking time
-                    toSpeak = "This Recipe has " + time.getText() + " cooking time. ";
-                    text_to_speech.speak(toSpeak, TextToSpeech.QUEUE_ADD, null, null);
-                    text_to_speech.playSilentUtterance(1000, TextToSpeech.QUEUE_ADD, null);
+                    toSpeak = "This Recipe has " + getRecipeTime() + " cooking time. ";
+                    speakPhrase(toSpeak);
 
                     // recipe ingredients
-                    toSpeak = "Ingredients " + ingredients.getText();
-                    text_to_speech.speak(toSpeak, TextToSpeech.QUEUE_ADD, null, null);
-                    text_to_speech.playSilentUtterance(1000, TextToSpeech.QUEUE_ADD, null);
+                    toSpeak = "Ingredients " + getRecipeIngredients();
+                    speakPhrase(toSpeak);
 
                     // recipe description
-                    toSpeak = "Description " + description.getText();
-                    text_to_speech.speak(toSpeak, TextToSpeech.QUEUE_ADD, null, null);
+                    toSpeak = "Description " + getRecipeDescription();
+                    speakPhrase(toSpeak);
                 }else
                 {
                     text_to_speech.stop();
@@ -107,6 +104,27 @@ public class SingleRecipe extends AppCompatActivity implements View.OnClickListe
                 setPlayImage();
             }
         });
+    }
+
+    private String getRecipeDescription() {
+        return extras.getString("recipeDescription");
+    }
+
+    private String getRecipeIngredients() {
+        return extras.getString("recipeIngredients");
+    }
+
+    private String getRecipeTitle() {
+        return extras.getString("recipeTitle");
+    }
+
+    private String getRecipeTime() {
+        return extras.getString("recipeTime");
+    }
+
+    private void speakPhrase(String text) {
+        text_to_speech.speak(text, TextToSpeech.QUEUE_ADD, null, null);
+        text_to_speech.playSilentUtterance(1000, TextToSpeech.QUEUE_ADD, null);
     }
 
     private void setPlayImage() {
@@ -192,6 +210,25 @@ public class SingleRecipe extends AppCompatActivity implements View.OnClickListe
         startActivityForResult(intent, ADD_ACTIVITY);
     }
 
+    private void shareRecipe() {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("*/*");
+        intent.putExtra(Intent.EXTRA_SUBJECT, getRecipeTitle());
+        intent.putExtra(Intent.EXTRA_TEXT, formatEmailText());
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+    }
+
+    private String formatEmailText() {
+        String text = "Title: \n" + getRecipeTitle();
+        text += "\n\nCooking Time: \n" + getRecipeTime();
+        text += "\n\nIngredients: \n" + getRecipeIngredients();
+        text += "\n\nDescription: \n" + getRecipeDescription();
+        text += "\n\nSent using Cook-ebook\n";
+        return text;
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != RESULT_OK) {
@@ -229,13 +266,15 @@ public class SingleRecipe extends AppCompatActivity implements View.OnClickListe
         } else if (id == R.id.edit_recipe){
             editRecipe();
             return true;
-        } else {
+        } else if (id == R.id.share_recipe) {
+            shareRecipe();
+            return true;
+        }else
             if(update) {
                 Intent intent = favouriteIntent();
                 setResult(RESULT_OK, intent);
             }
             finish();
             return true;
-        }
     }
 }
