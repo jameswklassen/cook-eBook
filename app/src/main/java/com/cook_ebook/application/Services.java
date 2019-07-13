@@ -26,7 +26,7 @@ public class Services {
     public static synchronized RecipePersistence getRecipePersistence(boolean forProduction) {
         if(recipePersistence == null) {
             if (forProduction) {
-                recipePersistence = new RecipePersistenceHSQLDB(recipeTagPersistence, Main.getDBPathName());
+                recipePersistence = new RecipePersistenceHSQLDB(getRecipeTagPersistence(true), Main.getDBPathName());
             } else {
                 recipePersistence = new RecipePersistenceStub();
             }
