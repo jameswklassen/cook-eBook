@@ -130,6 +130,8 @@ public class MainActivity extends AppCompatActivity {
                 int recipeId = extras.getInt("recipeID");
                 Date date = new Date();
                 Recipe newRecipe = buildRecipe(recipeId, time, title, tags, ingredients, description, date);
+                boolean favourite = extras.getBoolean("favourite");
+                newRecipe.setRecipeIsFavourite(favourite);
                 updateRecipe(newRecipe);
             }else{
                 Recipe newRecipe = buildRecipe(time, title, tags, ingredients, description);
