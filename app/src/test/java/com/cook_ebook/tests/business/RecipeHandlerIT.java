@@ -1,8 +1,10 @@
 package com.cook_ebook.tests.business;
 
 import com.cook_ebook.logic.RecipeHandler;
-import com.cook_ebook.logic.RecipeTagHandler;
+import com.cook_ebook.logic.comparators.AscendingTitleComparator;
+import com.cook_ebook.logic.comparators.DescendingTitleComparator;
 import com.cook_ebook.logic.comparators.LatestDateComparator;
+import com.cook_ebook.logic.comparators.OldestDateComparator;
 import com.cook_ebook.objects.Recipe;
 import com.cook_ebook.tests.utils.TestUtils;
 import static org.junit.Assert.*;
@@ -53,10 +55,16 @@ public class RecipeHandlerIT {
     @Test
     public void testDescendingDateCompare(){
         System.out.println("\nStarting testDescendingDateCompare");
-
         LatestDateComparator testComparator = new LatestDateComparator();
         final List<Recipe> actualRecipeList = recipeHandler.getAllRecipes();
+
         int result = testComparator.compare(actualRecipeList.get(0), actualRecipeList.get(1));
+        assertTrue(result <= 0);
+
+        result = testComparator.compare(actualRecipeList.get(1), actualRecipeList.get(2));
+        assertTrue(result <= 0);
+
+        result = testComparator.compare(actualRecipeList.get(2), actualRecipeList.get(3));
         assertTrue(result <= 0);
 
         System.out.println("Finished testDescendingDateCompare");
@@ -65,6 +73,17 @@ public class RecipeHandlerIT {
     @Test
     public void testAscendingDateCompare(){
         System.out.println("\nStarting testAscendingDateCompare");
+        OldestDateComparator testComparator = new OldestDateComparator();
+        List<Recipe> actualRecipeList = recipeHandler.getAllRecipes();
+
+        int result = testComparator.compare(actualRecipeList.get(0), actualRecipeList.get(1));
+        assertTrue(result >= 0);
+
+        result = testComparator.compare(actualRecipeList.get(1), actualRecipeList.get(2));
+        assertTrue(result >= 0);
+
+        result = testComparator.compare(actualRecipeList.get(2), actualRecipeList.get(3));
+        assertTrue(result >= 0);
 
         System.out.println("Finished testAscendingDateCompare");
     }
@@ -72,6 +91,20 @@ public class RecipeHandlerIT {
     @Test
     public void testDescendingTitleCompare(){
         System.out.println("\nStarting testDescendingTitleCompare");
+        DescendingTitleComparator testComparator = new DescendingTitleComparator();
+        List<Recipe> actualRecipeList = recipeHandler.getAllRecipes();
+
+        int result = testComparator.compare(actualRecipeList.get(0), actualRecipeList.get(1));
+        assertTrue(result <= 0);
+
+        for(int i = 0; i < actualRecipeList.size(); i ++) {
+            System.out.println(actualRecipeList.get(i).toString());
+        }
+//        result = testComparator.compare(actualRecipeList.get(1), actualRecipeList.get(2));
+//        assertTrue(result <= 0);
+//
+//        result = testComparator.compare(actualRecipeList.get(2), actualRecipeList.get(3));
+//        assertTrue(result <= 0);
 
         System.out.println("Finished testDescendingTitleCompare");
     }
@@ -79,6 +112,18 @@ public class RecipeHandlerIT {
     @Test
     public void testAscendingTitleCompare(){
         System.out.println("\nStarting testAscendingTitleCompare");
+
+        AscendingTitleComparator testComparator = new AscendingTitleComparator();
+        List<Recipe> actualRecipeList = recipeHandler.getAllRecipes();
+
+        int result = testComparator.compare(actualRecipeList.get(0), actualRecipeList.get(1));
+        assertTrue(result >= 0);
+
+//        result = testComparator.compare(actualRecipeList.get(1), actualRecipeList.get(2));
+//        assertTrue(result >= 0);
+//
+//        result = testComparator.compare(actualRecipeList.get(2), actualRecipeList.get(3));
+//        assertTrue(result >= 0);
 
         System.out.println("Finished testAscendingTitleCompare");
     }

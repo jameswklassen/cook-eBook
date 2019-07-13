@@ -158,6 +158,7 @@ public class Recipe {
                 ", recipeImage='" + recipeImage + '\'' +
                 ", recipeTagList='" + recipeTagList.toString() + '\'' +
                 ", recipeIsFavourite=" + recipeIsFavourite +
+                ", recipeDate=" + getRecipeDate().toString() +
                 '}';
     }
 
