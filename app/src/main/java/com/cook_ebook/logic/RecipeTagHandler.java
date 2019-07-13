@@ -52,16 +52,4 @@ public class RecipeTagHandler {
             throw new TagNotFoundException("The tag being deleted does not exist.");
         }
     }
-
-    public boolean doesTagExist(RecipeTag tag) throws InvalidTagException  {
-        if(RecipeTagValidator.validateRecipeTag(tag)) {
-            return dataAccessRecipeTag.doesTagExist(tag);
-        } else {
-            throw new TagNotFoundException("The tag does not exist.");
-        }
-    }
-
-    public boolean doesTagNameExist(String tagName)  throws InvalidTagException {
-        return dataAccessRecipeTag.doesTagNameExist(tagName);
-    }
 }
