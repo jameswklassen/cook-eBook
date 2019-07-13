@@ -59,14 +59,4 @@ public class RecipeValidatorTest {
 
         System.out.println("Finished testValidateCookingTimePositive");
     }
-
-    @Test
-    public void testIsStringNumeric() {
-        System.out.println("\nStarting testIsStringNumeric");
-
-        assertFalse(RecipeValidator.isStringNumeric("haha"));
-        assertTrue(RecipeValidator.isStringNumeric("100"));
-
-        System.out.println("Finished testIsStringNumeric");
-    }
 }
