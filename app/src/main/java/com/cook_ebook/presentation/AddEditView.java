@@ -15,6 +15,7 @@ public class AddEditView extends AppCompatActivity {
 
     //This boolean dictates whether a new recipe is being created or being edited
     private static boolean createRecipe;
+    private static boolean duplicateRecipe;
     private static int recipeId;
 
     @Override
@@ -30,8 +31,10 @@ public class AddEditView extends AppCompatActivity {
         Bundle recipe = intent.getBundleExtra("recipe_key");
         boolean fillRecipe = recipe != null;
         createRecipe = intent.getBooleanExtra("createRecipe",true);
+        //Add a duplication flag to the intent if the recipe is to be duplicated
+        duplicateRecipe = intent.getBooleanExtra("duplicateRecipe", false);
 
-        //Fill the textboxes if the recipe is being edited
+        //Fill the textboxes if the recipe is being edited or duplicated
         if(fillRecipe)
             fillTextBoxes(recipe);
         if (!createRecipe) {
@@ -58,6 +61,9 @@ public class AddEditView extends AppCompatActivity {
             Intent newRecipe = buildRecipe();
             Bundle extras = newRecipe.getExtras();
             int status = extras.getInt("status");
+
+            if (duplicateRecipe)
+                newRecipe.putExtra("duplicate", true);
 
             if (status == 0) {
                 if(!createRecipe){
