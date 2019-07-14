@@ -15,7 +15,6 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
@@ -136,20 +135,40 @@ public class RecipeHandlerIT {
 
         System.out.println("Finished testDescendingDateSort");
     }
-//
-//    @Test
-//    public void testAscendingTitleSort(){
-//        System.out.println("\nStarting testAscendingTitleSort");
-//
-//        System.out.println("Finished testAscendingTitleSort");
-//    }
-//
-//    @Test
-//    public void testDescendingTitleSort(){
-//        System.out.println("\nStarting testDescendingTitleSort");
-//
-//        System.out.println("Finished testDescendingTitleSort");
-//    }
+
+    @Test
+    public void testAscendingTitleSort(){
+        System.out.println("\nStarting testAscendingTitleSort");
+        recipeHandler.setSort("Title-Ascending");
+        List<Recipe> actualRecipeList = recipeHandler.getAllRecipes();
+
+        for(int i = 1; i < actualRecipeList.size(); i++) {
+            Recipe r1 = actualRecipeList.get(i-1);
+            Recipe r2 = actualRecipeList.get(i);
+            String s1 = r1.getRecipeTitle();
+            String s2 = r2.getRecipeTitle();
+            assertTrue(s1.compareTo(s2) < 0 || s1.equals(s2));
+        }
+
+        System.out.println("Finished testAscendingTitleSort");
+    }
+
+    @Test
+    public void testDescendingTitleSort(){
+        System.out.println("\nStarting testDescendingTitleSort");
+        recipeHandler.setSort("Title-Descending");
+        List<Recipe> actualRecipeList = recipeHandler.getAllRecipes();
+
+        for(int i = 1; i < actualRecipeList.size(); i++) {
+            Recipe r1 = actualRecipeList.get(i-1);
+            Recipe r2 = actualRecipeList.get(i);
+            String s1 = r1.getRecipeTitle();
+            String s2 = r2.getRecipeTitle();
+            assertTrue(s1.compareTo(s2) > 0 || s1.equals(s2));
+        }
+
+        System.out.println("Finished testDescendingTitleSort");
+    }
 //
 //    @Test
 //    public void testGetRecipeById() {
