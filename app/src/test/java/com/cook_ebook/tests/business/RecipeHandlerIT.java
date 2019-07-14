@@ -253,7 +253,7 @@ public class RecipeHandlerIT {
 
         System.out.println("Finished testSetFilter");
     }
-    
+
     @Test
     public void testFilter() {
         System.out.println("\nStarting testFilter");
@@ -287,41 +287,58 @@ public class RecipeHandlerIT {
 
         System.out.println("Finished testSetSort");
     }
-//
-//    @Test
-//    public void testGetRecipeListByCookingTime() {
-//        System.out.println("\nStarting testGetRecipeListByCookingTime");
-//
-//
-//        System.out.println("Finished testGetRecipeListByCookingTime");
-//    }
-//
-//    @Test
-//    public void testGetRecipeListByTagName() {
-//        System.out.println("\nStarting testGetRecipeListByTagName");
-//
-//
-//
-//        System.out.println("Finished testGetRecipeListByTagName");
-//    }
-//
-//    @Test
-//    public void testGetRecipeListByTagId() {
-//        System.out.println("\nStarting testGetRecipeListByTagId");
-//
-//
-//
-//        System.out.println("Finished testGetRecipeListByTagId");
-//    }
-//
-//    @Test
-//    public void testGetRecipeListByTag() {
-//        System.out.println("\nStarting testGetRecipeListByTag");
-//
-//
-//        System.out.println("Finished testGetRecipeListByTag");
-//    }
-//
+
+    @Test
+    public void testGetRecipeListByCookingTime() {
+        System.out.println("\nStarting testGetRecipeListByCookingTime");
+        List<Recipe> actualRecipeList = recipeHandler.getRecipeListByCookingTime(30);
+
+        assertEquals(1, actualRecipeList.size());
+
+        for(int i = 0; i < actualRecipeList.size(); i ++) {
+            assertEquals(30, actualRecipeList.get(i).getRecipeCookingTime());
+        }
+
+        System.out.println("Finished testGetRecipeListByCookingTime");
+    }
+
+    @Test
+    public void testGetRecipeListByTagName() {
+        System.out.println("\nStarting testGetRecipeListByTagName");
+        List<Recipe> actualRecipeList1 = recipeHandler.getRecipeListByTagName("meal");
+        assertEquals(3, actualRecipeList1.size());
+
+        List<Recipe> actualRecipeList2 = recipeHandler.getRecipeListByTagName("dessert");
+        assertEquals(1, actualRecipeList2.size());
+
+        System.out.println("Finished testGetRecipeListByTagName");
+    }
+
+    @Test
+    public void testGetRecipeListByTagId() {
+        System.out.println("\nStarting testGetRecipeListByTagId");
+
+        List<Recipe> actualRecipeList1 = recipeHandler.getRecipeListByTagId(-1);
+        assertEquals(0, actualRecipeList1.size());
+
+        // need more tests
+
+
+        System.out.println("Finished testGetRecipeListByTagId");
+    }
+
+    @Test
+    public void testGetRecipeListByTag() {
+        System.out.println("\nStarting testGetRecipeListByTag");
+        List<Recipe> actualRecipeList1 = recipeHandler.getRecipeListByTag(new RecipeTag("cake"));
+        assertEquals(1, actualRecipeList1.size());
+
+        List<Recipe> actualRecipeList2 = recipeHandler.getRecipeListByTag(new RecipeTag("dessert"));
+        assertEquals(2, actualRecipeList2.size());
+
+        System.out.println("Finished testGetRecipeListByTag");
+    }
+
 //    @Test
 //    public void testGetRecipeListByFavourite() {
 //        System.out.println("\nStarting testGetRecipeListByFavourite");
