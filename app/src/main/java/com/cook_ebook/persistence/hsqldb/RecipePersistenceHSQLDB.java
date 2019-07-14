@@ -1,6 +1,5 @@
 package com.cook_ebook.persistence.hsqldb;
 
-import com.cook_ebook.logic.exceptions.RecipeNotFoundException;
 import com.cook_ebook.objects.Recipe;
 import com.cook_ebook.objects.RecipeTag;
 import com.cook_ebook.persistence.RecipePersistence;
@@ -147,21 +146,6 @@ public class RecipePersistenceHSQLDB implements RecipePersistence {
             Log.e("Connect SQL", e.getMessage() + e.getSQLState());
             e.printStackTrace();
         }
-        return null;
-    }
-
-    @Override
-    public List<Recipe> getRecipeListByCookingTime(int cookingTime) {
-        return null;
-    }
-
-    @Override
-    public List<Recipe> getRecipeListByTagName(String tagName) {
-        return null;
-    }
-
-    @Override
-    public List<Recipe> getRecipeListByTagId(int tagId) {
         return null;
     }
 

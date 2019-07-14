@@ -171,18 +171,6 @@ public class RecipeHandler {
         return dataAccessRecipe.getRecipeById(recipeId);
     }
 
-    public List<Recipe> getRecipeListByCookingTime(int cookingTime) {
-        return dataAccessRecipe.getRecipeListByCookingTime(cookingTime);
-    }
-
-    public List<Recipe> getRecipeListByTagName(String tagName) {
-        return dataAccessRecipe.getRecipeListByTagName(tagName);
-    }
-
-    public List<Recipe> getRecipeListByTagId(int tagId) {
-        return dataAccessRecipe.getRecipeListByTagId(tagId);
-    }
-
     public List<Recipe> getRecipeListByTag(RecipeTag tag) {
         return dataAccessRecipe.getRecipeListByTag(tag);
     }
