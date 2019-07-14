@@ -66,9 +66,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
                 String tags = "";
                 for(int k = 0; k < recipes.get(i).getRecipeTagList().size(); k ++) {
-                    tags += recipes.get(i).getRecipeTagList().get(k).getTagName() + "\n";
+                    tags += recipes.get(i).getRecipeTagList().get(k).getTagName() + ", ";
                 }
-
+                
                 myIntent.putExtra("recipeTags", tags);
                 myIntent.putExtra("recipeID", recipes.get(i).getRecipeID());
 
