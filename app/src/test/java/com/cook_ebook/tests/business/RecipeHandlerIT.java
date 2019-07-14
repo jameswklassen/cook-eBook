@@ -169,14 +169,24 @@ public class RecipeHandlerIT {
 
         System.out.println("Finished testDescendingTitleSort");
     }
-//
-//    @Test
-//    public void testGetRecipeById() {
-//        System.out.println("\nStarting testGetRecipeById");
-//
-//
-//        System.out.println("Finished testGetRecipeById");
-//    }
+
+    @Test
+    public void testGetRecipeById() {
+        System.out.println("\nStarting testGetRecipeById");
+        Recipe targetRecipe = recipeHandler.getRecipeById(1);
+
+        assertEquals("Chocolate Chip Cookies", targetRecipe.getRecipeTitle());
+        assertEquals("Crisp edges, chewy middles, and so, so easy to make. Try this wildly-popular " +
+                "chocolate chip cookie recipe for yourself.", targetRecipe.getRecipeDescription());
+        assertEquals("1/4 cups of all purpose flour. 1 tsp baking soda. 1/2 cup of butter. 1 tsp salt ( " +
+                "use 1/2 tsp if you are using salted butter) 1 cup of packed brown sugar. 1/2 cup of granulated sugar. " +
+                "1 1/2 tsp vanilla. 2 eggs.", targetRecipe.getRecipeIngredients());
+        assertEquals(30, targetRecipe.getRecipeCookingTime());
+        assertEquals("/add/path/to/resource/later", targetRecipe.getRecipeImage());
+        assertEquals("2019-02-14 02:30:00.0", targetRecipe.getRecipeDate().toString());
+
+        System.out.println("Finished testGetRecipeById");
+    }
 //
 //    @Test
 //    public void testResetFilter() {
@@ -309,6 +319,7 @@ public class RecipeHandlerIT {
 
     @After
     public void tearDown() {
+        System.out.println("Reset database.");
         // reset DB
         this.tempDB.delete();
     }
