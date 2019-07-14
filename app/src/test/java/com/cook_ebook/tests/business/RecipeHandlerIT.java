@@ -5,6 +5,7 @@ import com.cook_ebook.logic.comparators.AscendingTitleComparator;
 import com.cook_ebook.logic.comparators.DescendingTitleComparator;
 import com.cook_ebook.logic.comparators.LatestDateComparator;
 import com.cook_ebook.logic.comparators.OldestDateComparator;
+import com.cook_ebook.logic.exceptions.InvalidRecipeException;
 import com.cook_ebook.objects.Recipe;
 import com.cook_ebook.objects.RecipeTag;
 import com.cook_ebook.tests.utils.TestUtils;
@@ -353,48 +354,120 @@ public class RecipeHandlerIT {
 //        System.out.println("Finished testSearch");
 //    }
 
-//    @Test
-//    public void testGetRecipeListByFavourite() {
-//        System.out.println("\nStarting testGetRecipeListByFavourite");
-//
-//        System.out.println("Finished testGetRecipeListByFavourite");
-//    }
-//
-//    @Test
-//    public void testInsertRecipe() {
-//        System.out.println("\nStarting testInsertRecipe");
-//
-//
-//
-//        System.out.println("Finished testInsertRecipe");
-//    }
-//
-//    @Test
-//    public void testUpdateRecipe() {
-//        System.out.println("\nStarting testUpdateRecipe");
-//
-//
-//
-//        System.out.println("Finished testUpdateRecipe");
-//    }
-//
-//    @Test
-//    public void testDeleteRecipe() {
-//        System.out.println("\nStarting testDeleteRecipe");
-//
-//
-//
-//        System.out.println("Finished testDeleteRecipe");
-//    }
-//
-//    @Test
-//    public void testDeleteRecipeById() {
-//        System.out.println("\nStarting testDeleteRecipeById");
-//
-//
-//
-//        System.out.println("Finished testDeleteRecipeById");
-//    }
+    @Test
+    public void testGetRecipeListByFavourite() {
+        System.out.println("\nStarting testGetRecipeListByFavourite");
+        List<Recipe> actualRecipeList = recipeHandler.getRecipeListByFavourite(false);
+
+        assertEquals(4, actualRecipeList.size());
+
+        for(int i = 0; i < actualRecipeList.size(); i ++) {
+            assertFalse(actualRecipeList.get(i).getRecipeIsFavourite());
+        }
+
+        System.out.println("Finished testGetRecipeListByFavourite");
+    }
+
+    @Test
+    public void testInsertRecipe() {
+        System.out.println("\nStarting testInsertRecipe");
+
+        int initialSize = recipeHandler.getAllRecipes().size();
+        int expectedSize = initialSize + 1;
+
+        Recipe recipe = new Recipe("pasta3",
+                "pasta3 description",
+                "egg, water",
+                10,
+                "pasta3 images",
+                true);
+
+        recipeHandler.insertRecipe(recipe);
+
+        assertEquals(expectedSize, recipeHandler.getAllRecipes().size());
+        boolean caught = false;
+        try{
+            recipe = null;
+
+            recipeHandler.insertRecipe(recipe);
+        }catch(InvalidRecipeException e)
+        {
+            caught = true;
+        }
+        assertTrue(caught);
+
+        System.out.println("Finished testInsertRecipe");
+    }
+
+    @Test
+    public void testUpdateRecipe() {
+        System.out.println("\nStarting testUpdateRecipe");
+
+        Recipe recipe = recipeHandler.getAllRecipes().get(0);
+        recipe.setRecipeDescription("I'm a test description.");
+
+        recipeHandler.updateRecipe(recipe);
+        assertEquals("I'm a test description.", recipeHandler.getAllRecipes().get(0).getRecipeDescription());
+
+        boolean caught = false;
+        try{
+            recipe = null;
+
+            recipeHandler.updateRecipe(recipe);
+        }catch(InvalidRecipeException e)
+        {
+            caught = true;
+        }
+        assertTrue(caught);
+
+        System.out.println("Finished testUpdateRecipe");
+    }
+
+    @Test
+    public void testDeleteRecipe() {
+        System.out.println("\nStarting testDeleteRecipe");
+
+        List<Recipe> initialList = recipeHandler.getAllRecipes();
+
+        int initialSize = initialList.size();
+        int expectedSize = initialSize - 1;
+        Recipe recipe = initialList.get(0);
+
+        recipeHandler.deleteRecipe(recipe);
+
+        assertEquals(expectedSize, recipeHandler.getAllRecipes().size());
+        assertEquals(recipe, recipeHandler.insertRecipe(recipe));
+
+        boolean caught = false;
+        try{
+            recipe = null;
+
+            recipeHandler.insertRecipe(recipe);
+        }catch(InvalidRecipeException e)
+        {
+            caught = true;
+        }
+        assertTrue(caught);
+
+        System.out.println("Finished testDeleteRecipe");
+    }
+
+    @Test
+    public void testDeleteRecipeById() {
+        System.out.println("\nStarting testDeleteRecipeById");
+
+        List<Recipe> initialRecipeList = recipeHandler.getAllRecipes();
+
+        int initialSize = initialRecipeList.size();
+        int expectedSize = initialSize - 1;
+        Recipe recipe = initialRecipeList.get(0);
+
+        recipeHandler.deleteRecipeById(recipe.getRecipeID());
+
+        assertEquals(expectedSize, recipeHandler.getAllRecipes().size());
+
+        System.out.println("Finished testDeleteRecipeById");
+    }
 
     @After
     public void tearDown() {
