@@ -3,6 +3,7 @@ package com.cook_ebook.tests.business;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 import com.cook_ebook.logic.RecipeHandler;
 import com.cook_ebook.logic.comparators.OldestDateComparator;
@@ -12,8 +13,11 @@ import com.cook_ebook.logic.comparators.DescendingTitleComparator;
 import com.cook_ebook.logic.exceptions.InvalidRecipeException;
 import com.cook_ebook.objects.Recipe;
 import com.cook_ebook.objects.RecipeTag;
+import com.cook_ebook.persistence.RecipePersistence;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class RecipeHandlerTest {
@@ -176,6 +180,14 @@ public class RecipeHandlerTest {
     }
 
     @Test
+    public void testResetSearch() {
+        System.out.println("\nStarting testResetSearch");
+        recipeHandler.resetSearch();
+        assertNull(recipeHandler.getSearchString());
+        System.out.println("Finished testResetSearch");
+    }
+
+    @Test
     public void testSetFavourite() {
         System.out.println("\nStarting testSetFavourite");
         recipeHandler.setFavourite(true);
@@ -237,6 +249,61 @@ public class RecipeHandlerTest {
         assertTrue(recipeHandler.getSort() instanceof DescendingTitleComparator);
 
         System.out.println("Finished testSetSort");
+    }
+
+    @Test
+    public void testSetSearch() {
+        System.out.println("\nStarting testSetSearch");
+
+        String[] testSearches = {
+                "Test0",
+                "tEsT1",
+                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        };
+
+        for(String search : testSearches) {
+            recipeHandler.setSearch(search);
+            assertEquals(recipeHandler.getSearchString(), search);
+        }
+        System.out.println("Finished testSetSearch");
+    }
+
+    @Test
+    public void testSearch() {
+        RecipePersistence mockedPersistence = mock(RecipePersistence.class);
+
+        RecipeHandler toTest = new RecipeHandler(mockedPersistence);
+        List<Recipe> mockList = new ArrayList<>();
+        String[] titles = {
+                "zero one two three four",
+                "one two three four",
+                "two three four",
+                "three four",
+                "four"
+        };
+
+        for(String title : titles)
+            mockList.add(new Recipe(title, "a", "a", 1, "a", false));
+
+        // Store a list of searches with known result counts
+        HashMap<String, Integer> knownSearches = new HashMap<>();
+        knownSearches.put("test string", 0);
+        knownSearches.put("er", 1);
+        knownSearches.put("ne", 2);
+        knownSearches.put("wo", 3);
+        knownSearches.put("ee", 4);
+        knownSearches.put("ou", 5);
+
+        when(mockedPersistence.getRecipeList()).thenReturn(mockList);
+
+        assertEquals(toTest.getAllRecipes(), mockList);
+
+        for(String searchTerm : knownSearches.keySet()) {
+            toTest.setSearch(searchTerm);
+            assertEquals(toTest.getAllRecipes().size(), (int)knownSearches.get(searchTerm));
+        }
+
+        System.out.println("Finished testSearch");
     }
 
     @Test
