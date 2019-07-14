@@ -25,4 +25,14 @@ public class Services {
 
         return recipeTagPersistence;
     }
+
+    /**
+     * clean
+     *
+     * Reset all services so to be reloaded from scratch next time they are referenced
+     */
+    public static synchronized void clean() {
+        recipePersistence = null;
+        recipeTagPersistence = null;
+    }
 }

@@ -1,6 +1,7 @@
 package com.cook_ebook.tests.business;
 
 import com.cook_ebook.logic.RecipeHandler;
+import com.cook_ebook.logic.Services;
 import com.cook_ebook.logic.comparators.AscendingTitleComparator;
 import com.cook_ebook.logic.comparators.DescendingTitleComparator;
 import com.cook_ebook.logic.comparators.LatestDateComparator;
@@ -474,5 +475,8 @@ public class RecipeHandlerIT {
         System.out.println("Reset database.");
         // reset DB
         this.tempDB.delete();
+
+        // clear Services
+        Services.clean();
     }
 }
