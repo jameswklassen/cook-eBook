@@ -196,13 +196,14 @@ public class RecipeHandlerIT {
 
         System.out.println("Finished testResetFilter");
     }
-//
-//    @Test
-//    public void testResetSort() {
-//        System.out.println("\nStarting testResetSort");
-//
-//        System.out.println("Finished testResetSort");
-//    }
+
+    @Test
+    public void testResetSort() {
+        System.out.println("\nStarting testResetSort");
+        recipeHandler.resetSort();
+        assertTrue(recipeHandler.getSort() instanceof LatestDateComparator);
+        System.out.println("Finished testResetSort");
+    }
 //
 //    @Test
 //    public void testResetFavourite() {
