@@ -189,7 +189,6 @@ public class SingleRecipe extends AppCompatActivity implements View.OnClickListe
 
     private Intent deleteIntent() {
         Intent myIntent = new Intent();
-        System.out.println(extras.getInt("recipeID"));
         myIntent.putExtra("doDelete", extras.getInt("recipeID"));
 
         return myIntent;
@@ -205,14 +204,9 @@ public class SingleRecipe extends AppCompatActivity implements View.OnClickListe
 
     private void editRecipe(){
         Intent intent = new Intent(getApplicationContext(),AddEditView.class);
-        System.out.println("SINGLE" + extras.getInt("recipeID"));
         intent.putExtra("recipe_key",extras);
         intent.putExtra("createRecipe",false);
         startActivityForResult(intent, ADD_ACTIVITY);
-    }
-    private void duplicateRecipe(){
-        Intent intent = new Intent(getApplicationContext(),AddEditView.class);
-        intent.putExtra("recipe_key",extras);
     }
 
     private void shareRecipe() {
@@ -232,6 +226,13 @@ public class SingleRecipe extends AppCompatActivity implements View.OnClickListe
         text += "\n\nDescription: \n" + getRecipeDescription();
         text += "\n\nSent using Cook-ebook\n";
         return text;
+    }
+
+    private void duplicateRecipe(){
+        Intent intent = new Intent(getApplicationContext(),AddEditView.class);
+        intent.putExtra("recipe_key",extras);
+        intent.putExtra("duplicateRecipe", true);
+        startActivityForResult(intent, ADD_ACTIVITY);
     }
 
     @Override
@@ -278,12 +279,13 @@ public class SingleRecipe extends AppCompatActivity implements View.OnClickListe
         } else if (id == R.id.share_recipe) {
             shareRecipe();
             return true;
-        } else
+        } else {
             if(update) {
                 Intent intent = favouriteIntent();
                 setResult(RESULT_OK, intent);
             }
             finish();
             return true;
+        }
     }
 }
