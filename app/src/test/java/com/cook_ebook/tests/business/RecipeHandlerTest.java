@@ -80,7 +80,7 @@ public class RecipeHandlerTest {
     @Test
     public void testAscendingDateSort(){
         System.out.println("\nStarting testAscendingDateSort");
-        recipeHandler.setSort("Date-Ascending");
+        recipeHandler.setSort("Date-Oldest");
         List<Recipe> actualRecipeList = recipeHandler.getAllRecipes();
 
         for(int i = 1; i < actualRecipeList.size(); i++) {
@@ -96,7 +96,7 @@ public class RecipeHandlerTest {
     @Test
     public void testDescendingDateSort(){
         System.out.println("\nStarting testDescendingDateSort");
-        recipeHandler.setSort("Date-Descending");
+        recipeHandler.setSort("Date-Latest");
         List<Recipe> actualRecipeList = recipeHandler.getAllRecipes();
 
         for(int i = 1; i < actualRecipeList.size(); i++) {
