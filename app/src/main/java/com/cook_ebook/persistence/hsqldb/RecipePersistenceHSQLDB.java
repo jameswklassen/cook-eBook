@@ -1,5 +1,6 @@
 package com.cook_ebook.persistence.hsqldb;
 
+import com.cook_ebook.logic.exceptions.RecipeNotFoundException;
 import com.cook_ebook.objects.Recipe;
 import com.cook_ebook.objects.RecipeTag;
 import com.cook_ebook.persistence.RecipePersistence;
@@ -150,11 +151,6 @@ public class RecipePersistenceHSQLDB implements RecipePersistence {
     }
 
     @Override
-    public List<Recipe> getRecipeListByTag(RecipeTag tag) {
-        return null;
-    }
-
-    @Override
     public List<Recipe> getRecipeListByFavourite(boolean isFavourite) {
         List<Recipe> favourites = new ArrayList<>();
 
@@ -205,7 +201,7 @@ public class RecipePersistenceHSQLDB implements RecipePersistence {
     }
 
     // TODO: throw RecipeNotFoundException
-    public Recipe updateRecipe(Recipe newRecipe) {
+    public Recipe updateRecipe(Recipe newRecipe) throws RecipeNotFoundException {
         System.out.println("[LOG] UPDATE RECIPE");
         String dateString = DBHelper.getSQLDateString(newRecipe.getRecipeDate());
 

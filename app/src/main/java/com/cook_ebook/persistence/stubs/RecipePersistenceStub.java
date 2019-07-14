@@ -154,26 +154,6 @@ public class RecipePersistenceStub implements RecipePersistence {
     }
 
     @Override
-    public List<Recipe> getRecipeListByTag(RecipeTag tag){
-        List<Recipe> recipeListByTag = new ArrayList<>();
-
-        for(int i = 0; i < recipeList.size(); i ++) {
-            if(recipeList.get(i).getRecipeTagList().contains(tag)) {
-                recipeListByTag.add(recipeList.get(i));
-            }
-        }
-
-        //sort the result by recipeId in ascending order
-        Collections.sort(recipeListByTag, new Comparator<Recipe>() {
-            public int compare(Recipe recipe1, Recipe recipe2) {
-                return Integer.valueOf(recipe1.getRecipeID()).compareTo(recipe2.getRecipeID());
-            }
-        });
-
-        return recipeListByTag;
-    }
-
-    @Override
     public List<Recipe> getRecipeListByFavourite(boolean isFavourite) {
         List<Recipe> recipeListByFavourite = new ArrayList<>();
 

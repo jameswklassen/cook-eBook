@@ -171,10 +171,6 @@ public class RecipeHandler {
         return dataAccessRecipe.getRecipeById(recipeId);
     }
 
-    public List<Recipe> getRecipeListByTag(RecipeTag tag) {
-        return dataAccessRecipe.getRecipeListByTag(tag);
-    }
-
     public List<Recipe> getRecipeListByFavourite(boolean isFavourite) {
         return dataAccessRecipe.getRecipeListByFavourite(isFavourite);
     }

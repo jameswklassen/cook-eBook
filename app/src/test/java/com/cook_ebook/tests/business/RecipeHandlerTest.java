@@ -149,8 +149,7 @@ public class RecipeHandlerTest {
     public void testGetRecipeById() {
         System.out.println("\nStarting testGetRecipeById");
         Recipe targetRecipe1 = recipeHandler.getRecipeById(3);
-
-
+        assertNotNull(targetRecipe1);
         System.out.println("Finished testGetRecipeById");
     }
 
@@ -304,19 +303,6 @@ public class RecipeHandlerTest {
         }
 
         System.out.println("Finished testSearch");
-    }
-
-    @Test
-    public void testGetRecipeListByTag() {
-        System.out.println("\nStarting testGetRecipeListByTag");
-
-        List<Recipe> actualRecipeList1 = recipeHandler.getRecipeListByTag(new RecipeTag("cake"));
-        assertEquals(1, actualRecipeList1.size());
-
-        List<Recipe> actualRecipeList2 = recipeHandler.getRecipeListByTag(new RecipeTag("dessert"));
-        assertEquals(2, actualRecipeList2.size());
-
-        System.out.println("Finished testGetRecipeListByTag");
     }
 
     @Test

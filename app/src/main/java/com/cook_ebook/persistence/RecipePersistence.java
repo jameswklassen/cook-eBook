@@ -11,8 +11,6 @@ public interface RecipePersistence {
 
     Recipe getRecipeById(int recipeId);
 
-    List<Recipe> getRecipeListByTag(RecipeTag tag);
-
     List<Recipe> getRecipeListByFavourite(boolean isFavourite);
 
     Recipe insertRecipe(Recipe recipe);
