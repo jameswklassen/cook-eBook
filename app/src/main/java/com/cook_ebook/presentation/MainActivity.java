@@ -109,6 +109,14 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(new Intent(getApplicationContext(), AddEditView.class), ADD_ACTIVITY);
     }
 
+    //This method checks to see if the returned activity requests a recipe to be made/edited
+    //Note: each line is OR'd meaning this method checks if any line's condition is met
+    private boolean handleRecipe(int requestCode, Bundle extras){
+        return requestCode == ADD_ACTIVITY ||
+               (requestCode == SINGLE_ACTIVITY && extras.containsKey("update")) ||
+               (requestCode == SINGLE_ACTIVITY && extras.containsKey("duplicate"));
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != RESULT_OK) {
@@ -117,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
         }
         Bundle extras = data.getExtras();
 
-        if (requestCode == ADD_ACTIVITY || (requestCode == SINGLE_ACTIVITY && extras.containsKey("update"))) {
+        if (handleRecipe(requestCode, extras)) {
             int time = Integer.parseInt(extras.getString("recipeTime"));
             String title = extras.getString("recipeTitle");
             String tags = extras.getString("recipeTags");
