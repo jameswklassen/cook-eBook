@@ -9,7 +9,8 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        RecipeHandlerIT.class
+        RecipeHandlerIT.class,
+        RecipeTagHandlerIT.class
 })
 
 public class IntegrationTests {
