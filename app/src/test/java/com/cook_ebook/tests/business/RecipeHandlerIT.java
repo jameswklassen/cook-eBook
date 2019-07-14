@@ -121,10 +121,6 @@ public class RecipeHandlerIT {
             assertTrue(actualRecipeList.get(i).getRecipeDate().before(actualRecipeList.get(i + 1).getRecipeDate()));
         }
 
-        for(int i = 0; i < actualRecipeList.size(); i++) {
-            System.out.println(actualRecipeList.get(i).getRecipeDate().toString());
-        }
-
         System.out.println("Finished testAscendingDateSort");
     }
 
@@ -135,11 +131,7 @@ public class RecipeHandlerIT {
         List<Recipe> actualRecipeList = recipeHandler.getAllRecipes();
 
         for(int i = 0; i < actualRecipeList.size() - 1; i++) {
-            //assertTrue(actualRecipeList.get(i).getRecipeDate().after(actualRecipeList.get(i + 1).getRecipeDate()));
-        }
-
-        for(int i = 0; i < actualRecipeList.size(); i++) {
-            System.out.println(actualRecipeList.get(i).getRecipeDate().toString());
+            assertTrue(actualRecipeList.get(i).getRecipeDate().after(actualRecipeList.get(i + 1).getRecipeDate()));
         }
 
         System.out.println("Finished testDescendingDateSort");
