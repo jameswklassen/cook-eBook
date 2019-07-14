@@ -427,7 +427,6 @@ public class RecipeHandlerIT {
     @Test
     public void testDeleteRecipe() {
         System.out.println("\nStarting testDeleteRecipe");
-
         List<Recipe> initialList = recipeHandler.getAllRecipes();
 
         int initialSize = initialList.size();
@@ -437,18 +436,6 @@ public class RecipeHandlerIT {
         recipeHandler.deleteRecipe(recipe);
 
         assertEquals(expectedSize, recipeHandler.getAllRecipes().size());
-        assertEquals(recipe, recipeHandler.insertRecipe(recipe));
-
-        boolean caught = false;
-        try{
-            recipe = null;
-
-            recipeHandler.insertRecipe(recipe);
-        }catch(InvalidRecipeException e)
-        {
-            caught = true;
-        }
-        assertTrue(caught);
 
         System.out.println("Finished testDeleteRecipe");
     }
