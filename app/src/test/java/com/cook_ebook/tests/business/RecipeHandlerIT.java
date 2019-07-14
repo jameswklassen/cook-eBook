@@ -15,6 +15,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
@@ -40,15 +41,11 @@ public class RecipeHandlerIT {
 
         assertNotNull(recipeList);
         assertEquals(4,recipeList.size());
-        for(int i = 0; i < recipeList.size(); i ++) {
-            assertNotNull(recipeList.get(i));
-            assertNotNull(recipeList.get(i).getRecipeTitle());
-            assertNotNull(recipeList.get(i).getRecipeDescription());
-            assertNotNull(recipeList.get(i).getRecipeTagList());
-            assertNotNull(recipeList.get(i).getRecipeCookingTime());
-            assertNotNull(recipeList.get(i).getRecipeDate());
+        for(int i = 0; i < recipeList.size() - 1; i ++) {
+            assertTrue(recipeList.get(i).getRecipeDate().after(recipeList.get(i + 1).getRecipeDate())
+            || recipeList.get(i).getRecipeDate().equals(recipeList.get(i + 1).getRecipeDate()));
         }
-        
+
         System.out.println("Finished testCreateRecipeList");
     }
 
@@ -114,19 +111,39 @@ public class RecipeHandlerIT {
         System.out.println("Finished testAscendingTitleCompare");
     }
 
-//    @Test
-//    public void testAscendingDateSort(){
-//        System.out.println("\nStarting testAscendingDateSort");
-//
-//        System.out.println("Finished testAscendingDateSort");
-//    }
-//
-//    @Test
-//    public void testDescendingDateSort(){
-//        System.out.println("\nStarting testDescendingDateSort");
-//
-//        System.out.println("Finished testDescendingDateSort");
-//    }
+    @Test
+    public void testAscendingDateSort(){
+        System.out.println("\nStarting testAscendingDateSort");
+        recipeHandler.setSort("Date-Ascending");
+        List<Recipe> actualRecipeList = recipeHandler.getAllRecipes();
+
+        for(int i = 0; i < actualRecipeList.size() - 1; i++) {
+            //assertTrue(actualRecipeList.get(i).getRecipeDate().before(actualRecipeList.get(i + 1).getRecipeDate()));
+        }
+
+//        for(int i = 0; i < actualRecipeList.size(); i++) {
+//            System.out.println(actualRecipeList.get(i).getRecipeDate().toString());
+//        }
+
+        System.out.println("Finished testAscendingDateSort");
+    }
+
+    @Test
+    public void testDescendingDateSort(){
+        System.out.println("\nStarting testDescendingDateSort");
+        recipeHandler.setSort("Date-Descending");
+        List<Recipe> actualRecipeList = recipeHandler.getAllRecipes();
+
+        for(int i = 0; i < actualRecipeList.size() - 1; i++) {
+            //assertTrue(actualRecipeList.get(i).getRecipeDate().after(actualRecipeList.get(i + 1).getRecipeDate()));
+        }
+
+//        for(int i = 0; i < actualRecipeList.size(); i++) {
+//            System.out.println(actualRecipeList.get(i).getRecipeDate().toString());
+//        }
+
+        System.out.println("Finished testDescendingDateSort");
+    }
 //
 //    @Test
 //    public void testAscendingTitleSort(){
