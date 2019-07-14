@@ -96,6 +96,7 @@ public class RecipeHandler {
         Collections.sort(recipeList, sort);
         return recipeList;
     }
+
     public void filter(String[] tagList, boolean[] checkedArray) {
         for (int i = 0; i < checkedArray.length; i++) {
             if (checkedArray[i]) {
@@ -161,8 +162,6 @@ public class RecipeHandler {
         }
     }
 
-    // should throw an exception for an invalid recipe
-    // should take care if two recipes have same Id
     public Recipe updateRecipe(Recipe newRecipe) throws InvalidRecipeException {
         if(RecipeValidator.validateRecipe(newRecipe)) {
             return dataAccessRecipe.updateRecipe(newRecipe);

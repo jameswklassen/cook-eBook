@@ -55,7 +55,6 @@ public class RecipeHandlerIT {
         final List<Recipe> actualRecipeList = recipeHandler.getAllRecipes();
 
         int result = testComparator.compare(actualRecipeList.get(0), actualRecipeList.get(1));
-        System.out.println(result);
         assertTrue(result <= 0);
 
         result = testComparator.compare(actualRecipeList.get(1), actualRecipeList.get(2));
@@ -187,13 +186,16 @@ public class RecipeHandlerIT {
 
         System.out.println("Finished testGetRecipeById");
     }
-//
-//    @Test
-//    public void testResetFilter() {
-//        System.out.println("\nStarting testResetFilter");
-//
-//        System.out.println("Finished testResetFilter");
-//    }
+
+    @Test
+    public void testResetFilter() {
+        System.out.println("\nStarting testResetFilter");
+        recipeHandler.resetFilter();
+        int length = recipeHandler.getFilter().size();
+        assertEquals(0, length);
+
+        System.out.println("Finished testResetFilter");
+    }
 //
 //    @Test
 //    public void testResetSort() {
