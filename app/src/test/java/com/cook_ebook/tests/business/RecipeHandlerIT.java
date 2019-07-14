@@ -1,7 +1,7 @@
 package com.cook_ebook.tests.business;
 
 import com.cook_ebook.logic.RecipeHandler;
-import com.cook_ebook.logic.Services;
+import com.cook_ebook.application.Services;
 import com.cook_ebook.logic.comparators.AscendingTitleComparator;
 import com.cook_ebook.logic.comparators.DescendingTitleComparator;
 import com.cook_ebook.logic.comparators.LatestDateComparator;
