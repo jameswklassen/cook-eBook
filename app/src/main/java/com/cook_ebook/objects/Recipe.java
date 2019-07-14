@@ -157,7 +157,8 @@ public class Recipe {
                 ", recipeCookingTime=" + recipeCookingTime +
                 ", recipeImage='" + recipeImage + '\'' +
                 ", recipeTagList='" + recipeTagList.toString() + '\'' +
-                ", recipeIsFavourite=" + recipeIsFavourite +
+                ", recipeIsFavourite=" + recipeIsFavourite + '\'' +
+                ", recipeDate=" + getRecipeDate().toString() +
                 '}';
     }
 
