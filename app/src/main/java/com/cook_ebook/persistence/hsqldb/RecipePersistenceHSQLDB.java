@@ -116,7 +116,7 @@ public class RecipePersistenceHSQLDB implements RecipePersistence {
     }
 
     private void removeAssociatedTags(Connection connection, int recipeId) throws SQLException {
-        final PreparedStatement statement = connection.prepareStatement("SELECT tag_id FROM RECIPES_TAGS where recipe_id = ? ");
+        final PreparedStatement statement = connection.prepareStatement("SELECT tag_id FROM RECIPES_TAGS where recipe_id = ?");
         statement.setInt(1, recipeId);
         final ResultSet resultSet = statement.executeQuery();
 
