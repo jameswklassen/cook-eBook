@@ -81,22 +81,31 @@ public class RecipeTagPersistenceHSQLDB implements RecipeTagPersistence {
 
     @Override
     public RecipeTag insertOneTag(RecipeTag targetTag) {
+        System.out.println("[LOG] Inserting a tag");
 
         if (tags.contains(targetTag)) {
-            return null;
+            System.out.println("[LOG] tag already exists. done");
+            return targetTag;
         }
 
-        System.out.println("[LOG] INSERTING ONE TAG");
+        System.out.println("[LOG] inserting " + targetTag);
+
         try (Connection connection = connect()) {
             final PreparedStatement statement = connection.prepareStatement("INSERT INTO TAGS VALUES(DEFAULT, ?)");
             statement.setString(1, targetTag.getTagName());
             statement.executeUpdate();
             statement.close();
 
-            this.tags = new ArrayList<>();
-            loadTags();
+            final PreparedStatement newStatement = connection.prepareStatement("SELECT * FROM TAGS WHERE title = ?");
+            newStatement.setString(1, targetTag.getTagName());
+            final ResultSet resultSet = newStatement.executeQuery();
 
-            return targetTag;
+            if (resultSet.next()) {
+                final RecipeTag tag = fromResultSet(resultSet);
+                System.out.println(tag + " ");
+                this.tags.add(tag);
+                return tag;
+            }
 
         } catch (final SQLException e) {
             Log.e("Connect SQL", e.getMessage() + e.getSQLState());
