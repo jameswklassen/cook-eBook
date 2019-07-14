@@ -208,9 +208,8 @@ public class MainActivity extends AppCompatActivity {
                 false);
 
         for (String tag : allTags) {
-            RecipeTag newTag = new RecipeTag(tag);
-            tagHandler.insertOneTag(newTag);
-            newRecipe.addRecipeTag(newTag);
+            RecipeTag recipeTag = tagHandler.insertOneTag(new RecipeTag(tag));
+            newRecipe.addRecipeTag(recipeTag);
         }
 
         return newRecipe;
@@ -230,9 +229,8 @@ public class MainActivity extends AppCompatActivity {
                 date);
 
         for (String tag : allTags) {
-            RecipeTag newTag = new RecipeTag(tag);
-            tagHandler.insertOneTag(newTag);
-            newRecipe.addRecipeTag(newTag);
+            RecipeTag recipeTag = tagHandler.insertOneTag(new RecipeTag(tag));
+            newRecipe.addRecipeTag(recipeTag);
         }
 
         return newRecipe;
