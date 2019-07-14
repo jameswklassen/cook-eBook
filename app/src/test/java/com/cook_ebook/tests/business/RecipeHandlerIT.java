@@ -6,6 +6,7 @@ import com.cook_ebook.logic.comparators.DescendingTitleComparator;
 import com.cook_ebook.logic.comparators.LatestDateComparator;
 import com.cook_ebook.logic.comparators.OldestDateComparator;
 import com.cook_ebook.objects.Recipe;
+import com.cook_ebook.objects.RecipeTag;
 import com.cook_ebook.tests.utils.TestUtils;
 import static org.junit.Assert.*;
 
@@ -252,22 +253,40 @@ public class RecipeHandlerIT {
 
         System.out.println("Finished testSetFilter");
     }
+    
+    @Test
+    public void testFilter() {
+        System.out.println("\nStarting testFilter");
+        String [] tags = {"meal", "salty"};
+        boolean [] checked = {true, false};
+        RecipeTag newTag = new RecipeTag("salty");
+        recipeHandler.filter(tags, checked);
+        List <Recipe> recipeList = recipeHandler.getAllRecipes();
+        for (Recipe recipe: recipeList) {
+            List<RecipeTag> tagList = recipe.getRecipeTagList();
+            assertTrue(tagList.contains(newTag));
+        }
 
-//    // this will be updated when we change how filter is
-//    @Test
-//    public void testFilter() {
-//        System.out.println("\nStarting testFilter");
-//
-//        System.out.println("Finished testFilter");
-//    }
-//
-//    @Test
-//    public void testSetSort() {
-//        System.out.println("\nStarting testSetSort");
-//
-//
-//        System.out.println("Finished testSetSort");
-//    }
+        System.out.println("Finished testFilter");
+    }
+
+    @Test
+    public void testSetSort() {
+        System.out.println("\nStarting testSetSort");
+        recipeHandler.setSort("Date-Oldest");
+        assertTrue(recipeHandler.getSort() instanceof OldestDateComparator);
+
+        recipeHandler.setSort("Date-Latest");
+        assertTrue(recipeHandler.getSort() instanceof LatestDateComparator);
+
+        recipeHandler.setSort("Title-Ascending");
+        assertTrue(recipeHandler.getSort() instanceof AscendingTitleComparator);
+
+        recipeHandler.setSort("Title-Descending");
+        assertTrue(recipeHandler.getSort() instanceof DescendingTitleComparator);
+
+        System.out.println("Finished testSetSort");
+    }
 //
 //    @Test
 //    public void testGetRecipeListByCookingTime() {
