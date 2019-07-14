@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,20 +14,17 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.cook_ebook.logic.RecipeTagHandler;
-import com.cook_ebook.logic.RecipeValidator;
 import com.cook_ebook.objects.Recipe;
 import com.cook_ebook.objects.RecipeTag;
 import com.cook_ebook.logic.RecipeHandler;
 import com.cook_ebook.R;
 import com.cook_ebook.persistence.utils.DBHelper;
 
-import org.hsqldb.lib.tar.DbBackup;
-
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import java.util.*;
@@ -61,8 +57,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                onClickSearchButton(view);
             }
         });
 
@@ -70,6 +65,34 @@ public class MainActivity extends AppCompatActivity {
         handler = new RecipeHandler(true);
         getRecipes();
     }
+
+    private void onClickSearchButton(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View dialog = getLayoutInflater().inflate(R.layout.dialog_search, null);
+        final EditText searchQuery = dialog.findViewById(R.id.searchQuery);
+
+        builder.setPositiveButton("Search", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String searchStr = searchQuery.getText().toString();
+
+                handler.resetSearch();
+                handler.resetFilter();
+                handler.resetFavourite();
+                viewingFavourites = false;
+
+                if(searchStr.length() > 0)
+                    applySearch(searchStr);
+            }
+        });
+
+        builder.setNegativeButton("Cancel", null);
+
+        builder.setView(dialog);
+        builder.show();
+
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -90,8 +113,13 @@ public class MainActivity extends AppCompatActivity {
 
             filterNumber.setVisible(true);
             filterNumber.setTitle(text);
+        } else if(handler.getSearchString() != null) {
+            filterNumber.setVisible(true);
+            filterNumber.setTitle("Search Applied");
+            filterOption.setEnabled(false);
         } else {
             filterNumber.setVisible(false);
+            filterOption.setEnabled(true);
         }
 
         if (viewingFavourites) {
@@ -99,7 +127,6 @@ public class MainActivity extends AppCompatActivity {
             filterOption.setEnabled(false);
         } else {
             menu.findItem(R.id.favourites_icon).setIcon(R.drawable.outline_favorite);
-            filterOption.setEnabled(true);
         }
 
         return true;
@@ -237,7 +264,7 @@ public class MainActivity extends AppCompatActivity {
         } else if (id == R.id.filter_list) {
             showFilterListDialog();
         } else if (id == R.id.filter_number) {
-            clearAllFilters();
+            clearSearchAndFilter();
         } else if (id == R.id.favourites_icon) {
             viewingFavourites = !viewingFavourites;
 
@@ -276,12 +303,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // Do nothing.
-            }
-        });
+        builder.setNegativeButton("Cancel", null);
 
         builder.show();
     }
@@ -315,35 +337,46 @@ public class MainActivity extends AppCompatActivity {
         builder.setNegativeButton("Clear", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                clearAllFilters();
+                clearSearchAndFilter();
             }
         });
 
         builder.show();
     }
 
+    private void applySearch(String str) {
+        // Resetting handled in button click handler
+
+        handler.setSearch(str);
+        invalidateOptionsMenu();
+        doFullRecyclerViewReset(handler.getAllRecipes());
+    }
+
     private void applyFilters(String[] tagList, boolean[] checkedArray) {
         handler.resetFilter();
+        handler.resetSearch();
+        handler.resetFavourite();
         handler.filter(tagList, checkedArray);
-        List<Recipe> allRecipes = handler.getAllRecipes();
-        recipes = allRecipes;
 
         //Set the menu text appropriately
         invalidateOptionsMenu();
 
         //Do a full reset of the recycler view
-        doFullRecyclerViewReset(allRecipes);
+        doFullRecyclerViewReset(handler.getAllRecipes());
     }
 
     private void updateFavouritesView() {
-        if (viewingFavourites)
+        if (viewingFavourites) {
             handler.resetFilter();
+            handler.resetSearch();
+        }
 
         handler.setFavourite(viewingFavourites);
         doFullRecyclerViewReset(handler.getAllRecipes());
     }
 
-    private void clearAllFilters() {
+    private void clearSearchAndFilter() {
+        handler.resetSearch();
         handler.resetFilter();
         doFullRecyclerViewReset(handler.getAllRecipes());
         invalidateOptionsMenu();

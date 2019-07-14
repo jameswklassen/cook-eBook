@@ -21,6 +21,7 @@ public class RecipeHandler {
     private RecipePersistence dataAccessRecipe;
     private List<String> filters;
     private boolean favourite;
+    private String search;
     private Comparator <Recipe> sort;
 
     public RecipeHandler(boolean forProduction) {
@@ -29,6 +30,15 @@ public class RecipeHandler {
         sort = new LatestDateComparator();
         filters = new ArrayList<>();
         favourite = false;
+        search = null;
+    }
+
+    public RecipeHandler(RecipePersistence persistence) {
+        dataAccessRecipe = persistence;
+        sort = new LatestDateComparator();
+        filters = new ArrayList<>();
+        favourite = false;
+        search = null;
     }
 
     public void setSort(String newSort) {
@@ -57,6 +67,10 @@ public class RecipeHandler {
             filters.remove(index);
     }
 
+    public void setSearch(String searchTerm) {
+        search = searchTerm;
+    }
+
     public void setFavourite(boolean favourite) {
         this.favourite = favourite;
     }
@@ -73,8 +87,14 @@ public class RecipeHandler {
         this.favourite = false;
     }
 
+    public void resetSearch() { this.search = null; }
+
     public boolean getFavourite() {
         return this.favourite;
+    }
+
+    public String getSearchString() {
+        return search;
     }
 
     public Comparator<Recipe> getSort() {
@@ -87,12 +107,13 @@ public class RecipeHandler {
 
     public List<Recipe> getAllRecipes() {
         List<Recipe> recipeList = dataAccessRecipe.getRecipeList();
-        if(favourite) {
+        if(favourite)
             recipeList = getRecipeListByFavourite(favourite);
-        }else
-        {
+        else if(filters.size() > 0)
             recipeList = getRecipeListByFilter(recipeList);
-        }
+        else
+            recipeList = getRecipeListBySearch(recipeList);
+
         Collections.sort(recipeList, sort);
         return recipeList;
     }
@@ -127,6 +148,22 @@ public class RecipeHandler {
             }
         }
         return filtered;
+    }
+
+    public List<Recipe> getRecipeListBySearch(List<Recipe> recipeList) {
+        List<Recipe> searchResults = new ArrayList<>(recipeList.size());
+
+        if(search != null)
+        {
+            String searchTerm = search.toLowerCase();
+            for (Recipe recipe : recipeList)
+                if(recipe.getRecipeTitle().toLowerCase().contains(searchTerm))
+                    searchResults.add(recipe);
+        }
+        else
+            searchResults = recipeList;
+
+        return searchResults;
     }
 
     public Recipe getRecipeById(int recipeId) throws InvalidRecipeException {
