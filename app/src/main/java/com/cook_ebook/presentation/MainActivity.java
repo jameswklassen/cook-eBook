@@ -197,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private Recipe buildRecipe(int time, String title, String tags, String ingredients, String description) {
-        RecipeTag newSet = new RecipeTag(tags);
+        String[] allTags = tags.split("\\s*,\\s*");
 
         Recipe newRecipe = new Recipe(
                 title,
@@ -207,13 +207,17 @@ public class MainActivity extends AppCompatActivity {
                 null,
                 false);
 
-        newRecipe.addRecipeTag(newSet);
+        for (String tag : allTags) {
+            RecipeTag newTag = new RecipeTag(tag);
+            tagHandler.insertOneTag(newTag);
+            newRecipe.addRecipeTag(newTag);
+        }
 
         return newRecipe;
     }
 
     private Recipe buildRecipe(int id, int time, String title, String tags, String ingredients, String description, Date date) {
-        RecipeTag newSet = new RecipeTag(tags);
+        String[] allTags = tags.split("\\s*,\\s*");
 
         Recipe newRecipe = new Recipe(
                 id,
@@ -225,7 +229,11 @@ public class MainActivity extends AppCompatActivity {
                 false,
                 date);
 
-        newRecipe.addRecipeTag(newSet);
+        for (String tag : allTags) {
+            RecipeTag newTag = new RecipeTag(tag);
+            tagHandler.insertOneTag(newTag);
+            newRecipe.addRecipeTag(newTag);
+        }
 
         return newRecipe;
     }

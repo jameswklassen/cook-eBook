@@ -8,6 +8,7 @@ import com.cook_ebook.persistence.RecipeTagPersistence;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -80,6 +81,27 @@ public class RecipeTagPersistenceHSQLDB implements RecipeTagPersistence {
 
     @Override
     public RecipeTag insertOneTag(RecipeTag targetTag) {
+
+        if (tags.contains(targetTag)) {
+            return null;
+        }
+
+        System.out.println("[LOG] INSERTING ONE TAG");
+        try (Connection connection = connect()) {
+            final PreparedStatement statement = connection.prepareStatement("INSERT INTO TAGS VALUES(DEFAULT, ?)");
+            statement.setString(1, targetTag.getTagName());
+            statement.executeUpdate();
+            statement.close();
+
+            this.tags = new ArrayList<>();
+            loadTags();
+
+            return targetTag;
+
+        } catch (final SQLException e) {
+            Log.e("Connect SQL", e.getMessage() + e.getSQLState());
+            e.printStackTrace();
+        }
         return null;
     }
 
