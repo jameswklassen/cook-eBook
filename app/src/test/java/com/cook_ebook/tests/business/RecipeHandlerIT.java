@@ -204,29 +204,55 @@ public class RecipeHandlerIT {
         assertTrue(recipeHandler.getSort() instanceof LatestDateComparator);
         System.out.println("Finished testResetSort");
     }
-//
-//    @Test
-//    public void testResetFavourite() {
-//        System.out.println("\nStarting testResetFavourite");
-//
-//        System.out.println("Finished testResetFavourite");
-//    }
-//
-//    @Test
-//    public void testSetFavourite() {
-//        System.out.println("\nStarting testSetFavourite");
-//
-//        System.out.println("Finished testSetFavourite");
-//    }
-//
-//    @Test
-//    public void testSetFilter() {
-//        System.out.println("\nStarting testSetFilter");
-//
-//
-//        System.out.println("Finished testSetFilter");
-//    }
-//
+
+    @Test
+    public void testResetFavourite() {
+        System.out.println("\nStarting testResetFavourite");
+        recipeHandler.resetFavourite();
+        assertFalse(recipeHandler.getFavourite());
+        System.out.println("Finished testResetFavourite");
+    }
+
+    @Test
+    public void testSetFavourite() {
+        System.out.println("\nStarting testSetFavourite");
+        recipeHandler.setFavourite(true);
+        assertTrue(recipeHandler.getFavourite());
+
+        List<Recipe> recipeList = recipeHandler.getAllRecipes();
+        for (Recipe recipe: recipeList) {
+            assertTrue(recipe.getRecipeIsFavourite());
+        }
+
+        System.out.println("Finished testSetFavourite");
+    }
+
+    @Test
+    public void testSetFilter() {
+        System.out.println("\nStarting testSetFilter");
+        recipeHandler.setFilter("meal");
+        int length = recipeHandler.getFilter().size();
+        assertEquals(1, length);
+
+        recipeHandler.setFilter("dessert");
+        length = recipeHandler.getFilter().size();
+        assertEquals(2, length);
+
+        recipeHandler.setFilter("salty");
+        length = recipeHandler.getFilter().size();
+        assertEquals(3, length);
+
+        recipeHandler.setFilter("savoury");
+        length = recipeHandler.getFilter().size();
+        assertEquals(4, length);
+
+        recipeHandler.setFilter("breakfast");
+        length = recipeHandler.getFilter().size();
+        assertEquals(5, length);
+
+        System.out.println("Finished testSetFilter");
+    }
+
 //    // this will be updated when we change how filter is
 //    @Test
 //    public void testFilter() {
