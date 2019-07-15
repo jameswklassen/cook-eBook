@@ -28,9 +28,9 @@ public class RecipePersistenceHSQLDB implements RecipePersistence {
 
     public RecipePersistenceHSQLDB(RecipeTagPersistence recipeTagPersistence, String dbPath) {
         this.dbPath = dbPath;
-         this.recipes = new ArrayList<>();
-         this.recipeTagPersistence = recipeTagPersistence;
-         loadRecipes();
+        this.recipes = new ArrayList<>();
+        this.recipeTagPersistence = recipeTagPersistence;
+        loadRecipes();
     }
 
     private Connection connect() throws SQLException {
@@ -113,7 +113,7 @@ public class RecipePersistenceHSQLDB implements RecipePersistence {
     }
 
     private void removeAssociatedTags(Connection connection, int recipeId) throws SQLException {
-        final PreparedStatement statement = connection.prepareStatement("SELECT tag_id FROM RECIPES_TAGS where recipe_id = ? ");
+        final PreparedStatement statement = connection.prepareStatement("SELECT tag_id FROM RECIPES_TAGS where recipe_id = ?");
         statement.setInt(1, recipeId);
         final ResultSet resultSet = statement.executeQuery();
 
@@ -144,26 +144,6 @@ public class RecipePersistenceHSQLDB implements RecipePersistence {
             Log.e("Connect SQL", e.getMessage() + e.getSQLState());
             e.printStackTrace();
         }
-        return null;
-    }
-
-    @Override
-    public List<Recipe> getRecipeListByCookingTime(int cookingTime) {
-        return null;
-    }
-
-    @Override
-    public List<Recipe> getRecipeListByTagName(String tagName) {
-        return null;
-    }
-
-    @Override
-    public List<Recipe> getRecipeListByTagId(int tagId) {
-        return null;
-    }
-
-    @Override
-    public List<Recipe> getRecipeListByTag(RecipeTag tag) {
         return null;
     }
 
@@ -229,8 +209,8 @@ public class RecipePersistenceHSQLDB implements RecipePersistence {
     }
 
     // TODO: throw RecipeNotFoundException
-    public Recipe updateRecipe(Recipe newRecipe) {
-        System.out.println("[LOG] Updating recipe: " + newRecipe.getRecipeTitle());
+    public Recipe updateRecipe(Recipe newRecipe) throws RecipeNotFoundException {
+        System.out.println("[LOG] UPDATE RECIPE");
         String dateString = DBHelper.getSQLDateString(newRecipe.getRecipeDate());
 
         try (Connection connection = connect()) {

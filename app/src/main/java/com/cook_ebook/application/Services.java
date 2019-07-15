@@ -26,11 +26,21 @@ public class Services {
     public static synchronized RecipePersistence getRecipePersistence(boolean forProduction) {
         if(recipePersistence == null) {
             if (forProduction) {
-                recipePersistence = new RecipePersistenceHSQLDB(recipeTagPersistence, Main.getDBPathName());
+                recipePersistence = new RecipePersistenceHSQLDB(getRecipeTagPersistence(true), Main.getDBPathName());
             } else {
                 recipePersistence = new RecipePersistenceStub();
             }
         }
         return recipePersistence;
+    }
+
+    /**
+     * clean
+     *
+     * Reset all services so to be reloaded from scratch next time they are referenced
+     */
+    public static synchronized void clean() {
+        recipePersistence = null;
+        recipeTagPersistence = null;
     }
 }
