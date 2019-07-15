@@ -1,11 +1,14 @@
 package com.cook_ebook.logic;
 
+import android.util.Log;
+
 import com.cook_ebook.application.Services;
 import com.cook_ebook.logic.comparators.OldestDateComparator;
 import com.cook_ebook.logic.comparators.AscendingTitleComparator;
 import com.cook_ebook.logic.comparators.LatestDateComparator;
 import com.cook_ebook.logic.comparators.DescendingTitleComparator;
 import com.cook_ebook.logic.exceptions.InvalidRecipeException;
+import com.cook_ebook.logic.exceptions.RecipeNotFoundException;
 import com.cook_ebook.objects.Recipe;
 import com.cook_ebook.objects.RecipeTag;
 import com.cook_ebook.persistence.RecipePersistence;
@@ -167,39 +170,49 @@ public class RecipeHandler {
         return searchResults;
     }
 
-    public Recipe getRecipeById(int recipeId) throws InvalidRecipeException {
-        return dataAccessRecipe.getRecipeById(recipeId);
+    public Recipe getRecipeById(int recipeId) {
+        try{
+           return dataAccessRecipe.getRecipeById(recipeId);
+        }catch(RecipeNotFoundException e) {
+            Log.e("Recipe Not found: id: " + recipeId, e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public List<Recipe> getRecipeListByFavourite(boolean isFavourite) {
         return dataAccessRecipe.getRecipeListByFavourite(isFavourite);
     }
 
-    public Recipe insertRecipe(Recipe recipe) throws InvalidRecipeException {
+    public Recipe insertRecipe(Recipe recipe) {
         if(RecipeValidator.validateRecipe(recipe)) {
             return dataAccessRecipe.insertRecipe(recipe);
-        } else {
-            throw new InvalidRecipeException("The new recipe is invalid!");
         }
+        return null;
     }
 
-    public Recipe updateRecipe(Recipe newRecipe) throws InvalidRecipeException {
+    public Recipe updateRecipe(Recipe newRecipe) {
         if(RecipeValidator.validateRecipe(newRecipe)) {
             return dataAccessRecipe.updateRecipe(newRecipe);
-        } else {
-            throw new InvalidRecipeException("The new recipe is invalid!");
         }
+        return null;
     }
 
-    public void deleteRecipe(Recipe recipe) throws InvalidRecipeException {
-        if(RecipeValidator.validateRecipe(recipe)) {
+    public void deleteRecipe(Recipe recipe) throws RecipeNotFoundException {
+        try{
             dataAccessRecipe.deleteRecipe(recipe);
-        } else {
-            throw new InvalidRecipeException("The new recipe is invalid!");
+        }catch(RecipeNotFoundException e) {
+            Log.e("Recipe Not found: id: " + recipe.getRecipeID(), e.getMessage());
+            e.printStackTrace();
         }
     }
 
-    public void deleteRecipeById(int recipeId) throws InvalidRecipeException {
-        dataAccessRecipe.deleteRecipeById(recipeId);
+    public void deleteRecipeById(int recipeId) throws RecipeNotFoundException {
+        try{
+            dataAccessRecipe.deleteRecipeById(recipeId);
+        }catch(RecipeNotFoundException e) {
+            Log.e("Recipe Not found: id: " + recipeId, e.getMessage());
+            e.printStackTrace();
+        }
     }
 }

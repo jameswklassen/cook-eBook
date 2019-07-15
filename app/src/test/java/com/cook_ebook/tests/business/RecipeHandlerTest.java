@@ -336,16 +336,8 @@ public class RecipeHandlerTest {
         recipeHandler.insertRecipe(recipe);
 
         assertEquals(expectedSize, recipeHandler.getAllRecipes().size());
-        boolean caught = false;
-        try{
-            recipe = null;
-
-            recipeHandler.insertRecipe(recipe);
-        }catch(InvalidRecipeException e)
-        {
-            caught = true;
-        }
-        assertTrue(caught);
+        recipe = recipeHandler.insertRecipe(null);
+        assertNull(recipe);
 
         System.out.println("Finished testInsertRecipe");
     }
@@ -360,16 +352,8 @@ public class RecipeHandlerTest {
         recipeHandler.updateRecipe(recipe);
         assertEquals("I'm a test description.", recipeHandler.getAllRecipes().get(0).getRecipeDescription());
 
-        boolean caught = false;
-        try{
-            recipe = null;
-
-            recipeHandler.updateRecipe(recipe);
-        }catch(InvalidRecipeException e)
-        {
-            caught = true;
-        }
-        assertTrue(caught);
+        recipe = recipeHandler.updateRecipe(null);
+        assertNull(recipe);
 
         System.out.println("Finished testUpdateRecipe");
     }
