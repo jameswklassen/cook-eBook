@@ -34,7 +34,6 @@ public class RecipePersistenceHSQLDB implements RecipePersistence {
     }
 
     private Connection connect() throws SQLException {
-        System.out.println("[LOG] Connecting Recipe Persistence " + dbPath);
         return DriverManager.getConnection("jdbc:hsqldb:file:" + dbPath + ";shutdown=true", "SA", "");
     }
 
@@ -52,8 +51,6 @@ public class RecipePersistenceHSQLDB implements RecipePersistence {
     }
 
     private void loadRecipes() {
-        System.out.println("[LOG] PERSISTENCE IS " + recipeTagPersistence.getAllTags());
-
         try (Connection connection = connect()) {
             final Statement statement = connection.createStatement();
             final ResultSet resultSet = statement.executeQuery("SELECT * FROM RECIPES");
@@ -172,7 +169,7 @@ public class RecipePersistenceHSQLDB implements RecipePersistence {
 
     @Override
     public Recipe insertRecipe(Recipe recipe) {
-        System.out.println("[LOG] INSERTING RECIPE");
+        System.out.println("[LOG] Inserting Recipe " + recipe.getRecipeTitle());
         String dateString = DBHelper.getSQLDateString(recipe.getRecipeDate());
 
         try (Connection connection = connect()) {
@@ -188,8 +185,19 @@ public class RecipePersistenceHSQLDB implements RecipePersistence {
             statement.executeUpdate();
             statement.close();
 
-            this.recipes = new ArrayList<>();
-            loadRecipes();
+            // Since the recipe was automatically assigned an ID by the database
+            // we need to retrieve the recipe using title + creation date and get its ID
+            final PreparedStatement newStatement = connection.prepareStatement("SELECT * FROM RECIPES WHERE title = ? AND creation_date = ?");
+            newStatement.setString(1, recipe.getRecipeTitle());
+            newStatement.setString(2, dateString);
+            final ResultSet resultSet = newStatement.executeQuery();
+
+            if (resultSet.next()) {
+                final Recipe recipeWithId = fromResultSet(resultSet);
+                addRecipeTagRelation(connection, recipe.getRecipeTagList(), recipeWithId.getRecipeID());
+                this.recipes = new ArrayList<>();
+                loadRecipes();
+            }
 
             return recipe;
 
@@ -222,11 +230,8 @@ public class RecipePersistenceHSQLDB implements RecipePersistence {
             removeRecipeTagRelations(connection, newRecipe.getRecipeID());
             addRecipeTagRelation(connection, newRecipe.getRecipeTagList(), newRecipe.getRecipeID());
 
-            int index = recipes.indexOf(newRecipe);
-            newRecipe = getRecipeById(newRecipe.getRecipeID());
-
-            if(index >= 0)
-                recipes.set(index, newRecipe);
+            this.recipes = new ArrayList<>();
+            loadRecipes();
 
             return newRecipe;
 
@@ -239,7 +244,7 @@ public class RecipePersistenceHSQLDB implements RecipePersistence {
     }
 
     public void deleteRecipe(Recipe recipe) {
-        System.out.println("[LOG] Deleting recipe");
+        System.out.println("[LOG] Deleting recipe: " + recipe.getRecipeTitle());
         deleteRecipeById(recipe.getRecipeID());
     }
 
