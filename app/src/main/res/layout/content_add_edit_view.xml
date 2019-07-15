@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mainScrollView"
     android:layout_width="match_parent"
@@ -85,16 +84,6 @@
             android:ems="10"
             android:hint="@string/add_the_tags"
             android:inputType="textPersonName" />
-
-        <ImageButton
-            android:id="@+id/imageButton"
-            android:layout_width="69dp"
-            android:layout_height="69dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="-70dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            tools:srcCompat="@android:drawable/ic_menu_gallery" />
 
     </LinearLayout>
 

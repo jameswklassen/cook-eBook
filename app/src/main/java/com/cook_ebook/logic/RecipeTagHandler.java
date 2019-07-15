@@ -3,7 +3,6 @@ package com.cook_ebook.logic;
 import com.cook_ebook.application.Services;
 import com.cook_ebook.logic.exceptions.InvalidTagException;
 import com.cook_ebook.logic.exceptions.TagNotFoundException;
-import com.cook_ebook.objects.Recipe;
 import com.cook_ebook.objects.RecipeTag;
 import com.cook_ebook.persistence.RecipeTagPersistence;
 

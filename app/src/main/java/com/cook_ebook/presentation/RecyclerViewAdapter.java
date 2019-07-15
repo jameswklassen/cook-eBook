@@ -14,10 +14,6 @@ import android.widget.TextView;
 
 import com.cook_ebook.R;
 import com.cook_ebook.objects.Recipe;
-import com.cook_ebook.objects.RecipeTag;
-
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
