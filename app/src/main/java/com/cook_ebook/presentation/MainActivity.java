@@ -108,14 +108,14 @@ public class MainActivity extends AppCompatActivity {
                  filterOption = menu.findItem(R.id.filter_list);
 
         if (handler.getFilter().size() > 0) {
-            String text = "" + handler.getFilter().size();
+            String text = "Clear " + handler.getFilter().size();
             text += handler.getFilter().size() == 1 ? " Filter" : " Filters";
 
             filterNumber.setVisible(true);
             filterNumber.setTitle(text);
         } else if(handler.getSearchString() != null) {
             filterNumber.setVisible(true);
-            filterNumber.setTitle("Search Applied");
+            filterNumber.setTitle("Clear search for '" + handler.getSearchString() + "'");
             filterOption.setEnabled(false);
         } else {
             filterNumber.setVisible(false);
