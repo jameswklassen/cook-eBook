@@ -20,22 +20,6 @@ public class RecipeTagHandler {
         return dataAccessRecipeTag.getAllTags();
     }
 
-    public int getTagIdByName(String tagName)  throws InvalidTagException {
-        return dataAccessRecipeTag.getTagIdByName(tagName);
-    }
-
-    public String getTagNameById(int tagId) throws InvalidTagException  {
-        return dataAccessRecipeTag.getTagNameById(tagId);
-    }
-
-    public RecipeTag getTagById(int tagId) throws InvalidTagException  {
-        return dataAccessRecipeTag.getTagById(tagId);
-    }
-
-    public RecipeTag getTagByName(String tagName)  throws InvalidTagException {
-        return dataAccessRecipeTag.getTagByName(tagName);
-    }
-
     public RecipeTag insertOneTag(RecipeTag tag) throws InvalidTagException  {
         if(RecipeTagValidator.validateRecipeTag(tag)) {
             return dataAccessRecipeTag.insertOneTag(tag);

@@ -46,6 +46,24 @@ public class RecipeTagHandlerIT {
         System.out.println("Finished testGetAllTags.");
     }
 
+    @Test
+    public void testInsertTag() {
+        System.out.println("\nStarting testInsertTag");
+        List<RecipeTag> recipeTagList;
+        recipeTagList = recipeTagHandler.getAllRecipeTags();
+        assertEquals(5, recipeTagList.size());
+
+        recipeTagHandler.insertOneTag(new RecipeTag("dessert"));
+        recipeTagList = recipeTagHandler.getAllRecipeTags();
+        assertEquals(5, recipeTagList.size());
+
+        recipeTagHandler.insertOneTag(new RecipeTag("I am a new tag"));
+        recipeTagList = recipeTagHandler.getAllRecipeTags();
+        assertEquals(6, recipeTagList.size());
+
+        System.out.println("Finished testInsertTag.");
+    }
+
     @After
     public void tearDown() {
         System.out.println("Reset database.");
