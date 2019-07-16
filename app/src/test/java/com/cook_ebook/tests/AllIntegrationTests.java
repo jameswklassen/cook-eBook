@@ -13,5 +13,5 @@ import org.junit.runners.Suite;
         RecipeTagHandlerIT.class
 })
 
-public class IntegrationTests {
+public class AllIntegrationTests {
 }

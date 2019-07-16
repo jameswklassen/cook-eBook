@@ -1,8 +1,6 @@
 package com.cook_ebook.persistence.hsqldb;
 
 import android.util.Log;
-
-import com.cook_ebook.objects.Recipe;
 import com.cook_ebook.objects.RecipeTag;
 import com.cook_ebook.persistence.RecipeTagPersistence;
 
@@ -13,7 +11,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class RecipeTagPersistenceHSQLDB implements RecipeTagPersistence {
@@ -60,26 +57,6 @@ public class RecipeTagPersistenceHSQLDB implements RecipeTagPersistence {
     }
 
     @Override
-    public int getTagIdByName(String tagName) {
-        return -1;
-    }
-
-    @Override
-    public String getTagNameById(int tagId) {
-        return null;
-    }
-
-    @Override
-    public RecipeTag getTagById(int tagId) {
-        return null;
-    }
-
-    @Override
-    public RecipeTag getTagByName(String tagName) {
-        return null;
-    }
-
-    @Override
     public RecipeTag insertOneTag(RecipeTag targetTag) {
         System.out.println("[LOG] Inserting a tag");
 
@@ -116,17 +93,7 @@ public class RecipeTagPersistenceHSQLDB implements RecipeTagPersistence {
 
     @Override
     public void deleteOneTag(RecipeTag targetTag) {
-    }
-
-    @Override
-    public boolean doesTagExist(RecipeTag targetTag) {
-        return false;
-    }
-
-    // we may not need this method, I am not not sure, so I keep it for temp
-    // if we do not need it, we can delete this method before merge to master
-    @Override
-    public boolean doesTagNameExist(String targetTagName) {
-        return false;
+        // user won't able to delete tag in tag-table
+        // do nothing here
     }
 }

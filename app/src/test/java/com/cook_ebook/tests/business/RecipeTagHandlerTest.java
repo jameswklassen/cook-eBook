@@ -3,7 +3,6 @@ package com.cook_ebook.tests.business;
 import com.cook_ebook.logic.RecipeTagHandler;
 import com.cook_ebook.objects.RecipeTag;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
