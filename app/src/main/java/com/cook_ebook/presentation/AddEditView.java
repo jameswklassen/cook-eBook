@@ -10,6 +10,11 @@ import android.content.Intent;
 import android.widget.TextView;
 import com.cook_ebook.R;
 import com.cook_ebook.logic.RecipeValidator;
+import com.cook_ebook.logic.exceptions.InvalidCookingTimeException;
+import com.cook_ebook.logic.exceptions.InvalidRecipeException;
+import com.cook_ebook.logic.exceptions.InvalidRecipeTitle;
+import com.cook_ebook.logic.exceptions.NonPositiveCookingTimeException;
+import com.cook_ebook.logic.exceptions.NotATimeException;
 
 public class AddEditView extends AppCompatActivity {
 
@@ -58,31 +63,21 @@ public class AddEditView extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.save_recipe) {
-            Intent newRecipe = buildRecipe();
-            Bundle extras = newRecipe.getExtras();
-            int status = extras.getInt("status");
+            try {
+                Intent newRecipe = buildRecipe();
+                Bundle extras = newRecipe.getExtras();
 
-            if (duplicateRecipe)
-                newRecipe.putExtra("duplicate", true);
+                if (duplicateRecipe)
+                    newRecipe.putExtra("duplicate", true);
 
-            if (status == 0) {
                 if(!createRecipe){
                     newRecipe.putExtra("update", true);
                     newRecipe.putExtra("recipeID", recipeId);
                 }
                 setResult(RESULT_OK, newRecipe);
                 finish();
-            } else {
-                String message = "Invalid recipe.";
-
-                if(status == 1)
-                    message = "The title of the recipe can't be empty.";
-                else if(status == 2)
-                    message = "Cooking time has to be a valid number.";
-                else if(status == 3)
-                    message = "Cooking time can't be a negative number.";
-
-                showErrormessageDialog(message);
+            } catch (InvalidRecipeException e) {
+                showErrormessageDialog(e.getMessage());
             }
         }
         return super.onOptionsItemSelected(item);
@@ -137,16 +132,12 @@ public class AddEditView extends AppCompatActivity {
 
         int status = 0;
 
-        try {
-            if (!RecipeValidator.validateTitle(title))
-                status = 1;
-            else if (!RecipeValidator.validateCookingTimeNumeric(time))
-                status = 2;
-            else if (!RecipeValidator.validateCookingTimePositive(time))
-                status = 3;
-        } catch(Exception e) {
-            System.err.println(e.getMessage());
-        }
+        if (!RecipeValidator.validateTitle(title))
+            throw new InvalidRecipeTitle("Can't entry an empty title!");
+        else if (!RecipeValidator.validateCookingTimeNumeric(time))
+            throw new NotATimeException("Can't entry an non-numeric / empty cooking time!");
+        else if (!RecipeValidator.validateCookingTimePositive(time))
+            throw new NonPositiveCookingTimeException("Can't entry a non-positive cooking time!");
 
         return generateIntent(title, description, ingredients, time, tags, status);
     }
