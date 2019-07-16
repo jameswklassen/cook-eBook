@@ -119,7 +119,7 @@ public class SingleRecipe extends AppCompatActivity implements View.OnClickListe
     }
 
     private String getRecipeTime() {
-        return extras.getString("recipeTime");
+        return extras.getString("recipeTime") + " minutes";
     }
 
     private void speakPhrase(String text) {
@@ -224,7 +224,7 @@ public class SingleRecipe extends AppCompatActivity implements View.OnClickListe
         text += "\n\nCooking Time: \n" + getRecipeTime();
         text += "\n\nIngredients: \n" + getRecipeIngredients();
         text += "\n\nDescription: \n" + getRecipeDescription();
-        text += "\n\nSent using Cook-ebook\n";
+        text += "\n\nSent using Cook-ebook\n\n";
         return text;
     }
 
