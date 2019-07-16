@@ -26,7 +26,7 @@ import com.cook_ebook.tests.objects.RecipeTest;
         ExceptionsTest.class
 })
 
-public class AllTests
+public class AllUnitTests
 {
 
 }
