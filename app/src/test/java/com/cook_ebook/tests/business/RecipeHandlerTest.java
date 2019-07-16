@@ -42,23 +42,33 @@ public class RecipeHandlerTest {
     }
 
     @Test
-    public void testDescendingDateCompare(){
-        System.out.println("\nStarting testDescendingDateCompare");
+    public void testLatestDateCompare(){
+        System.out.println("\nStarting testLatestDateCompare");
         LatestDateComparator testComparator = new LatestDateComparator();
         List<Recipe> actualRecipeList = recipeHandler.getAllRecipes();
-        int result = testComparator.compare(actualRecipeList.get(0), actualRecipeList.get(1));
+        Recipe r1 = actualRecipeList.get(0);
+        Recipe r2 = actualRecipeList.get(1);
+        r1.updateRecipeDate();
+        int result = testComparator.compare(r1, r2);
         assertTrue(result <= 0);
-        System.out.println("Finished testDescendingDateCompare");
+        result = testComparator.compare(r2, r1);
+        assertTrue(result > 0);
+        System.out.println("Finished testLatestDateCompare");
     }
 
     @Test
-    public void testAscendingDateCompare(){
-        System.out.println("\nStarting testAscendingDateCompare");
+    public void testOldestDateCompare(){
+        System.out.println("\nStarting testOldestDateCompare");
         OldestDateComparator testComparator = new OldestDateComparator();
         List<Recipe> actualRecipeList = recipeHandler.getAllRecipes();
-        int result = testComparator.compare(actualRecipeList.get(0), actualRecipeList.get(1));
+        Recipe r1 = actualRecipeList.get(0);
+        Recipe r2 = actualRecipeList.get(1);
+        r1.updateRecipeDate();
+        int result = testComparator.compare(r1, r2);
         assertTrue(result >= 0);
-        System.out.println("Finished testAscendingDateCompare");
+        result = testComparator.compare(r2, r1);
+        assertTrue(result < 0);
+        System.out.println("Finished testOldestDateCompare");
     }
 
     @Test
