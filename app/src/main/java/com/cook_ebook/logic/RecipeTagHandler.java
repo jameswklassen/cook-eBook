@@ -21,38 +21,6 @@ public class RecipeTagHandler {
         return dataAccessRecipeTag.getAllTags();
     }
 
-    public int getTagIdByName(String tagName) {
-        try{
-            return dataAccessRecipeTag.getTagIdByName(tagName);
-        }catch(TagNotFoundException e) {
-            return 0;
-        }
-    }
-
-    public String getTagNameById(int tagId) {
-        try{
-            return dataAccessRecipeTag.getTagNameById(tagId);
-        }catch(TagNotFoundException e) {
-            return null;
-        }
-    }
-
-    public RecipeTag getTagById(int tagId) {
-        try{
-            return dataAccessRecipeTag.getTagById(tagId);
-        }catch(TagNotFoundException e) {
-            return null;
-        }
-    }
-
-    public RecipeTag getTagByName(String tagName) {
-        try{
-            return dataAccessRecipeTag.getTagByName(tagName);
-        }catch(TagNotFoundException e) {
-            return null;
-        }
-    }
-
     public RecipeTag insertOneTag(RecipeTag tag)  {
         if(RecipeTagValidator.validateRecipeTag(tag)) {
             return dataAccessRecipeTag.insertOneTag(tag);

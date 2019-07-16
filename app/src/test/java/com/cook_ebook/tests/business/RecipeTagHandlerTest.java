@@ -35,66 +35,6 @@ public class RecipeTagHandlerTest {
     }
 
     @Test
-    public void testGetTagIdByName() {
-        System.out.println("\nStarting testGetTagIdByName");
-
-        int id = tagSetHandler.getTagIdByName("dessert");
-        assertNotEquals(0, id);
-
-        int id2 = tagSetHandler.getTagIdByName("salt");
-        assertEquals(0, id2);
-
-        System.out.println("Finished testGetTagIdByName.");
-    }
-
-
-    @Test
-    public void testGetTagNameById() {
-        System.out.println("\nStarting testGetTagNameById");
-
-        int id = tagSetHandler.getTagIdByName("dessert");
-        String tagName = tagSetHandler.getTagNameById(id);
-        assertNotNull(tagName);
-
-        String tagName2 = tagSetHandler.getTagNameById(-1);
-        assertNull(tagName2);
-
-        System.out.println("Finished testGetTagNameById.");
-    }
-
-    @Test
-    public void testGetTagById() {
-        System.out.println("\nStarting testGetTagById");
-
-        int id = tagSetHandler.getTagIdByName("dessert");
-        RecipeTag tag = tagSetHandler.getTagById(id);
-        assertNotNull(tag);
-
-        RecipeTag tag2 = tagSetHandler.getTagById(-1);
-        assertNull(tag2);
-
-        // this test will be implemented after we have true database
-        assertNull(tagSetHandler.getTagById(-1));
-
-        System.out.println("Finished testGetTagById.");
-    }
-
-    @Test
-    public void testGetTagByName() {
-        System.out.println("\nStarting testGetTagByName");
-
-        assertEquals(new RecipeTag("dessert"), tagSetHandler.getTagByName("dessert"));
-        assertNotEquals(new RecipeTag("dessert"), tagSetHandler.getTagByName("cake"));
-        assertNotEquals(new RecipeTag("dessert"), tagSetHandler.getTagByName("sweet"));
-
-        RecipeTag tag = tagSetHandler.getTagByName("salt");
-        assertNull(tag);
-
-        System.out.println("Finished testGetTagByName.");
-    }
-
-
-    @Test
     public void testInsertTag() {
         System.out.println("\nStarting testInsertTag");
 
