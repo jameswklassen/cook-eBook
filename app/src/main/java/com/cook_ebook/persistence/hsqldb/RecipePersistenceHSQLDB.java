@@ -144,7 +144,7 @@ public class RecipePersistenceHSQLDB implements RecipePersistence {
             Log.e("Connect SQL", e.getMessage() + e.getSQLState());
             e.printStackTrace();
         }
-        throw new RecipeNotFoundException("Recipe could not be found in the database");
+        return null;
     }
 
     @Override

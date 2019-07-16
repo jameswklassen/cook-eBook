@@ -171,13 +171,7 @@ public class RecipeHandler {
     }
 
     public Recipe getRecipeById(int recipeId) {
-        try{
-           return dataAccessRecipe.getRecipeById(recipeId);
-        }catch(RecipeNotFoundException e) {
-            Log.e("Recipe Not found: id: " + recipeId, e.getMessage());
-            e.printStackTrace();
-            return null;
-        }
+        return dataAccessRecipe.getRecipeById(recipeId);
     }
 
     public List<Recipe> getRecipeListByFavourite(boolean isFavourite) {
