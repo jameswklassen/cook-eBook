@@ -1,5 +1,8 @@
 package com.cook_ebook.persistence.stubs;
 
+import android.widget.TabHost;
+
+import com.cook_ebook.logic.exceptions.TagNotFoundException;
 import com.cook_ebook.objects.RecipeTag;
 import com.cook_ebook.persistence.RecipeTagPersistence;
 
@@ -23,7 +26,7 @@ public class RecipeTagPersistenceStub implements RecipeTagPersistence {
     }
 
     @Override
-    public int getTagIdByName(String tagName) {
+    public int getTagIdByName(String tagName) throws TagNotFoundException {
         if(recipeTagList.contains(new RecipeTag(tagName))) {
             for(int i = 0; i < recipeTagList.size(); i ++) {
                 if(recipeTagList.get(i).getTagName().equals(tagName)) {
@@ -32,33 +35,33 @@ public class RecipeTagPersistenceStub implements RecipeTagPersistence {
             }
         }
 
-        return -1;
+        throw new TagNotFoundException("Tag Not found");
     }
 
     @Override
-    public String getTagNameById(int tagId) {
+    public String getTagNameById(int tagId) throws TagNotFoundException{
         for(int i = 0; i < recipeTagList.size(); i ++) {
             if(recipeTagList.get(i).getTagID() == tagId) {
                 return recipeTagList.get(i).getTagName();
             }
         }
 
-        return "Tag Id does not exist!";
+        throw new TagNotFoundException("Tag Not found");
     }
 
     @Override
-    public RecipeTag getTagById(int tagId){
+    public RecipeTag getTagById(int tagId) throws TagNotFoundException{
         for(int i = 0; i < recipeTagList.size(); i ++) {
             if(recipeTagList.get(i).getTagID() == tagId) {
                 return recipeTagList.get(i);
             }
         }
 
-        return null;
+        throw new TagNotFoundException("Tag Not found");
     }
 
     @Override
-    public RecipeTag getTagByName(String tagName){
+    public RecipeTag getTagByName(String tagName) throws TagNotFoundException{
         if(recipeTagList.contains(new RecipeTag(tagName))) {
             for(int i = 0; i < recipeTagList.size(); i ++) {
                 if(recipeTagList.get(i).getTagName().equals(tagName)) {
@@ -67,7 +70,7 @@ public class RecipeTagPersistenceStub implements RecipeTagPersistence {
             }
         }
 
-        return null;
+        throw new TagNotFoundException("Tag Not found");
     }
 
     @Override

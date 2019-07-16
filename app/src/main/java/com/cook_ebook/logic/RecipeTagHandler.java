@@ -5,6 +5,7 @@ import com.cook_ebook.logic.exceptions.InvalidTagException;
 import com.cook_ebook.logic.exceptions.TagNotFoundException;
 import com.cook_ebook.objects.RecipeTag;
 import com.cook_ebook.persistence.RecipeTagPersistence;
+import android.util.Log;
 
 import java.util.List;
 
@@ -20,35 +21,54 @@ public class RecipeTagHandler {
         return dataAccessRecipeTag.getAllTags();
     }
 
-    public int getTagIdByName(String tagName)  throws InvalidTagException {
-        return dataAccessRecipeTag.getTagIdByName(tagName);
-    }
-
-    public String getTagNameById(int tagId) throws InvalidTagException  {
-        return dataAccessRecipeTag.getTagNameById(tagId);
-    }
-
-    public RecipeTag getTagById(int tagId) throws InvalidTagException  {
-        return dataAccessRecipeTag.getTagById(tagId);
-    }
-
-    public RecipeTag getTagByName(String tagName)  throws InvalidTagException {
-        return dataAccessRecipeTag.getTagByName(tagName);
-    }
-
-    public RecipeTag insertOneTag(RecipeTag tag) throws InvalidTagException  {
-        if(RecipeTagValidator.validateRecipeTag(tag)) {
-            return dataAccessRecipeTag.insertOneTag(tag);
-        } else {
-            throw new TagNotFoundException("The tag being inserted does not exist.");
+    public int getTagIdByName(String tagName) {
+        try{
+            return dataAccessRecipeTag.getTagIdByName(tagName);
+        }catch(TagNotFoundException e) {
+            return 0;
         }
     }
 
-    public void deleteOneTag(RecipeTag tag) throws InvalidTagException  {
+    public String getTagNameById(int tagId) {
+        try{
+            return dataAccessRecipeTag.getTagNameById(tagId);
+        }catch(TagNotFoundException e) {
+            return null;
+        }
+    }
+
+    public RecipeTag getTagById(int tagId) {
+        try{
+            return dataAccessRecipeTag.getTagById(tagId);
+        }catch(TagNotFoundException e) {
+            return null;
+        }
+    }
+
+    public RecipeTag getTagByName(String tagName) {
+        try{
+            return dataAccessRecipeTag.getTagByName(tagName);
+        }catch(TagNotFoundException e) {
+            return null;
+        }
+    }
+
+    public RecipeTag insertOneTag(RecipeTag tag)  {
         if(RecipeTagValidator.validateRecipeTag(tag)) {
-            dataAccessRecipeTag.deleteOneTag(tag);
-        } else {
-            throw new TagNotFoundException("The tag being deleted does not exist.");
+            return dataAccessRecipeTag.insertOneTag(tag);
+        }
+        return null;
+    }
+
+    public void deleteOneTag(RecipeTag tag) throws InvalidTagException  {
+
+        try{
+            if(RecipeTagValidator.validateRecipeTag(tag)) {
+                dataAccessRecipeTag.deleteOneTag(tag);
+            }
+        }catch(TagNotFoundException e) {
+            Log.e("Tag Not found: id: " + tag.getTagID(), e.getMessage());
+            e.printStackTrace();
         }
     }
 }

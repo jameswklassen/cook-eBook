@@ -143,9 +143,8 @@ public class RecipePersistenceHSQLDB implements RecipePersistence {
         } catch (final SQLException e) {
             Log.e("Connect SQL", e.getMessage() + e.getSQLState());
             e.printStackTrace();
-            throw new RecipeNotFoundException("Recipe could not be found in the database");
         }
-        return null;
+        throw new RecipeNotFoundException("Recipe could not be found in the database");
     }
 
     @Override
@@ -209,7 +208,6 @@ public class RecipePersistenceHSQLDB implements RecipePersistence {
         return null;
     }
 
-    // TODO: throw RecipeNotFoundException
     public Recipe updateRecipe(Recipe newRecipe) throws RecipeNotFoundException {
         System.out.println("[LOG] UPDATE RECIPE");
         String dateString = DBHelper.getSQLDateString(newRecipe.getRecipeDate());
@@ -241,7 +239,7 @@ public class RecipePersistenceHSQLDB implements RecipePersistence {
             e.printStackTrace();
         }
 
-        return null;
+        throw new RecipeNotFoundException("Recipe not found");
     }
 
     public void deleteRecipe(Recipe recipe) throws RecipeNotFoundException {

@@ -11,6 +11,7 @@ import com.cook_ebook.logic.comparators.LatestDateComparator;
 import com.cook_ebook.logic.comparators.AscendingTitleComparator;
 import com.cook_ebook.logic.comparators.DescendingTitleComparator;
 import com.cook_ebook.logic.exceptions.InvalidRecipeException;
+import com.cook_ebook.logic.exceptions.RecipeNotFoundException;
 import com.cook_ebook.objects.Recipe;
 import com.cook_ebook.objects.RecipeTag;
 import com.cook_ebook.persistence.RecipePersistence;
@@ -150,6 +151,8 @@ public class RecipeHandlerTest {
         System.out.println("\nStarting testGetRecipeById");
         Recipe targetRecipe1 = recipeHandler.getRecipeById(3);
         assertNotNull(targetRecipe1);
+        Recipe targetRecipe2 = recipeHandler.getRecipeById(3000);
+        assertNull(targetRecipe2);
         System.out.println("Finished testGetRecipeById");
     }
 
@@ -372,17 +375,6 @@ public class RecipeHandlerTest {
 
         assertEquals(expectedSize, recipeHandler.getAllRecipes().size());
         assertEquals(recipe, recipeHandler.insertRecipe(recipe));
-
-        boolean caught = false;
-        try{
-            recipe = null;
-
-            recipeHandler.insertRecipe(recipe);
-        }catch(InvalidRecipeException e)
-        {
-            caught = true;
-        }
-        assertTrue(caught);
 
         System.out.println("Finished testDeleteRecipe");
     }

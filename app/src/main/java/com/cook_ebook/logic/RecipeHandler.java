@@ -198,16 +198,18 @@ public class RecipeHandler {
         return null;
     }
 
-    public void deleteRecipe(Recipe recipe) throws RecipeNotFoundException {
+    public void deleteRecipe(Recipe recipe) {
         try{
-            dataAccessRecipe.deleteRecipe(recipe);
+            if(RecipeValidator.validateRecipe(recipe)) {
+                dataAccessRecipe.deleteRecipe(recipe);
+            }
         }catch(RecipeNotFoundException e) {
             Log.e("Recipe Not found: id: " + recipe.getRecipeID(), e.getMessage());
             e.printStackTrace();
         }
     }
 
-    public void deleteRecipeById(int recipeId) throws RecipeNotFoundException {
+    public void deleteRecipeById(int recipeId) {
         try{
             dataAccessRecipe.deleteRecipeById(recipeId);
         }catch(RecipeNotFoundException e) {
