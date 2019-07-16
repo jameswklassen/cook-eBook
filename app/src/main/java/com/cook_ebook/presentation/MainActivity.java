@@ -17,7 +17,7 @@ import android.content.Intent;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.cook_ebook.logic.RecipeTagHandler;
+import com.cook_ebook.logic.exceptions.InvalidRecipeException;
 import com.cook_ebook.objects.Recipe;
 import com.cook_ebook.objects.RecipeTag;
 import com.cook_ebook.logic.RecipeHandler;
@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
     //Temporary variables until we have database placeholders merged in
     private List<Recipe> recipes = new ArrayList<>();
     private RecipeHandler handler;
-    private RecipeTagHandler tagHandler;
     private RecyclerViewAdapter adapter;
 
     @Override
@@ -61,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        tagHandler = new RecipeTagHandler(true);
         handler = new RecipeHandler(true);
         getRecipes();
     }
@@ -153,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
         Bundle extras = data.getExtras();
 
         if (handleRecipe(requestCode, extras)) {
-            int time = Integer.parseInt(extras.getString("recipeTime"));
+            String time = extras.getString("recipeTime");
             String title = extras.getString("recipeTitle");
             String tags = extras.getString("recipeTags");
             String ingredients = extras.getString("recipeIngredients");
@@ -164,13 +162,22 @@ public class MainActivity extends AppCompatActivity {
                 // change this once code is pulled
                 int recipeId = extras.getInt("recipeID");
                 Date date = new Date();
-                Recipe newRecipe = buildRecipe(recipeId, time, title, tags, ingredients, description, date);
-                boolean favourite = extras.getBoolean("favourite");
-                newRecipe.setRecipeIsFavourite(favourite);
-                updateRecipe(newRecipe);
+                try {
+                    Recipe newRecipe = handler.buildRecipe(recipeId, time, title, tags, ingredients, description, date);
+                    boolean favourite = extras.getBoolean("favourite");
+
+                    newRecipe.setRecipeIsFavourite(favourite);
+                    updateRecipe(newRecipe);
+                } catch(InvalidRecipeException e) {
+                    Log.d(TAG, "Could not create recipe: " + e.getMessage());
+                }
             }else{
-                Recipe newRecipe = buildRecipe(time, title, tags, ingredients, description);
-                handler.insertRecipe(newRecipe);
+                try {
+                    Recipe newRecipe = handler.buildRecipe(time, title, tags, ingredients, description);
+                    handler.insertRecipe(newRecipe);
+                } catch(InvalidRecipeException e) {
+                    Log.d(TAG, "Could not create recipe: " + e.getMessage());
+                }
             }
 
             recipes = handler.getAllRecipes();
@@ -194,46 +201,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void updateRecipe(Recipe recipe) {
         handler.updateRecipe(recipe);
-    }
-
-    private Recipe buildRecipe(int time, String title, String tags, String ingredients, String description) {
-        String[] allTags = tags.split("\\s*,\\s*");
-
-        Recipe newRecipe = new Recipe(
-                title,
-                description,
-                ingredients,
-                time,
-                null,
-                false);
-
-        for (String tag : allTags) {
-            RecipeTag recipeTag = tagHandler.insertOneTag(new RecipeTag(tag));
-            newRecipe.addRecipeTag(recipeTag);
-        }
-
-        return newRecipe;
-    }
-
-    private Recipe buildRecipe(int id, int time, String title, String tags, String ingredients, String description, Date date) {
-        String[] allTags = tags.split("\\s*,\\s*");
-
-        Recipe newRecipe = new Recipe(
-                id,
-                title,
-                description,
-                ingredients,
-                time,
-                null,
-                false,
-                date);
-
-        for (String tag : allTags) {
-            RecipeTag recipeTag = tagHandler.insertOneTag(new RecipeTag(tag));
-            newRecipe.addRecipeTag(recipeTag);
-        }
-
-        return newRecipe;
     }
 
     public void deleteRecipe(int id) {
@@ -315,7 +282,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showFilterListDialog() {
-        List<RecipeTag> tags = tagHandler.getAllRecipeTags();
+        List<RecipeTag> tags = handler.getTagHandler().getAllRecipeTags();
         final String[] tagList = new String[tags.size()];
 
         for (int i = 0; i < tagList.length; i++)

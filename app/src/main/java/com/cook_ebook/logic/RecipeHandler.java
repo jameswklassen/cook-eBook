@@ -5,13 +5,17 @@ import com.cook_ebook.logic.comparators.OldestDateComparator;
 import com.cook_ebook.logic.comparators.AscendingTitleComparator;
 import com.cook_ebook.logic.comparators.LatestDateComparator;
 import com.cook_ebook.logic.comparators.DescendingTitleComparator;
+import com.cook_ebook.logic.exceptions.InvalidCookingTimeException;
 import com.cook_ebook.logic.exceptions.InvalidRecipeException;
+import com.cook_ebook.logic.exceptions.InvalidRecipeTitle;
+import com.cook_ebook.logic.exceptions.InvalidTagException;
 import com.cook_ebook.objects.Recipe;
 import com.cook_ebook.objects.RecipeTag;
 import com.cook_ebook.persistence.RecipePersistence;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Collections;
@@ -19,6 +23,7 @@ import java.util.Collections;
 public class RecipeHandler {
 
     private RecipePersistence dataAccessRecipe;
+    private RecipeTagHandler tagHandler;
     private List<String> filters;
     private boolean favourite;
     private String search;
@@ -27,6 +32,7 @@ public class RecipeHandler {
     public RecipeHandler(boolean forProduction) {
         //default get recipeList sorted by date in ascending order
         dataAccessRecipe = Services.getRecipePersistence(forProduction);
+        tagHandler = new RecipeTagHandler(forProduction);
         sort = new LatestDateComparator();
         filters = new ArrayList<>();
         favourite = false;
@@ -35,6 +41,7 @@ public class RecipeHandler {
 
     public RecipeHandler(RecipePersistence persistence) {
         dataAccessRecipe = persistence;
+        tagHandler = new RecipeTagHandler(false);
         sort = new LatestDateComparator();
         filters = new ArrayList<>();
         favourite = false;
@@ -65,6 +72,81 @@ public class RecipeHandler {
             filters.add(newFilter);
         else
             filters.remove(index);
+    }
+
+    public Recipe buildRecipe(String time, String title, String tags, String ingredients, String description) throws InvalidRecipeException {
+        List<RecipeTag> tagList = stringToTags(tags);
+
+        validateRecipeProperties(tagList, title, time);
+
+        // Create the object, validate it and return
+        Recipe newRecipe = new Recipe(
+                title,
+                description,
+                ingredients,
+                Integer.parseInt(time),
+                null,
+                false);
+
+        for(RecipeTag tag : tagList)
+            newRecipe.addRecipeTag(tag);
+
+        if(!RecipeValidator.validateRecipe(newRecipe))
+            throw new InvalidRecipeException("Final recipe object was invalid");
+
+        return newRecipe;
+    }
+
+    public Recipe buildRecipe(int id, String time, String title, String tags, String ingredients, String description, Date date) {
+        List<RecipeTag> tagList = stringToTags(tags);
+
+        validateRecipeProperties(tagList, title, time);
+
+        Recipe newRecipe = new Recipe(
+                id,
+                title,
+                description,
+                ingredients,
+                Integer.parseInt(time),
+                null,
+                false,
+                date);
+
+        for(RecipeTag tag : tagList)
+            newRecipe.addRecipeTag(tag);
+
+        if(!RecipeValidator.validateRecipe(newRecipe))
+            throw new InvalidRecipeException("Final recipe object was invalid");
+
+        return newRecipe;
+    }
+
+    private void validateRecipeProperties(List<RecipeTag> tagList, String title, String time) {
+        for(RecipeTag tag : tagList) {
+            if(!RecipeTagValidator.validateRecipeTag(tag))
+                throw new InvalidTagException("A tag in the recipe was invalid.");
+        }
+
+        // Validate Title
+        if(!RecipeValidator.validateTitle(title))
+            throw new InvalidRecipeTitle("Recipe Title was invalid");
+
+        // Validate cooking time
+        if(!RecipeValidator.validateCookingTimeNumeric(time) || !RecipeValidator.validateCookingTimePositive(time))
+            throw new InvalidCookingTimeException("Recipe cooking time was invalid");
+    }
+
+    private List<RecipeTag> stringToTags(String tags) {
+        List<RecipeTag> tagList = new ArrayList<>();
+
+        String[] allTags = tags.split("\\s*,\\s*");
+
+        for (String tag : allTags) {
+            RecipeTag recipeTag = tagHandler.insertOneTag(new RecipeTag(tag));
+            tagList.add(recipeTag);
+        }
+
+        return tagList;
     }
 
     public void setSearch(String searchTerm) {
@@ -116,6 +198,10 @@ public class RecipeHandler {
 
         Collections.sort(recipeList, sort);
         return recipeList;
+    }
+
+    public RecipeTagHandler getTagHandler() {
+        return tagHandler;
     }
 
     public void filter(String[] tagList, boolean[] checkedArray) {
