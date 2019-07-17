@@ -334,16 +334,13 @@ public class RecipeHandlerTest {
         System.out.println("\nStarting testInsertRecipe");
 
         int initialSize = recipeHandler.getAllRecipes().size();
-        int expectedSize = initialSize + 1;
+        int expectedSize = initialSize + 2;
 
-        Recipe recipe = new Recipe("pasta3",
-                "pasta3 description",
-                "egg, water",
-                10,
-                "pasta3 images",
-                true);
-
+        Recipe recipe = recipeHandler.buildRecipe("10", "pasta3","cake","egg, water", "pasta3 description");
         recipeHandler.insertRecipe(recipe);
+
+        Recipe recipe2 = recipeHandler.buildRecipe(1000, "10", "pasta3","cake","egg, water", "pasta3 description", new Date());
+        recipeHandler.insertRecipe(recipe2);
 
         assertEquals(expectedSize, recipeHandler.getAllRecipes().size());
         boolean caught = false;
