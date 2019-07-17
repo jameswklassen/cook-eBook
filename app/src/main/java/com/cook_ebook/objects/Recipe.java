@@ -128,9 +128,10 @@ public class Recipe {
     public RecipeTag addRecipeTag(RecipeTag newTag) {
         if(!recipeTagList.contains(newTag)) {
             recipeTagList.add(newTag);
+            return newTag;
+        } else {
+            return recipeTagList.get(recipeTagList.indexOf(newTag));
         }
-
-        return newTag;
     }
 
     public void deleteRecipeTag(RecipeTag targetTag) {
