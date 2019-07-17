@@ -62,9 +62,9 @@ public class RecipeTagPersistenceHSQLDB implements RecipeTagPersistence {
 
         if (tags.contains(targetTag)) {
             System.out.println("[LOG] tag already exists. done");
-            return targetTag;
+            return tags.get(tags.indexOf(targetTag));
         }
-
+        
         System.out.println("[LOG] inserting " + targetTag);
 
         try (Connection connection = connect()) {
