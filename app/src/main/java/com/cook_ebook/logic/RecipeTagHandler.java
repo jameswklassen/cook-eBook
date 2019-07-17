@@ -5,6 +5,7 @@ import com.cook_ebook.logic.exceptions.InvalidTagException;
 import com.cook_ebook.logic.exceptions.TagNotFoundException;
 import com.cook_ebook.objects.RecipeTag;
 import com.cook_ebook.persistence.RecipeTagPersistence;
+import android.util.Log;
 
 import java.util.List;
 
@@ -20,19 +21,22 @@ public class RecipeTagHandler {
         return dataAccessRecipeTag.getAllTags();
     }
 
-    public RecipeTag insertOneTag(RecipeTag tag) throws InvalidTagException  {
+    public RecipeTag insertOneTag(RecipeTag tag)  {
         if(RecipeTagValidator.validateRecipeTag(tag)) {
             return dataAccessRecipeTag.insertOneTag(tag);
-        } else {
-            throw new TagNotFoundException("The tag being inserted does not exist.");
         }
+        return null;
     }
 
     public void deleteOneTag(RecipeTag tag) throws InvalidTagException  {
-        if(RecipeTagValidator.validateRecipeTag(tag)) {
-            dataAccessRecipeTag.deleteOneTag(tag);
-        } else {
-            throw new TagNotFoundException("The tag being deleted does not exist.");
+
+        try{
+            if(RecipeTagValidator.validateRecipeTag(tag)) {
+                dataAccessRecipeTag.deleteOneTag(tag);
+            }
+        }catch(TagNotFoundException e) {
+            Log.e("Tag Not found: id: " + tag.getTagID(), e.getMessage());
+            e.printStackTrace();
         }
     }
 }

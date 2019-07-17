@@ -62,7 +62,11 @@ public class RecipeTagHandlerTest {
         tagSetHandler.deleteOneTag(new RecipeTag("dessert"));
         assertEquals(expectNum - 1, tagSetHandler.getAllRecipeTags().size());
 
-        tagSetHandler.insertOneTag(new RecipeTag("dessert"));
+        RecipeTag tag = tagSetHandler.insertOneTag(new RecipeTag("dessert"));
+        assertNotNull(tag);
+
+        RecipeTag tag2 = tagSetHandler.insertOneTag(null);
+        assertNull(tag2);
 
         System.out.println("Finished testDeleteTag.");
     }

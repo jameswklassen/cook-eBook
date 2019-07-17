@@ -1,5 +1,7 @@
 package com.cook_ebook.logic;
 
+import android.util.Log;
+
 import com.cook_ebook.application.Services;
 import com.cook_ebook.logic.comparators.OldestDateComparator;
 import com.cook_ebook.logic.comparators.AscendingTitleComparator;
@@ -7,6 +9,7 @@ import com.cook_ebook.logic.comparators.LatestDateComparator;
 import com.cook_ebook.logic.comparators.DescendingTitleComparator;
 import com.cook_ebook.logic.exceptions.InvalidCookingTimeException;
 import com.cook_ebook.logic.exceptions.InvalidRecipeException;
+import com.cook_ebook.logic.exceptions.RecipeNotFoundException;
 import com.cook_ebook.logic.exceptions.InvalidRecipeTitle;
 import com.cook_ebook.logic.exceptions.InvalidTagException;
 import com.cook_ebook.objects.Recipe;
@@ -77,7 +80,12 @@ public class RecipeHandler {
     public Recipe buildRecipe(String time, String title, String tags, String ingredients, String description) throws InvalidRecipeException {
         List<RecipeTag> tagList = stringToTags(tags);
 
-        validateRecipeProperties(tagList, title, time);
+        try {
+            validateRecipeTag(tagList);
+        }catch (InvalidTagException e) {
+            Log.e("Null tag: ", e.getMessage());
+            tagList = new ArrayList<>();
+        }
 
         // Create the object, validate it and return
         Recipe newRecipe = new Recipe(
@@ -91,16 +99,18 @@ public class RecipeHandler {
         for(RecipeTag tag : tagList)
             newRecipe.addRecipeTag(tag);
 
-        if(!RecipeValidator.validateRecipe(newRecipe))
-            throw new InvalidRecipeException("Final recipe object was invalid");
-
         return newRecipe;
     }
 
     public Recipe buildRecipe(int id, String time, String title, String tags, String ingredients, String description, Date date) {
         List<RecipeTag> tagList = stringToTags(tags);
 
-        validateRecipeProperties(tagList, title, time);
+        try {
+            validateRecipeTag(tagList);
+        }catch (InvalidTagException e) {
+            Log.e("Null tag: ", e.getMessage());
+            tagList = new ArrayList<>();
+        }
 
         Recipe newRecipe = new Recipe(
                 id,
@@ -115,25 +125,14 @@ public class RecipeHandler {
         for(RecipeTag tag : tagList)
             newRecipe.addRecipeTag(tag);
 
-        if(!RecipeValidator.validateRecipe(newRecipe))
-            throw new InvalidRecipeException("Final recipe object was invalid");
-
         return newRecipe;
     }
 
-    private void validateRecipeProperties(List<RecipeTag> tagList, String title, String time) {
+    private void validateRecipeTag(List<RecipeTag> tagList) {
         for(RecipeTag tag : tagList) {
             if(!RecipeTagValidator.validateRecipeTag(tag))
                 throw new InvalidTagException("A tag in the recipe was invalid.");
         }
-
-        // Validate Title
-        if(!RecipeValidator.validateTitle(title))
-            throw new InvalidRecipeTitle("Recipe Title was invalid");
-
-        // Validate cooking time
-        if(!RecipeValidator.validateCookingTimeNumeric(time) || !RecipeValidator.validateCookingTimePositive(time))
-            throw new InvalidCookingTimeException("Recipe cooking time was invalid");
     }
 
     private List<RecipeTag> stringToTags(String tags) {
@@ -253,7 +252,7 @@ public class RecipeHandler {
         return searchResults;
     }
 
-    public Recipe getRecipeById(int recipeId) throws InvalidRecipeException {
+    public Recipe getRecipeById(int recipeId) {
         return dataAccessRecipe.getRecipeById(recipeId);
     }
 
@@ -261,31 +260,37 @@ public class RecipeHandler {
         return dataAccessRecipe.getRecipeListByFavourite(isFavourite);
     }
 
-    public Recipe insertRecipe(Recipe recipe) throws InvalidRecipeException {
+    public Recipe insertRecipe(Recipe recipe) {
         if(RecipeValidator.validateRecipe(recipe)) {
             return dataAccessRecipe.insertRecipe(recipe);
-        } else {
-            throw new InvalidRecipeException("The new recipe is invalid!");
         }
+        return null;
     }
 
-    public Recipe updateRecipe(Recipe newRecipe) throws InvalidRecipeException {
+    public Recipe updateRecipe(Recipe newRecipe) {
         if(RecipeValidator.validateRecipe(newRecipe)) {
             return dataAccessRecipe.updateRecipe(newRecipe);
-        } else {
-            throw new InvalidRecipeException("The new recipe is invalid!");
+        }
+        return null;
+    }
+
+    public void deleteRecipe(Recipe recipe) {
+        try{
+            if(RecipeValidator.validateRecipe(recipe)) {
+                dataAccessRecipe.deleteRecipe(recipe);
+            }
+        }catch(RecipeNotFoundException e) {
+            Log.e("Recipe Not found: id: " + recipe.getRecipeID(), e.getMessage());
+            e.printStackTrace();
         }
     }
 
-    public void deleteRecipe(Recipe recipe) throws InvalidRecipeException {
-        if(RecipeValidator.validateRecipe(recipe)) {
-            dataAccessRecipe.deleteRecipe(recipe);
-        } else {
-            throw new InvalidRecipeException("The new recipe is invalid!");
+    public void deleteRecipeById(int recipeId) {
+        try{
+            dataAccessRecipe.deleteRecipeById(recipeId);
+        }catch(RecipeNotFoundException e) {
+            Log.e("Recipe Not found: id: " + recipeId, e.getMessage());
+            e.printStackTrace();
         }
-    }
-
-    public void deleteRecipeById(int recipeId) throws InvalidRecipeException {
-        dataAccessRecipe.deleteRecipeById(recipeId);
     }
 }

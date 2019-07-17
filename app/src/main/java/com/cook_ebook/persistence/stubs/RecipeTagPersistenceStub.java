@@ -1,5 +1,8 @@
 package com.cook_ebook.persistence.stubs;
 
+import android.widget.TabHost;
+
+import com.cook_ebook.logic.exceptions.TagNotFoundException;
 import com.cook_ebook.objects.RecipeTag;
 import com.cook_ebook.persistence.RecipeTagPersistence;
 

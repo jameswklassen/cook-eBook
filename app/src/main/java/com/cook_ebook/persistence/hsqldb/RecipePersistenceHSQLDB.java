@@ -208,7 +208,6 @@ public class RecipePersistenceHSQLDB implements RecipePersistence {
         return null;
     }
 
-    // TODO: throw RecipeNotFoundException
     public Recipe updateRecipe(Recipe newRecipe) throws RecipeNotFoundException {
         System.out.println("[LOG] UPDATE RECIPE");
         String dateString = DBHelper.getSQLDateString(newRecipe.getRecipeDate());
@@ -240,15 +239,15 @@ public class RecipePersistenceHSQLDB implements RecipePersistence {
             e.printStackTrace();
         }
 
-        return null;
+        throw new RecipeNotFoundException("Recipe not found");
     }
 
-    public void deleteRecipe(Recipe recipe) {
+    public void deleteRecipe(Recipe recipe) throws RecipeNotFoundException {
         System.out.println("[LOG] Deleting recipe: " + recipe.getRecipeTitle());
         deleteRecipeById(recipe.getRecipeID());
     }
 
-    public void deleteRecipeById(int recipeId) {
+    public void deleteRecipeById(int recipeId) throws RecipeNotFoundException {
         System.out.println("[LOG] Deleting recipe by ID " + recipeId);
 
         try (Connection connection = connect()) {
@@ -270,6 +269,7 @@ public class RecipePersistenceHSQLDB implements RecipePersistence {
         } catch (final SQLException e) {
             Log.e("Connect SQL", e.getMessage() + e.getSQLState());
             e.printStackTrace();
+            throw new RecipeNotFoundException("Recipe could not be deleted in the database");
         }
     }
 }
