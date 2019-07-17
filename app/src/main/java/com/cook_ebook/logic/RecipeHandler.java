@@ -80,7 +80,12 @@ public class RecipeHandler {
     public Recipe buildRecipe(String time, String title, String tags, String ingredients, String description) throws InvalidRecipeException {
         List<RecipeTag> tagList = stringToTags(tags);
 
-        validateRecipeProperties(tagList, title, time);
+        try {
+            validateRecipeTag(tagList);
+        }catch (InvalidTagException e) {
+            Log.e("Null tag: ", e.getMessage());
+            tagList = new ArrayList<>();
+        }
 
         // Create the object, validate it and return
         Recipe newRecipe = new Recipe(
@@ -94,16 +99,18 @@ public class RecipeHandler {
         for(RecipeTag tag : tagList)
             newRecipe.addRecipeTag(tag);
 
-        if(!RecipeValidator.validateRecipe(newRecipe))
-            throw new InvalidRecipeException("Final recipe object was invalid");
-
         return newRecipe;
     }
 
     public Recipe buildRecipe(int id, String time, String title, String tags, String ingredients, String description, Date date) {
         List<RecipeTag> tagList = stringToTags(tags);
 
-        validateRecipeProperties(tagList, title, time);
+        try {
+            validateRecipeTag(tagList);
+        }catch (InvalidTagException e) {
+            Log.e("Null tag: ", e.getMessage());
+            tagList = new ArrayList<>();
+        }
 
         Recipe newRecipe = new Recipe(
                 id,
@@ -118,25 +125,14 @@ public class RecipeHandler {
         for(RecipeTag tag : tagList)
             newRecipe.addRecipeTag(tag);
 
-        if(!RecipeValidator.validateRecipe(newRecipe))
-            throw new InvalidRecipeException("Final recipe object was invalid");
-
         return newRecipe;
     }
 
-    private void validateRecipeProperties(List<RecipeTag> tagList, String title, String time) {
+    private void validateRecipeTag(List<RecipeTag> tagList) {
         for(RecipeTag tag : tagList) {
             if(!RecipeTagValidator.validateRecipeTag(tag))
                 throw new InvalidTagException("A tag in the recipe was invalid.");
         }
-
-        // Validate Title
-        if(!RecipeValidator.validateTitle(title))
-            throw new InvalidRecipeTitle("Recipe Title was invalid");
-
-        // Validate cooking time
-        if(!RecipeValidator.validateCookingTimeNumeric(time) || !RecipeValidator.validateCookingTimePositive(time))
-            throw new InvalidCookingTimeException("Recipe cooking time was invalid");
     }
 
     private List<RecipeTag> stringToTags(String tags) {
