@@ -119,7 +119,7 @@ public class SingleRecipe extends AppCompatActivity implements View.OnClickListe
     }
 
     private String getRecipeTime() {
-        return extras.getString("recipeTime") + " minutes";
+        return extras.getInt("recipeTime") + " minutes";
     }
 
     private void speakPhrase(String text) {
@@ -251,6 +251,7 @@ public class SingleRecipe extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onBackPressed() {
+        text_to_speech.stop();
         if(update) {
             Intent intent = favouriteIntent();
             setResult(RESULT_OK, intent);
@@ -284,6 +285,7 @@ public class SingleRecipe extends AppCompatActivity implements View.OnClickListe
                 Intent intent = favouriteIntent();
                 setResult(RESULT_OK, intent);
             }
+            text_to_speech.stop();
             finish();
             return true;
         }
