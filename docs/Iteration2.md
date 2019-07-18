@@ -34,7 +34,7 @@ Note for the Marker:
 - Our database is also not fully implemented properly for the tags. We are hoping to get to that in the next iteration.
 
 ### Architecture Document
-We updated our [Architecture](https://code.cs.umanitoba.ca/comp3350-summer2019/cook-eBook/blob/develop/docs/Architecture.md) Document
+We updated our [Architecture](https://code.cs.umanitoba.ca/comp3350-summer2019/cook-eBook/blob/master/docs/Architecture.md) Document
 
 ## Next Iteration
 In the third Iteration we would like to :
