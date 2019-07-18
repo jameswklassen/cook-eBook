@@ -6,11 +6,11 @@ cook-eBook is a new app that will allow users to store, view and edit their own 
 ## Iteration Documents
 For the markers:
 
-[Iteration 1](https://code.cs.umanitoba.ca/comp3350-summer2019/cook-eBook/blob/develop/docs/Iteration1.md)
+[Iteration 1](https://code.cs.umanitoba.ca/comp3350-summer2019/cook-eBook/blob/master/docs/Iteration1.md)
 
-[Iteration 2](https://code.cs.umanitoba.ca/comp3350-summer2019/cook-eBook/blob/develop/docs/Iteration2.md)
+[Iteration 2](https://code.cs.umanitoba.ca/comp3350-summer2019/cook-eBook/blob/master/docs/Iteration2.md)
 
-[Iteration 3](https://code.cs.umanitoba.ca/comp3350-summer2019/cook-eBook/blob/develop/docs/Iteration3.md)
+[Iteration 3](https://code.cs.umanitoba.ca/comp3350-summer2019/cook-eBook/blob/master/docs/Iteration3.md)
 
 
 ## Vision Statement
@@ -50,9 +50,9 @@ For the markers:
 
 
 ## Retrospective
-- Out document for [Retrospective](https://code.cs.umanitoba.ca/comp3350-summer2019/cook-eBook/blob/develop/docs/Retrospective.md)
+- Out document for [Retrospective](https://code.cs.umanitoba.ca/comp3350-summer2019/cook-eBook/blob/master/docs/Retrospective.md)
 
 ## Tests
-- [UnitTests](https://code.cs.umanitoba.ca/comp3350-summer2019/cook-eBook/blob/develop/app/src/test/java/com/cook_ebook/tests/AllUnitTests.java)
-- [IntegrationTests](https://code.cs.umanitoba.ca/comp3350-summer2019/cook-eBook/blob/develop/app/src/test/java/com/cook_ebook/tests/AllIntegrationTests.java)
-- [AcceptanceTests](https://code.cs.umanitoba.ca/comp3350-summer2019/cook-eBook/blob/develop/app/src/androidTest/java/com/cook_ebook/AllAcceptanceTests.java)
+- [UnitTests](https://code.cs.umanitoba.ca/comp3350-summer2019/cook-eBook/blob/master/app/src/test/java/com/cook_ebook/tests/AllUnitTests.java)
+- [IntegrationTests](https://code.cs.umanitoba.ca/comp3350-summer2019/cook-eBook/blob/master/app/src/test/java/com/cook_ebook/tests/AllIntegrationTests.java)
+- [AcceptanceTests](https://code.cs.umanitoba.ca/comp3350-summer2019/cook-eBook/blob/master/app/src/androidTest/java/com/cook_ebook/AllAcceptanceTests.java)
