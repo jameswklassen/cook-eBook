@@ -214,7 +214,7 @@ public class RecipeTest {
         SystemClock.sleep(5000);
 
         onView(withId(R.id.play_button)).perform(click());
-        SystemClock.sleep(10000);
+        SystemClock.sleep(10500);
 
         pressBack();
     }
