@@ -13,11 +13,7 @@ public class RecipeValidator {
      * Return false if title is invalid
      */
     public static boolean validateRecipe(Recipe recipe) throws InvalidRecipeException {
-        if(recipe !=null) {
-            return true;
-        }
-
-        return false;
+        return recipe !=null;
     }
 
     /* validateTitle()
@@ -25,11 +21,7 @@ public class RecipeValidator {
      * Return false if title is invalid
      */
     public static boolean validateTitle(String title) throws InvalidRecipeTitle {
-        if(title.equals("") || title == null) {
-            return false;
-        }
-
-        return true;
+        return title != null && !(title.equals(""));
     }
 
     /* validateCookingTimeNumeric()
@@ -37,36 +29,22 @@ public class RecipeValidator {
      * Return false if cooking time is not a number
      */
     public static boolean validateCookingTimeNumeric(String cookingTime) throws NotATimeException {
-        if(isStringNumeric(cookingTime)) {
-                return true;
-        }
 
-        return false;
-    }
-
-    /* validateCookingTimePositive()
-     *
-     * Return false if cooking time is non-positive
-     */
-    public static boolean validateCookingTimePositive(String cookingTime) throws NonPositiveCookingTimeException {
-        if(Integer.parseInt(cookingTime) > 0) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /* isStringNumeric()
-     *
-     * Return false if String is not a number
-     */
-    public static boolean isStringNumeric(String targetInput) {
         try {
-            int num = Integer.parseInt(targetInput);
+            int num = Integer.parseInt(cookingTime);
         } catch(NumberFormatException e) {
             return false;
         }
 
         return true;
     }
+    
+    /* validateCookingTimePositive()
+     *
+     * Return false if cooking time is non-positive
+     */
+    public static boolean validateCookingTimePositive(String cookingTime) throws NonPositiveCookingTimeException {
+        return Integer.parseInt(cookingTime) > 0;
+    }
+
 }

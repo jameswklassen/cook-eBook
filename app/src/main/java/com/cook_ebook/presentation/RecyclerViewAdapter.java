@@ -14,10 +14,6 @@ import android.widget.TextView;
 
 import com.cook_ebook.R;
 import com.cook_ebook.objects.Recipe;
-import com.cook_ebook.objects.RecipeTag;
-
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
@@ -51,6 +47,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         Log.d(TAG, "onBindViewHolder: called.");
 
         viewHolder.recipeName.setText(recipes.get(i).getRecipeTitle());
+        viewHolder.recipeDate.setText("Last Modified: " + recipes.get(i).getRecipeDate());
+        viewHolder.recipeTime.setText("Cooking Time: " + recipes.get(i).getRecipeCookingTime() + " min");
         viewHolder.parent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -60,12 +58,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 myIntent.putExtra("recipeIngredients", recipes.get(i).getRecipeIngredients());
                 myIntent.putExtra("recipeTime", recipes.get(i).getRecipeCookingTime());
                 myIntent.putExtra("recipeFavourite", recipes.get(i).getRecipeIsFavourite());
+                myIntent.putExtra("recipeDate", recipes.get(i).getRecipeDate().toString());
 
                 String tags = "";
                 for(int k = 0; k < recipes.get(i).getRecipeTagList().size(); k ++) {
-                    tags += recipes.get(i).getRecipeTagList().get(k).getTagName() + "\n";
+                    tags += recipes.get(i).getRecipeTagList().get(k).getTagName() + ", ";
                 }
-
+                
                 myIntent.putExtra("recipeTags", tags);
                 myIntent.putExtra("recipeID", recipes.get(i).getRecipeID());
 
@@ -94,12 +93,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView recipeName;
+        TextView recipeDate;
+        TextView recipeTime;
         RelativeLayout parent;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             recipeName = itemView.findViewById(R.id.recipe_name);
+            recipeDate = itemView.findViewById(R.id.recipe_date);
+            recipeTime = itemView.findViewById(R.id.recipe_time);
             parent = itemView.findViewById(R.id.parent_relative_layout);
         }
     }

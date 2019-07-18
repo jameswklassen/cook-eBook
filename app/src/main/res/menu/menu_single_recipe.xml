@@ -12,4 +12,15 @@
         android:orderInCategory="100"
         android:title="@string/delete_recipe"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/duplicate_recipe"
+        android:orderInCategory="100"
+        android:title="@string/duplicate_recipe"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/share_recipe"
+        android:orderInCategory="100"
+        android:title="@string/share_recipe" />
 </menu>

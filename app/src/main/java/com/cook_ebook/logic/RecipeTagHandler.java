@@ -3,9 +3,9 @@ package com.cook_ebook.logic;
 import com.cook_ebook.application.Services;
 import com.cook_ebook.logic.exceptions.InvalidTagException;
 import com.cook_ebook.logic.exceptions.TagNotFoundException;
-import com.cook_ebook.objects.Recipe;
 import com.cook_ebook.objects.RecipeTag;
 import com.cook_ebook.persistence.RecipeTagPersistence;
+import android.util.Log;
 
 import java.util.List;
 
@@ -21,47 +21,22 @@ public class RecipeTagHandler {
         return dataAccessRecipeTag.getAllTags();
     }
 
-    public int getTagIdByName(String tagName)  throws InvalidTagException {
-        return dataAccessRecipeTag.getTagIdByName(tagName);
-    }
-
-    public String getTagNameById(int tagId) throws InvalidTagException  {
-        return dataAccessRecipeTag.getTagNameById(tagId);
-    }
-
-    public RecipeTag getTagById(int tagId) throws InvalidTagException  {
-        return dataAccessRecipeTag.getTagById(tagId);
-    }
-
-    public RecipeTag getTagByName(String tagName)  throws InvalidTagException {
-        return dataAccessRecipeTag.getTagByName(tagName);
-    }
-
-    public RecipeTag insertOneTag(RecipeTag tag) throws InvalidTagException  {
+    public RecipeTag insertOneTag(RecipeTag tag)  {
         if(RecipeTagValidator.validateRecipeTag(tag)) {
             return dataAccessRecipeTag.insertOneTag(tag);
-        } else {
-            throw new TagNotFoundException("The tag being inserted does not exist.");
         }
+        return null;
     }
 
     public void deleteOneTag(RecipeTag tag) throws InvalidTagException  {
-        if(RecipeTagValidator.validateRecipeTag(tag)) {
-            dataAccessRecipeTag.deleteOneTag(tag);
-        } else {
-            throw new TagNotFoundException("The tag being deleted does not exist.");
-        }
-    }
 
-    public boolean doesTagExist(RecipeTag tag) throws InvalidTagException  {
-        if(RecipeTagValidator.validateRecipeTag(tag)) {
-            return dataAccessRecipeTag.doesTagExist(tag);
-        } else {
-            throw new TagNotFoundException("The tag does not exist.");
+        try{
+            if(RecipeTagValidator.validateRecipeTag(tag)) {
+                dataAccessRecipeTag.deleteOneTag(tag);
+            }
+        }catch(TagNotFoundException e) {
+            Log.e("Tag Not found: id: " + tag.getTagID(), e.getMessage());
+            e.printStackTrace();
         }
-    }
-
-    public boolean doesTagNameExist(String tagName)  throws InvalidTagException {
-        return dataAccessRecipeTag.doesTagNameExist(tagName);
     }
 }

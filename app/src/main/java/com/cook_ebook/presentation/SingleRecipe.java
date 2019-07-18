@@ -7,23 +7,26 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.widget.TextView;
-
 import com.cook_ebook.R;
-import com.cook_ebook.objects.Recipe;
+import android.speech.tts.TextToSpeech;
+import java.util.Locale;
 
 public class SingleRecipe extends AppCompatActivity implements View.OnClickListener {
 
     private FloatingActionButton favourite_btn;
+    private FloatingActionButton speech_button;
     private boolean favourite = false;
+    private boolean playSpeech = true;
+    private boolean update = false;
     private static final String TAG = "SingleActivity";
     public static final int ADD_ACTIVITY = 1;
+    private TextToSpeech text_to_speech;
 
     private Bundle extras;
 
@@ -40,25 +43,99 @@ public class SingleRecipe extends AppCompatActivity implements View.OnClickListe
 
         extras = getIntent().getExtras();
 
-        CollapsingToolbarLayout layout = findViewById(R.id.toolbar_layout);
+        final CollapsingToolbarLayout layout = findViewById(R.id.toolbar_layout);
         layout.setTitle(extras.getString("recipeTitle"));
 
-        TextView description = findViewById(R.id.description);
+        final TextView description = findViewById(R.id.description);
         description.setText(extras.getString("recipeDescription"));
 
-        TextView ingredients = findViewById(R.id.ingredients);
+        final TextView ingredients = findViewById(R.id.ingredients);
         ingredients.setText(extras.getString("recipeIngredients"));
 
-        TextView time = findViewById(R.id.time);
+        final TextView time = findViewById(R.id.time);
         String cookTime = extras.getInt("recipeTime") + " minutes";
         time.setText(cookTime);
 
         TextView tags = findViewById(R.id.tags);
         tags.setText(extras.getString("recipeTags"));
 
+        TextView date = findViewById(R.id.recipe_date);
+        String recipeDate = "Last Modified: " + extras.getString("recipeDate");
+        date.setText(recipeDate);
+
         favourite = extras.getBoolean("recipeFavourite");
-        updateFavourite();
+        setFavouriteImage();
+
+        speech_button = findViewById(R.id.play_button);
+
+        text_to_speech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status != TextToSpeech.ERROR) {
+                    text_to_speech.setLanguage(Locale.UK);
+                }
+            }
+        });
+//
+        speech_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(playSpeech) {
+                    // recipe title
+                    String toSpeak = getRecipeTitle() + " Recipe";
+                    speakPhrase(toSpeak);
+
+                    // cooking time
+                    toSpeak = "This Recipe has " + getRecipeTime() + " cooking time. ";
+                    speakPhrase(toSpeak);
+
+                    // recipe ingredients
+                    toSpeak = "Ingredients " + getRecipeIngredients();
+                    speakPhrase(toSpeak);
+
+                    // recipe description
+                    toSpeak = "Description " + getRecipeDescription();
+                    speakPhrase(toSpeak);
+                }else
+                {
+                    text_to_speech.stop();
+                }
+
+                setPlayImage();
+            }
+        });
     }
+
+    private String getRecipeDescription() {
+        return extras.getString("recipeDescription");
+    }
+
+    private String getRecipeIngredients() {
+        return extras.getString("recipeIngredients");
+    }
+
+    private String getRecipeTitle() {
+        return extras.getString("recipeTitle");
+    }
+
+    private String getRecipeTime() {
+        return extras.getInt("recipeTime") + " minutes";
+    }
+
+    private void speakPhrase(String text) {
+        text_to_speech.speak(text, TextToSpeech.QUEUE_ADD, null, null);
+        text_to_speech.playSilentUtterance(1000, TextToSpeech.QUEUE_ADD, null);
+    }
+
+    private void setPlayImage() {
+        if (playSpeech) {
+            speech_button.setImageResource(R.drawable.stop_icon);
+        } else {
+            speech_button.setImageResource(R.drawable.play_icon);
+        }
+        playSpeech = !playSpeech;
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -66,24 +143,25 @@ public class SingleRecipe extends AppCompatActivity implements View.OnClickListe
         return true;
     }
 
+
     @Override
     public void onClick(View v) {
         updateFavourite();
     }
 
-    // TODO: have this update the value in memory
     private void updateFavourite() {
+        if(favourite_btn != null) {
+            favourite = !favourite;
+            update = true;
+            setFavouriteImage();
+        }
+    }
+    private void setFavouriteImage() {
         if(favourite_btn != null) {
             if (favourite) {
                 favourite_btn.setImageResource(R.drawable.heart_filled);
-                favourite = false;
-                Intent intent = favouriteIntent();
-                setResult(RESULT_OK, intent);
             } else {
                 favourite_btn.setImageResource(R.drawable.heart_empty);
-                favourite = true;
-                Intent intent = favouriteIntent();
-                setResult(RESULT_OK, intent);
             }
         }
     }
@@ -111,7 +189,6 @@ public class SingleRecipe extends AppCompatActivity implements View.OnClickListe
 
     private Intent deleteIntent() {
         Intent myIntent = new Intent();
-        System.out.println(extras.getInt("recipeID"));
         myIntent.putExtra("doDelete", extras.getInt("recipeID"));
 
         return myIntent;
@@ -120,14 +197,41 @@ public class SingleRecipe extends AppCompatActivity implements View.OnClickListe
     private Intent favouriteIntent() {
         Intent myIntent = new Intent();
         myIntent.putExtra("toggleFavourite", extras.getInt("recipeID"));
+        myIntent.putExtra("favourite", favourite);
 
         return myIntent;
     }
 
     private void editRecipe(){
         Intent intent = new Intent(getApplicationContext(),AddEditView.class);
-        System.out.println("SINGLE" + extras.getInt("recipeID"));
         intent.putExtra("recipe_key",extras);
+        intent.putExtra("createRecipe",false);
+        startActivityForResult(intent, ADD_ACTIVITY);
+    }
+
+    private void shareRecipe() {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("*/*");
+        intent.putExtra(Intent.EXTRA_SUBJECT, getRecipeTitle());
+        intent.putExtra(Intent.EXTRA_TEXT, formatEmailText());
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+    }
+
+    private String formatEmailText() {
+        String text = "Title: \n" + getRecipeTitle();
+        text += "\n\nCooking Time: \n" + getRecipeTime();
+        text += "\n\nIngredients: \n" + getRecipeIngredients();
+        text += "\n\nDescription: \n" + getRecipeDescription();
+        text += "\n\nSent using Cook-ebook\n\n";
+        return text;
+    }
+
+    private void duplicateRecipe(){
+        Intent intent = new Intent(getApplicationContext(),AddEditView.class);
+        intent.putExtra("recipe_key",extras);
+        intent.putExtra("duplicateRecipe", true);
         startActivityForResult(intent, ADD_ACTIVITY);
     }
 
@@ -139,11 +243,22 @@ public class SingleRecipe extends AppCompatActivity implements View.OnClickListe
         }
 
         if (requestCode == ADD_ACTIVITY) {
+            data.putExtra("favourite", favourite);
             setResult(RESULT_OK, data);
             finish();
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        text_to_speech.stop();
+        if(update) {
+            Intent intent = favouriteIntent();
+            setResult(RESULT_OK, intent);
+            finish();
+        }
+        super.onBackPressed();
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -156,12 +271,23 @@ public class SingleRecipe extends AppCompatActivity implements View.OnClickListe
         if (id == R.id.delete_recipe) {
             showConfirmationDialog();
             return true;
-        }
-        else if (id == R.id.edit_recipe){
+        } else if (id == R.id.edit_recipe){
             editRecipe();
             return true;
+        } else if (id == R.id.duplicate_recipe){
+            duplicateRecipe();
+            return true;
+        } else if (id == R.id.share_recipe) {
+            shareRecipe();
+            return true;
+        } else {
+            if(update) {
+                Intent intent = favouriteIntent();
+                setResult(RESULT_OK, intent);
+            }
+            text_to_speech.stop();
+            finish();
+            return true;
         }
-
-        return super.onOptionsItemSelected(item);
     }
 }

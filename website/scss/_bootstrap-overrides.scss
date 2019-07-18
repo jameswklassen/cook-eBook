@@ -1,0 +1,106 @@
+// Bootstrap overrides for this template
+.bg-primary {
+    // background: $theme-primary;
+    // background: -webkit-linear-gradient($theme-primary, darken($theme-primary, 5%));
+    // background: linear-gradient($theme-primary, darken($theme-primary, 5%));
+    background: $theme-primary !important;
+    color: #fff;
+    background-image: url('img/cookies.jpg');
+
+    a {
+        color: #fff;
+    }
+}
+
+.text-primary {
+    color: $theme-primary;
+}
+
+.no-gutter > [class*='col-'] {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.btn-outline {
+    color: white;
+    border: 1px solid;
+    border-color: white;
+    &:hover,
+    &:focus,
+    &:active,
+    &.active {
+        color: white;
+        border-color: $theme-primary;
+        background-color: $theme-primary;
+    }
+}
+
+.btn {
+    border-radius: 300px;
+    @include alt-font;
+}
+
+.btn-xl {
+    font-size: 11px;
+    padding: 15px 45px;
+}
+
+.feature-item {
+    margin-bottom: 30px;
+}
+
+h3 {
+    margin-top: 30px;
+}
+
+.icon {
+    text-align: center;
+    display: inline-block;
+    width: 100px;
+    background: darken($theme-primary, 10%);
+    padding: 30px;
+    border-radius: 50%;
+    height: 100px;
+    font-size: 30px;
+    margin: 30px 30px;
+}
+
+.contributors {
+    text-align: center;
+    
+    .contributor {
+        margin: 30px 0;
+        display: inline-block;
+        
+        .name {
+            color: white;
+            font-size: 30px;
+            // text-transform: uppercase;
+            font-weight: 100;
+            margin: 5px 0;
+        }
+        img {
+            max-width: 200px;
+            background: darken($theme-primary, 10%);
+            border-radius: 50%;
+            width: 100%;
+        }
+
+        ul {
+            list-style: none;
+            text-align: left;
+            // padding-left: 0;
+
+            li {
+                position: relative;
+                margin: 10px 0;
+
+                span {
+                    display: block;
+                    opacity: 0.6;
+                }
+            }
+        }
+    }
+
+}

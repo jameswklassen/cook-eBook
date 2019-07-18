@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,20 +14,17 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
+import android.widget.EditText;
 import android.widget.Toast;
 
-import com.cook_ebook.logic.RecipeTagHandler;
-import com.cook_ebook.logic.RecipeValidator;
+import com.cook_ebook.logic.exceptions.InvalidRecipeException;
 import com.cook_ebook.objects.Recipe;
 import com.cook_ebook.objects.RecipeTag;
 import com.cook_ebook.logic.RecipeHandler;
 import com.cook_ebook.R;
 import com.cook_ebook.persistence.utils.DBHelper;
 
-import org.hsqldb.lib.tar.DbBackup;
-
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import java.util.*;
@@ -44,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
     //Temporary variables until we have database placeholders merged in
     private List<Recipe> recipes = new ArrayList<>();
     private RecipeHandler handler;
-    private RecipeTagHandler tagHandler;
     private RecyclerViewAdapter adapter;
 
     @Override
@@ -61,15 +56,41 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                onClickSearchButton(view);
             }
         });
 
-        tagHandler = new RecipeTagHandler(true);
         handler = new RecipeHandler(true);
         getRecipes();
     }
+
+    private void onClickSearchButton(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View dialog = getLayoutInflater().inflate(R.layout.dialog_search, null);
+        final EditText searchQuery = dialog.findViewById(R.id.searchQuery);
+
+        builder.setPositiveButton("Search", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String searchStr = searchQuery.getText().toString();
+
+                handler.resetSearch();
+                handler.resetFilter();
+                handler.resetFavourite();
+                viewingFavourites = false;
+
+                if(searchStr.length() > 0)
+                    applySearch(searchStr);
+            }
+        });
+
+        builder.setNegativeButton("Cancel", null);
+
+        builder.setView(dialog);
+        builder.show();
+
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -85,13 +106,18 @@ public class MainActivity extends AppCompatActivity {
                  filterOption = menu.findItem(R.id.filter_list);
 
         if (handler.getFilter().size() > 0) {
-            String text = "" + handler.getFilter().size();
+            String text = "Clear " + handler.getFilter().size();
             text += handler.getFilter().size() == 1 ? " Filter" : " Filters";
 
             filterNumber.setVisible(true);
             filterNumber.setTitle(text);
+        } else if(handler.getSearchString() != null) {
+            filterNumber.setVisible(true);
+            filterNumber.setTitle("Clear search for '" + handler.getSearchString() + "'");
+            filterOption.setEnabled(false);
         } else {
             filterNumber.setVisible(false);
+            filterOption.setEnabled(true);
         }
 
         if (viewingFavourites) {
@@ -99,7 +125,6 @@ public class MainActivity extends AppCompatActivity {
             filterOption.setEnabled(false);
         } else {
             menu.findItem(R.id.favourites_icon).setIcon(R.drawable.outline_favorite);
-            filterOption.setEnabled(true);
         }
 
         return true;
@@ -109,17 +134,24 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(new Intent(getApplicationContext(), AddEditView.class), ADD_ACTIVITY);
     }
 
+    //This method checks to see if the returned activity requests a recipe to be made/edited
+    //Note: each line is OR'd meaning this method checks if any line's condition is met
+    private boolean handleRecipe(int requestCode, Bundle extras){
+        return requestCode == ADD_ACTIVITY ||
+               (requestCode == SINGLE_ACTIVITY && extras.containsKey("update")) ||
+               (requestCode == SINGLE_ACTIVITY && extras.containsKey("duplicate"));
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != RESULT_OK) {
             Log.d(TAG, "Result code was NOT okay. " + requestCode);
             return;
         }
-
         Bundle extras = data.getExtras();
 
-        if (requestCode == ADD_ACTIVITY || (requestCode == SINGLE_ACTIVITY && extras.containsKey("update"))) {
-            int time = Integer.parseInt(extras.getString("recipeTime"));
+        if (handleRecipe(requestCode, extras)) {
+            String time = extras.getString("recipeTime");
             String title = extras.getString("recipeTitle");
             String tags = extras.getString("recipeTags");
             String ingredients = extras.getString("recipeIngredients");
@@ -130,11 +162,22 @@ public class MainActivity extends AppCompatActivity {
                 // change this once code is pulled
                 int recipeId = extras.getInt("recipeID");
                 Date date = new Date();
-                Recipe newRecipe = buildRecipe(recipeId, time, title, tags, ingredients, description, date);
-                updateRecipe(newRecipe);
+                try {
+                    Recipe newRecipe = handler.buildRecipe(recipeId, time, title, tags, ingredients, description, date);
+                    boolean favourite = extras.getBoolean("favourite");
+
+                    newRecipe.setRecipeIsFavourite(favourite);
+                    updateRecipe(newRecipe);
+                } catch(InvalidRecipeException e) {
+                    Log.d(TAG, "Could not create recipe: " + e.getMessage());
+                }
             }else{
-                Recipe newRecipe = buildRecipe(time, title, tags, ingredients, description);
-                handler.insertRecipe(newRecipe);
+                try {
+                    Recipe newRecipe = handler.buildRecipe(time, title, tags, ingredients, description);
+                    handler.insertRecipe(newRecipe);
+                } catch(InvalidRecipeException e) {
+                    Log.d(TAG, "Could not create recipe: " + e.getMessage());
+                }
             }
 
             recipes = handler.getAllRecipes();
@@ -144,12 +187,13 @@ public class MainActivity extends AppCompatActivity {
             if(extras.containsKey("doDelete")) {
                 deleteRecipe(extras.getInt("doDelete"));
             } else if (extras.containsKey("toggleFavourite")) {
-                int index = extras.getInt("toggleFavourite");
-                if (index < recipes.size()) {
-                    Recipe recipe = recipes.get(index);
-                    recipe.setRecipeIsFavourite(!recipe.getRecipeIsFavourite());
-                    //updateRecipe(recipe);
-                }
+                int id = extras.getInt("toggleFavourite");
+                boolean favourite = extras.getBoolean("favourite");
+                Recipe recipe = handler.getRecipeById(id);
+                recipe.setRecipeIsFavourite(favourite);
+                updateRecipe(recipe);
+                recipes = handler.getAllRecipes();
+                adapter.setNewList(recipes);
             }
 
         }
@@ -157,40 +201,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void updateRecipe(Recipe recipe) {
         handler.updateRecipe(recipe);
-    }
-
-    private Recipe buildRecipe(int time, String title, String tags, String ingredients, String description) {
-        RecipeTag newSet = new RecipeTag(tags);
-
-        Recipe newRecipe = new Recipe(
-                title,
-                description,
-                ingredients,
-                time,
-                null,
-                false);
-
-        newRecipe.addRecipeTag(newSet);
-
-        return newRecipe;
-    }
-
-    private Recipe buildRecipe(int id, int time, String title, String tags, String ingredients, String description, Date date) {
-        RecipeTag newSet = new RecipeTag(tags);
-
-        Recipe newRecipe = new Recipe(
-                id,
-                title,
-                description,
-                ingredients,
-                time,
-                null,
-                false,
-                date);
-
-        newRecipe.addRecipeTag(newSet);
-
-        return newRecipe;
     }
 
     public void deleteRecipe(int id) {
@@ -227,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
         } else if (id == R.id.filter_list) {
             showFilterListDialog();
         } else if (id == R.id.filter_number) {
-            clearAllFilters();
+            clearSearchAndFilter();
         } else if (id == R.id.favourites_icon) {
             viewingFavourites = !viewingFavourites;
 
@@ -240,8 +250,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void showSortListDialog() {
         final String[] sorts = new String[] {
-            "Date-Ascending",
-            "Date-Descending",
+            "Date-Oldest",
+            "Date-Latest",
             "Title-Ascending",
             "Title-Descending"
         };
@@ -266,18 +276,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // Do nothing.
-            }
-        });
+        builder.setNegativeButton("Cancel", null);
 
         builder.show();
     }
 
     private void showFilterListDialog() {
-        List<RecipeTag> tags = tagHandler.getAllRecipeTags();
+        List<RecipeTag> tags = handler.getTagHandler().getAllRecipeTags();
         final String[] tagList = new String[tags.size()];
 
         for (int i = 0; i < tagList.length; i++)
@@ -305,33 +310,46 @@ public class MainActivity extends AppCompatActivity {
         builder.setNegativeButton("Clear", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                clearAllFilters();
+                clearSearchAndFilter();
             }
         });
 
         builder.show();
     }
 
+    private void applySearch(String str) {
+        // Resetting handled in button click handler
+
+        handler.setSearch(str);
+        invalidateOptionsMenu();
+        doFullRecyclerViewReset(handler.getAllRecipes());
+    }
+
     private void applyFilters(String[] tagList, boolean[] checkedArray) {
         handler.resetFilter();
-        List<Recipe> allRecipes = handler.filter(tagList, checkedArray);
+        handler.resetSearch();
+        handler.resetFavourite();
+        handler.filter(tagList, checkedArray);
 
         //Set the menu text appropriately
         invalidateOptionsMenu();
 
         //Do a full reset of the recycler view
-        doFullRecyclerViewReset(allRecipes);
+        doFullRecyclerViewReset(handler.getAllRecipes());
     }
 
     private void updateFavouritesView() {
-        if (viewingFavourites)
+        if (viewingFavourites) {
             handler.resetFilter();
+            handler.resetSearch();
+        }
 
         handler.setFavourite(viewingFavourites);
         doFullRecyclerViewReset(handler.getAllRecipes());
     }
 
-    private void clearAllFilters() {
+    private void clearSearchAndFilter() {
+        handler.resetSearch();
         handler.resetFilter();
         doFullRecyclerViewReset(handler.getAllRecipes());
         invalidateOptionsMenu();

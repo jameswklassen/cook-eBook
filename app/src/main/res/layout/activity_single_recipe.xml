@@ -46,6 +46,19 @@
     <include layout="@layout/content_single_recipe" />
 
     <android.support.design.widget.FloatingActionButton
+        android:id="@+id/play_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="240dp"
+        android:layout_marginRight="16dp"
+        android:backgroundTint="#FFFFFF"
+        app:backgroundTint="#818181"
+        app:borderWidth="1dp"
+        app:layout_anchor="@id/fav_button"
+        app:layout_anchorGravity="bottom|center"
+        app:srcCompat="@drawable/play_icon" />
+
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/fav_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

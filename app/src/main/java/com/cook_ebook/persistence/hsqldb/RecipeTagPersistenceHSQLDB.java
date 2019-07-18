@@ -1,18 +1,16 @@
 package com.cook_ebook.persistence.hsqldb;
 
 import android.util.Log;
-
-import com.cook_ebook.objects.Recipe;
 import com.cook_ebook.objects.RecipeTag;
 import com.cook_ebook.persistence.RecipeTagPersistence;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class RecipeTagPersistenceHSQLDB implements RecipeTagPersistence {
@@ -59,43 +57,43 @@ public class RecipeTagPersistenceHSQLDB implements RecipeTagPersistence {
     }
 
     @Override
-    public int getTagIdByName(String tagName) {
-        return -1;
-    }
-
-    @Override
-    public String getTagNameById(int tagId) {
-        return null;
-    }
-
-    @Override
-    public RecipeTag getTagById(int tagId) {
-        return null;
-    }
-
-    @Override
-    public RecipeTag getTagByName(String tagName) {
-        return null;
-    }
-
-    @Override
     public RecipeTag insertOneTag(RecipeTag targetTag) {
+        System.out.println("[LOG] Inserting a tag");
+
+        if (tags.contains(targetTag)) {
+            System.out.println("[LOG] tag already exists. done");
+            return tags.get(tags.indexOf(targetTag));
+        }
+        
+        System.out.println("[LOG] inserting " + targetTag);
+
+        try (Connection connection = connect()) {
+            final PreparedStatement statement = connection.prepareStatement("INSERT INTO TAGS VALUES(DEFAULT, ?)");
+            statement.setString(1, targetTag.getTagName());
+            statement.executeUpdate();
+            statement.close();
+
+            final PreparedStatement newStatement = connection.prepareStatement("SELECT * FROM TAGS WHERE title = ?");
+            newStatement.setString(1, targetTag.getTagName());
+            final ResultSet resultSet = newStatement.executeQuery();
+
+            if (resultSet.next()) {
+                final RecipeTag tag = fromResultSet(resultSet);
+                System.out.println(tag + " ");
+                this.tags.add(tag);
+                return tag;
+            }
+
+        } catch (final SQLException e) {
+            Log.e("Connect SQL", e.getMessage() + e.getSQLState());
+            e.printStackTrace();
+        }
         return null;
     }
 
     @Override
     public void deleteOneTag(RecipeTag targetTag) {
-    }
-
-    @Override
-    public boolean doesTagExist(RecipeTag targetTag) {
-        return false;
-    }
-
-    // we may not need this method, I am not not sure, so I keep it for temp
-    // if we do not need it, we can delete this method before merge to master
-    @Override
-    public boolean doesTagNameExist(String targetTagName) {
-        return false;
+        // user won't able to delete tag in tag-table
+        // do nothing here
     }
 }

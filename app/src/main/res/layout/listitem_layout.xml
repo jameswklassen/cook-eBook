@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="5dp"
     android:id="@+id/parent_relative_layout">
 
@@ -20,14 +19,47 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/recipe" />
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:layout_marginBottom="8dp"
-                android:text="@string/save_recipe"
-                android:textColor="#000"
-                android:textSize="24sp"
-                android:id="@+id/recipe_name"/>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/save_recipe"
+            android:textColor="#000"
+            android:textSize="24sp"
+            android:id="@+id/recipe_name"/>
+
+            <RelativeLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/RelativeLayout01"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/recipe_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="16dp"
+                    android:padding="2dp"
+                    android:text="2019-02-12"
+                    android:textColor="#A5A5A5"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:id="@+id/recipe_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginRight="16dp"
+                    android:padding="2dp"
+                    android:text="50 minutes"
+                    android:textColor="#A5A5A5"
+                    android:textSize="16sp"/>
+
+            </RelativeLayout>
         </LinearLayout>
     </android.support.v7.widget.CardView>
 </RelativeLayout>
